@@ -1,0 +1,44 @@
+/* CSS for styling the login form */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #ffffff;
+    }
+    
+    .login-container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+    
+    .login-container h2 {
+    text-align: center;
+    }
+    
+    .login-container input[type="text"],
+    .login-container input[type="password"],
+    .login-container input[type="date"],
+    .login-container textarea {
+    width: 92%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    }
+   
+    .login-container input[type="submit"] {
+    width: 100%;
+    background-color: #218625;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 125px;
+    cursor: pointer;
+    }
+    
+    .login-container input[type="submit"]:hover {
+    background-color: #45a049;
+    }
