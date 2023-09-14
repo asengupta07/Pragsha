@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    <link rel="stylesheet" href="signupstyles.css" />
+  </head>
+    <body>
+      <div align="center" height="300">
+        <img src="C:\Users\HP\Downloads\WhatsApp Image 2023-09-09 at 22.40.35.jpg" width="350" />
+      </div>
+      <hr />
+      <div class="reg-container">
+        <h2>Register</h2>
+        <form action="action.php" method="post">
+          <label for="agencyName"></label>
+          <input
+            type="text"
+            id="agencyName"
+            name="agencyName"
+            required
+            placeholder="Agency Name"
+          />
+          <label for="email"></label>
+          <input
+            type="text"
+            id="email"
+            name="email"
+            required
+            placeholder="Email"
+          />
+          <label for="password"></label>
+          <input
+            type="text"
+            id="password"
+            name="password"
+            required
+            placeholder="Password"
+          />
+          <label for="regIdType"></label>
+          <input
+            type="text"
+            id="regIdType"
+            name="regIdType"
+            required
+            placeholder="Registration ID Type"
+          />
+          <label for="regId"></label>
+          <input
+            type="text"
+            id="regId"
+            name="regId"
+            required
+            placeholder="Registration ID Number"
+          />
+          <label for="agencyType">Select an Agency Type:</label>
+    <select id="agencyType">
+        <option value="Fire Department">Fire Department</option>
+        <option value="Flood Rescue">Flood Rescue</option>
+        <option value="Earthquake Rescue">Earthquake Rescue</option>
+        <option value="Forest Fire Department">Forest Fire Department</option>
+        <option value="Tsunami Rescue">Tsunami Rescue</option>
+    </select>
+
+    <label for="getLocation">Get Location</label>
+    <button id="getLocationButton">Get Location</button>
+    <script>
+        if ("geolocation" in navigator) {
+            document.getElementById("getLocationButton").addEventListener("click", function() {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var latitude = position.coords.latitude;
+                    var longitude = position.coords.longitude;
+                }, function(error) {
+                    var locationElement = document.getElementById("location");
+                    locationElement.innerHTML = "Error getting location: " + error.message;
+                });
+            });
+        } else {
+            var locationElement = document.getElementById("location");
+            locationElement.innerHTML = "Geolocation is not supported in your browser.";
+        }
+    </script>
+
+          <input type="submit" value="Login" />
+        </form>
+      </div>
+    </body>
+</html>
