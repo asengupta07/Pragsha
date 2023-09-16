@@ -55,33 +55,31 @@
             placeholder="Registration ID Number"
           />
           <label for="agencyType">Select an Agency Type:</label>
-    <select id="agencyType">
-        <option value="Fire Department">Fire Department</option>
-        <option value="Flood Rescue">Flood Rescue</option>
-        <option value="Earthquake Rescue">Earthquake Rescue</option>
-        <option value="Forest Fire Department">Forest Fire Department</option>
-        <option value="Tsunami Rescue">Tsunami Rescue</option>
-    </select>
-
-    <label for="getLocation">Get Location</label>
-    <button id="getLocationButton">Get Location</button>
-    <script>
-        if ("geolocation" in navigator) {
-            document.getElementById("getLocationButton").addEventListener("click", function() {
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    var latitude = position.coords.latitude;
-                    var longitude = position.coords.longitude;
-                }, function(error) {
-                    var locationElement = document.getElementById("location");
-                    locationElement.innerHTML = "Error getting location: " + error.message;
-                });
-            });
-        } else {
-            var locationElement = document.getElementById("location");
-            locationElement.innerHTML = "Geolocation is not supported in your browser.";
-        }
-    </script>
-
+          <select id="agencyType">
+              <option value="Fire Department">Fire Department</option>
+              <option value="Flood Rescue">Flood Rescue</option>
+              <option value="Earthquake Rescue">Earthquake Rescue</option>
+              <option value="Forest Fire Department">Forest Fire Department</option>
+              <option value="Tsunami Rescue">Tsunami Rescue</option>
+          </select>
+          <label for="getLocation">Get Location</label>
+          <button id="getLocationButton">Get Location</button>
+          <script>
+              if ("geolocation" in navigator) {
+                  document.getElementById("getLocationButton").addEventListener("click", function() {
+                      navigator.geolocation.getCurrentPosition(function(position) {
+                          var latitude = position.coords.latitude;
+                          var longitude = position.coords.longitude;
+                      }, function(error) {
+                          var locationElement = document.getElementById("location");
+                          locationElement.innerHTML = "Error getting location: " + error.message;
+                      });
+                  });
+              } else {
+                  var locationElement = document.getElementById("location");
+                  locationElement.innerHTML = "Geolocation is not supported in your browser.";
+              }
+          </script>
           <input type="submit" value="Login" />
         </form>
       </div>

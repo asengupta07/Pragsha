@@ -1,0 +1,55 @@
+from django.shortcuts import render
+from django import forms
+from .models import Agency, Location
+from django.contrib.auth.hashers import make_password
+
+# Create your views here.
+class RegisterForm(forms.ModelForm):
+    name = forms.CharField(max_length=100, label="Name")
+    email = forms.EmailField(max_length=100, label="Email")
+    regId = forms.CharField(max_length=100, label="Registration ID")
+    password = forms.CharField(max_length=100, label="Password", widget=forms.PasswordInput)
+    confirm_password = forms.CharField(max_length=100, label="Confirm Password", widget=forms.PasswordInput)
+    class Meta:
+        model = Agency
+        fields = ['name', 'email', 'regId', 'password']
+
+class LocationForm(forms.ModelForm):
+    agency_id = forms.CharField(widget=forms.HiddenInput, required=False)
+    latitude = forms.FloatField()
+    longitude = forms.FloatField()
+    class Meta:
+        model = Location
+        fields = ['latitude', 'longitude']
+
+
+def register(request):
+    if request.method == 'GET':
+        return render(request, 'registration.html', {
+            'form': RegisterForm(),
+            'loc': LocationForm()
+        })
+    elif request.method == 'POST':
+        form = RegisterForm(request.POST)
+        loc = LocationForm(request.POST)
+        if form.is_valid() and form.cleaned_data['password'] == form.cleaned_data['confirm_password'] and loc.is_valid():
+            form.cleaned_data.pop('confirm_password')
+            hashed_password = make_password(form.cleaned_data['password'])
+            form.instance.password = hashed_password
+            agency = form.save()
+            location = Location(
+                agency_id=agency,  # Set the agency_id field
+                latitude=loc.cleaned_data['latitude'],
+                longitude=loc.cleaned_data['longitude']
+            )
+            location.save()
+            return render(request, 'registration.html', {
+                'form': RegisterForm(),
+                'loc': LocationForm(),
+                'success': True
+            })
+        else:
+            return render(request, 'registration.html', {
+                'form': form,
+                'location': loc
+            })

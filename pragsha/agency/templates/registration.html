@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+{% block title %}Register{% endblock %}
+{% block main %}
+<div class="login-container">
+    {% if success %}
+    {% if success == False %}
+        <p class="error">Please Retry</p>
+    {% endif %}
+    {% endif %}
+    <h2>Register</h2>
+    <form action="{% url 'agency:register' %}" method="post">
+        <div>
+            {% csrf_token %}
+        </div>
+        <div>
+            {{ form.name.label_tag }}
+            {{ form.name }}
+        </div>
+        <div>
+            {{ form.email.label_tag }}
+            {{ form.email }}
+        </div>
+        <div>
+            {{ form.regId.label_tag }}
+            {{ form.regId }}
+        </div>
+        <div>
+            {{ loc.as_p }}
+        </div>
+        <button class="button-24" id="getLocationBtn">Get My Location</button>
+        <div>
+            {{ form.password.label_tag }}
+            {{ form.password }}
+        </div>
+        <div>
+            {{ form.confirm_password.label_tag }}
+            {{ form.confirm_password }}
+        <div>
+            <input type="submit" value="Register">
+        </div>
+    </form>
+    <script>
+        document.getElementById('getLocationBtn').addEventListener('click', function () {
+            if ("geolocation" in navigator) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    var latitude = position.coords.latitude;
+                    var longitude = position.coords.longitude;
+                    document.getElementById('id_latitude').value = latitude;
+                    document.getElementById('id_longitude').value = longitude;
+                });
+            } else {
+                alert('Geolocation is not available in your browser.');
+            }
+        });
+    </script>
+</div>
+{% endblock %}
