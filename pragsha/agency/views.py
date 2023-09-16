@@ -38,7 +38,7 @@ def register(request):
             form.instance.password = hashed_password
             agency = form.save()
             location = Location(
-                agency_id=agency,  # Set the agency_id field
+                agency_id=agency,
                 latitude=loc.cleaned_data['latitude'],
                 longitude=loc.cleaned_data['longitude']
             )
