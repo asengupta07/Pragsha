@@ -1,7 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django import forms
 from .models import User
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password, check_password
 
 # Create your views here.
 class RegisterForm(forms.ModelForm):
@@ -49,3 +49,33 @@ def register(request):
             return render(request, 'register.html', {
                 'form': form
             })
+        
+
+class LoginForm(forms.Form):
+    name = forms.CharField(max_length=100, label="Name")
+    password = forms.CharField(max_length=100, label="Password", widget=forms.PasswordInput)
+
+def login(request):
+    if request.method == 'GET':
+        return render(request, 'login.html', {'form': LoginForm()})
+
+    elif request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            password = form.cleaned_data['password']
+            try:
+                user = User.objects.get(name=name)
+            except User.DoesNotExist:
+                return render(request, 'login.html', {
+                    'form': form,
+                    'error_message': 'Invalid Name or Password'
+                })
+
+            if check_password(password, user.password):
+                return redirect('/authentification/register')
+            else:
+                return render(request, 'login.html', {
+                    'form': form,
+                    'error_message': 'Invalid Name or Password'
+                })
