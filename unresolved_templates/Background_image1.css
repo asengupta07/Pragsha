@@ -1,0 +1,12 @@
+.section3 {
+    background-image: url('heyay.png'); 
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 400px 0;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

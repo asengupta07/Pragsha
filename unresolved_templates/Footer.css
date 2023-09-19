@@ -1,0 +1,27 @@
+    
+        footer {
+            background-color: black;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        
+        .contact-button {
+            background-color: white;
+            color: black;
+            border: none;
+            border-radius: 30px;
+            padding: 10px 20px;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        
+        .footer-text {
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+        }

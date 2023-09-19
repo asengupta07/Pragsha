@@ -1,0 +1,31 @@
+
+.section1 {
+    background-image: url('nejc-soklic-XXp9RthTqCc-unsplash.jpg'); 
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 300px 0;
+    text-align: left;
+    display: flex;
+    align-items: center;
+}
+
+
+.text-container {
+    flex: 1;
+    padding: 20px;
+}
+
+
+.headline {
+    font-family: Arial, sans-serif;
+    font-size: 50px;
+    margin-bottom: 20px;
+}
+
+
+.paragraph {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+}

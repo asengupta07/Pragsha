@@ -1,0 +1,51 @@
+.banner {
+    background-color: #FF4136; 
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+
+.hero {
+    background-image: url('scott-rodgerson-ffH_GkINfyY-unsplash.jpg'); 
+    background-size: cover;
+    background-position: center;
+    text-align: center;
+    padding: 300px 0; 
+}
+
+
+.form-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: inline-block;
+}
+
+select,
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+select {
+    margin-right: 5px;
+}
+
+
+.submit-button {
+    background-color: #0074D9; 
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.submit-button:hover {
+    background-color: #0056b3; 
+}

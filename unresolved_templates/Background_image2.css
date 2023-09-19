@@ -1,0 +1,20 @@
+.section2 {
+    background-image: url('y-s-OkAHdWuhWV0-unsplash.jpg'); 
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 300px 0;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.paragraph {
+    font-family: Arial, sans-serif;
+    font-size: 40px;
+    line-height: 2px;
+    margin: 20px 0;
+}

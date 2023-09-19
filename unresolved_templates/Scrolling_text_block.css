@@ -1,0 +1,12 @@
+
+.scroll-container {
+    width: 1500px; 
+    height: 200px; 
+    overflow: auto; 
+    border: 1px solid #ccc; 
+}
+
+
+.scroll-content {
+    padding: 10px; 
+}
