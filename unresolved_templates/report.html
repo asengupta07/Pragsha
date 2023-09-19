@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report an Emergency</title>
+    <style>
+       
+        .banner {
+            background-color: #FF4136; 
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+       
+        .hero {
+            background-image: url('scott-rodgerson-ffH_GkINfyY-unsplash.jpg'); 
+            background-size: cover;
+            background-position: center;
+            text-align: center;
+            padding: 300px 0; 
+        }
+
+        
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+        }
+
+        select,
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        select {
+            margin-right: 5px;
+        }
+
+        
+        .submit-button {
+            background-color: #0074D9; 
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .submit-button:hover {
+            background-color: #0056b3; 
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="banner">
+        <h1>Report an Emergency</h1>
+    </div>
+
+   
+    <div class="hero">
+       
+        <div class="form-container">
+            <form>
+                <select>
+                    <option value="emergency-type-1">Serious</option>
+                    <option value="emergency-type-2">Intermediate</option>
+                </select>
+                <input type="text" placeholder="Emergency Name">
+                <input type="text" placeholder="Phone Number">
+                <input type="text" placeholder="Location">
+                <input type="text" placeholder="Emergency Description">
+                <input type="text" placeholder="Lives in Danger">
+                <button class="submit-button" type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
