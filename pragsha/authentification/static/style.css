@@ -1,7 +1,8 @@
 /* CSS for styling the login form */
 body {
     font-family: Arial, sans-serif;
-    background-color: #ffffff;
+    background-color: #fff6ef;
+    overflow-x: hidden;
     }
     
     .login-container {

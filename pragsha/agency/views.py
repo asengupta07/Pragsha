@@ -25,7 +25,7 @@ class LocationForm(forms.ModelForm):
 
 def register(request):
     if request.method == 'GET':
-        return render(request, 'registration.html', {
+        return render(request, 'agency/registration.html', {
             'form': RegisterForm(),
             'loc': LocationForm()
         })
@@ -43,13 +43,13 @@ def register(request):
                 longitude=loc.cleaned_data['longitude']
             )
             location.save()
-            return render(request, 'registration.html', {
+            return render(request, 'agency/registration.html', {
                 'form': RegisterForm(),
                 'loc': LocationForm(),
                 'success': True
             })
         else:
-            return render(request, 'registration.html', {
+            return render(request, 'agency/registration.html', {
                 'form': form,
                 'location': loc
             })
@@ -61,7 +61,7 @@ class LoginForm(forms.Form):
 
 def login(request):
     if request.method == 'GET':
-        return render(request, 'login.html', {'form': LoginForm()})
+        return render(request, 'agency/login.html', {'form': LoginForm()})
 
     elif request.method == 'POST':
         form = LoginForm(request.POST)
@@ -71,7 +71,7 @@ def login(request):
             try:
                 agency = Agency.objects.get(regId=reg_id)
             except Agency.DoesNotExist:
-                return render(request, 'login.html', {
+                return render(request, 'agency/login.html', {
                     'form': form,
                     'error_message': 'Invalid Registration ID or Password'
                 })
@@ -83,7 +83,7 @@ def login(request):
                 # For this example, I'll just redirect to a success page.
                 return redirect('/agency/register')  # Replace 'success_page' with your actual success page URL.
             else:
-                return render(request, 'login.html', {
+                return render(request, 'agency/login.html', {
                     'form': form,
                     'error_message': 'Invalid Registration ID or Password'
                 })

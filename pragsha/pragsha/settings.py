@@ -15,6 +15,42 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+PWA_APP_NAME = 'Pragsha'
+PWA_APP_DESCRIPTION = "Disaster Management Application"
+PWA_APP_THEME_COLOR = '#ffb78f'
+PWA_APP_BACKGROUND_COLOR = '#fff6ef'
+PWA_APP_DISPLAY = 'standalone'
+PWA_APP_SCOPE = '/'
+PWA_APP_ORIENTATION = 'any'
+PWA_APP_START_URL = '/'
+PWA_APP_STATUS_BAR_COLOR = '#ffb78f'
+PWA_APP_ICONS = [
+    {
+        'src': '/static/icon-512x512.png',
+        'sizes': '512x512'
+    },
+    {
+      "src": "/static/maskable_icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+]
+PWA_APP_ICONS_APPLE = [
+    {
+        'src': '/static/icon-512x512.png',
+        'sizes': '512x512'
+    }
+]
+PWA_APP_SPLASH_SCREEN = [
+    {
+        'src': '/static/splash.jpg',
+        'media': '(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)'
+    }
+]
+PWA_APP_DIR = 'ltr'
+PWA_APP_LANG = 'en-US'
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -34,6 +70,7 @@ INSTALLED_APPS = [
     "authentification",
     "agency",
     "land",
+    "pwa",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",

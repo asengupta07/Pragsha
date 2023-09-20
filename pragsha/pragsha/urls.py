@@ -22,4 +22,5 @@ urlpatterns = [
     path("authentification/", include("authentification.urls")),
     path("agency/", include("agency.urls")),
     path("", include("land.urls")),
+    path('', include('pwa.urls')),
 ]
