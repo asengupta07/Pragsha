@@ -3,6 +3,7 @@
 from django.shortcuts import render, redirect
 from .models import Thread, Post
 from django.contrib.auth.decorators import login_required
+from .utils import is_spam
 
 def forum(request):
     threads = Thread.objects.all()
@@ -24,5 +25,22 @@ def thread_detail(request, thread_id):
     posts = Post.objects.filter(thread=thread)
     return render(request, 'forumapp/thread_detail.html', {'thread': thread, 'posts': posts})
 
+
+
+def create_post(request):
+    if request.method == 'POST':
+        content = request.POST['content']
+        
+        
+        if is_spam(request, content):
+            
+            pass
+        else:
+            
+            Post.objects.create(content=content)
+        
+        return redirect('forum')
+    
+    return render(request, 'forumapp/create_post.html') # arnab we need to make a create_post.html
 
 # Create your views here.
