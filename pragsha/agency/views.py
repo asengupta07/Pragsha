@@ -25,6 +25,8 @@ class LocationForm(forms.ModelForm):
 
 def register(request):
     if request.method == 'GET':
+        if 'agency_id' in request.session:
+            return redirect('/agency/dashboard')
         return render(request, 'agency/registration.html', {
             'form': RegisterForm(),
             'loc': LocationForm()
@@ -61,6 +63,8 @@ class LoginForm(forms.Form):
 
 def login(request):
     if request.method == 'GET':
+        if 'agency_id' in request.session:
+            return redirect('/agency/dashboard')
         return render(request, 'agency/login.html', {'form': LoginForm()})
 
     elif request.method == 'POST':
@@ -77,10 +81,16 @@ def login(request):
                 })
 
             if check_password(password, agency.password):
-                request.session['agency_id'] = agency.id
+                request.session['agency_id'] = agency.agency_id
                 return redirect('/agency/dashboard')
             else:
                 return render(request, 'agency/login.html', {
                     'form': form,
                     'error_message': 'Invalid Registration ID or Password'
                 })
+            
+
+def logout(request):
+    if 'agency_id' in request.session:
+        del request.session['agency_id']
+    return redirect('/agency/login')

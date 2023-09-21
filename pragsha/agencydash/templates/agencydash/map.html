@@ -19,7 +19,7 @@
         // Add a pushpin for the user's location
         navigator.geolocation.getCurrentPosition(function (position) {
             var userLocation = new Microsoft.Maps.Location(position.coords.latitude, position.coords.longitude);
-            var userPushpin = new Microsoft.Maps.Pushpin(userLocation, { color: 'green', title: 'My location'});
+            var userPushpin = new Microsoft.Maps.Pushpin(userLocation, { color: 'green', title: '{{ agency_name|safe }}'});
             map.entities.push(userPushpin);
         });
 
