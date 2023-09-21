@@ -122,3 +122,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AKISMET_API_KEY = 'YOUR_AKISMET_API_KEY'
+AKISMET_BLOG_URL = 'http://yourforum.com' #add the forum app url here arnab
