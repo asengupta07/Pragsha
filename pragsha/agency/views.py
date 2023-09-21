@@ -77,11 +77,8 @@ def login(request):
                 })
 
             if check_password(password, agency.password):
-                # Passwords match, log in the user.
-                # You can implement your authentication logic here.
-                # For example, you can set a session variable or use Django's built-in authentication system.
-                # For this example, I'll just redirect to a success page.
-                return redirect('/agency/register')  # Replace 'success_page' with your actual success page URL.
+                request.session['agency_id'] = agency.id
+                return redirect('/agency/dashboard')
             else:
                 return render(request, 'agency/login.html', {
                     'form': form,
