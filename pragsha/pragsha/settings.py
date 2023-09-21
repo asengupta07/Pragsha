@@ -15,6 +15,8 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+BING_MAPS_API_KEY = 'AoCUncNX_-l6FfT1nHyketx4jOn1zrAIiBzGfYei8zgT9CUyVqxRckBBMZYI18Zx'
+
 PWA_APP_NAME = 'Pragsha'
 PWA_APP_DESCRIPTION = "Disaster Management Application"
 PWA_APP_THEME_COLOR = '#ffb78f'
@@ -71,6 +73,7 @@ INSTALLED_APPS = [
     "agency",
     "land",
     "pwa",
+    "agencydash",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",

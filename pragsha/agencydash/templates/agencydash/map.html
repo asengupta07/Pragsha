@@ -1,0 +1,38 @@
+{% extends 'agencydash/layout.html' %}
+
+{% block title %}
+    Map
+{% endblock %}
+
+{% block links %}
+    <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?key=AoCUncNX_-l6FfT1nHyketx4jOn1zrAIiBzGfYei8zgT9CUyVqxRckBBMZYI18Zx'></script>
+{% endblock %}
+
+{% block main %}
+    <div id="map" style="width: 100%; height: 400px;"></div>
+    <script>
+        function initMap() {
+        var map = new Microsoft.Maps.Map(document.getElementById('map'), {
+            credentials: 'AoCUncNX_-l6FfT1nHyketx4jOn1zrAIiBzGfYei8zgT9CUyVqxRckBBMZYI18Zx'
+        });
+
+        // Add a pushpin for the user's location
+        navigator.geolocation.getCurrentPosition(function (position) {
+            var userLocation = new Microsoft.Maps.Location(position.coords.latitude, position.coords.longitude);
+            var userPushpin = new Microsoft.Maps.Pushpin(userLocation, { color: 'green', title: 'My location'});
+            map.entities.push(userPushpin);
+        });
+
+        // Parse the JSON data passed from the view
+        var markerData = {{ marker_data|safe }};
+        
+        for (var i = 0; i < markerData.length; i++) {
+            var location = new Microsoft.Maps.Location(markerData[i].latitude, markerData[i].longitude);
+            var pushpin = new Microsoft.Maps.Pushpin(location, { title: markerData[i].name });
+            map.entities.push(pushpin);
+        }
+    }
+
+    Microsoft.Maps.loadModule('Microsoft.Maps.AutoSuggest', { callback: initMap, errorCallback: function (e) { console.log(e); } });
+    </script>
+{% endblock %}
