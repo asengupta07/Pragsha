@@ -4,16 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Emergency Broadcast Form</title>
+    <!-- Include Bootstrap CSS link here -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #fff6ef;
+            overflow-x: hidden;
+        }
+    </style>
 </head>
 <body>
-    <h1>Emergency Broadcast Form</h1>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card" style="background-color: #ffb78f;">
+                    <div class="card-header">
+                        <h1 class="text-center">Emergency Broadcast Form</h1>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" id="broadcast-form">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <button type="submit" class="btn btn-primary btn-block">Broadcast</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <form method="post" id="broadcast-form">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Broadcast</button>
-    </form>
-
-    <!-- Include any additional content or styling as needed -->
+    <!-- Include Bootstrap JS and jQuery (optional) here if needed -->
+    <!--
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    -->
 </body>
 </html>
