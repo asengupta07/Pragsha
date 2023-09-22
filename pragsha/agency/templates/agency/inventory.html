@@ -1,0 +1,116 @@
+{% extends 'agencydash/layout.html' %}
+{% block links %}
+<style>
+    #inventory-form {
+        margin-bottom: 20px;
+    }
+    #inventory-table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+    #inventory-table th, #inventory-table td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+    #inventory-table th {
+        background-color: #f2f2f2;
+    }
+</style>
+{% endblock %}
+{% block main %}
+<div class="row">
+    <div class="col">
+  <h1>Add Inventory</h1>
+  <form id="inventory-form" class="form-inline">
+    {% csrf_token %}
+    <div class="form-group">
+      <input type="text" name="name" id="name" class="form-control mr-2" placeholder="Name" style="width:50% !important;" required>
+    </div>
+    <br>
+    <div class="form-group">
+      <input type="number" name="number" id="number" class="form-control mr-2" placeholder="Number" style="width:50% !important;" required>
+    </div>
+    <br>
+    <button type="submit" class="btn btn-primary">Add</button>
+  </form>
+  <table id="inventory-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Number</th>
+      </tr>
+    </thead>
+    <tbody id="inventory-list">
+    </tbody>
+  </table>
+  </div>
+  <div class="col">
+    <h1>Inventory</h1>
+    <table id="inventory-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Number</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in inv %}
+        <tr>
+          <td>{{ item.name }}</td>
+          <td>{{ item.number }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(function () {
+  // Submit the form using AJAX
+  $('#inventory-form').submit(function (e) {
+    e.preventDefault();
+    // Submit the form using AJAX
+    $.ajax({
+      url: '{% url "agency:inventory" %}',
+      method: 'POST',
+      data: $(this).serialize(),
+      success: function (data) {
+        if (data.status === 'success') {
+          // Do nothing
+          var name = $('input[name="name"]').val();
+          var number = parseInt($('input[name="number"]').val());
+          var existingRow = $('#inventory-list').find('tr').filter(function () {
+            return $(this).find('td:first').text() === name;
+          });
+          if (existingRow.length) {
+            // Update the existing row with the new number
+            var existingNumber = parseInt(existingRow.find('td:last').text());
+            existingRow.find('td:last').text(existingNumber + number);
+          } else {
+            // Add a new row to the table
+            var row = $('<tr>');
+            row.append($('<td>').text(name));
+            row.append($('<td>').text(number));
+            $('#inventory-list').append(row);
+          }
+          // Clear the form
+          $('#inventory-form')[0].reset();
+              } else {
+          // Display the form errors
+          alert('Error: ' + JSON.stringify(data.errors));
+        }
+      },
+      error: function () {
+        alert('Error: Failed to submit form');
+      }
+    });
+  });
+});
+  </script>
+{% endblock %}

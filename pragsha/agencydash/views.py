@@ -12,6 +12,7 @@ def map_view(request):
         'name': marker.agency_id.name,
         'latitude': marker.latitude,
         'longitude': marker.longitude,
+        'id': marker.agency_id.agency_id,
     } for marker in markers if marker.agency_id.agency_id != agency_id])
     agency_name = Agency.objects.get(agency_id=agency_id).name
     return render(request, 'agencydash/map.html', {'marker_data': marker_data, 'agency_name': agency_name})
