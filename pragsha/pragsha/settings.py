@@ -75,6 +75,7 @@ INSTALLED_APPS = [
     "pwa",
     "agencydash",
     "chat",
+    "userdash",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
