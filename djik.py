@@ -24,22 +24,29 @@ class Graph:
 
         return distances
 
-# Example usage:
-if __name__ == "__main__":
-    # Create a list of vertices
-    vertices = ["A", "B", "C", "D", "E"]
+    import math
 
-    # Create a graph and add edges with their weights
-    graph = Graph(vertices)
-    graph.add_edge("A", "B", 3)
-    graph.add_edge("A", "C", 2)
-    graph.add_edge("B", "D", 2)
-    graph.add_edge("C", "B", 1)
-    graph.add_edge("D", "C", 1)
-    graph.add_edge("E", "A", 1)
-    graph.add_edge("E", "D", 4)
+    def haversine(lat1, lon1, lat2, lon2):
+        R = 6371.0
+        lat1 = math.radians(lat1)
+        lon1 = math.radians(lon1)
+        lat2 = math.radians(lat2)
+        lon2 = math.radians(lon2)
+        dlon = lon2 - lon1
+        dlat = lat2 - lat1
+        a = math.sin(dlat / 2) ** 2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon / 2) ** 2
+        c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+        distance = R * c
 
-    start_vertex = "E"
+        return distance
+
+import networkx as nx
+G = nx.Graph()
+G.add_node("Node1", lat=latitude1, lon=longitude1)
+G.add_node("Node2", lat=latitude2, lon=longitude2)
+distance = haversine(latitude1, longitude1, latitude2, longitude2)
+if distance < threshold_distance:
+    G.add_edge("Node1", "Node2", weight=distance)
 
     try:
         shortest_distances = graph.bellman_ford(start_vertex)
