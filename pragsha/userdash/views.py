@@ -1,5 +1,6 @@
 from django import forms
 from .models import Broadcast
+from authentification.models import User
 from django.shortcuts import render, redirect
 
 
@@ -13,10 +14,14 @@ def dashboard(request):
         if request.method == 'POST':
             form = BroadcastForm(request.POST)
             if form.is_valid():
-                broadcast = form.save(commit=False)
-                broadcast = Broadcast()
-                user = User(request.session["user_id"])
-                broadcast.user = request.user
+                
+                user = list(User.objects.filter(user_id=request.session["user_id"]))[0]
+                broadcast = Broadcast(
+                    name = form.cleaned_data['name'],
+                    latitude = form.cleaned_data['latitude'],
+                    longitude = form.cleaned_data['longitude'],
+                    user = user
+                )
                 broadcast.save()
                 return redirect('dashboard')
         else:
