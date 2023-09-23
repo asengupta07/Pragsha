@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect
 class BroadcastForm(forms.ModelForm):
     class Meta:
         model = Broadcast
-        fields = ['name', 'location']
+        fields = ['name', 'latitude', 'longitude']
 
 def dashboard(request):
     if "user_id" in request.session:
