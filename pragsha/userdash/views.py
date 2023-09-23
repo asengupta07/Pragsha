@@ -14,6 +14,8 @@ def dashboard(request):
             form = BroadcastForm(request.POST)
             if form.is_valid():
                 broadcast = form.save(commit=False)
+                broadcast = Broadcast()
+                user = User(request.session["user_id"])
                 broadcast.user = request.user
                 broadcast.save()
                 return redirect('dashboard')
