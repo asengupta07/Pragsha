@@ -53,20 +53,14 @@ class LocationForm(forms.ModelForm):
         model = Location
         fields = ['latitude', 'longitude']
 
-class DepartmentForm(forms.ModelForm):
+class DepartmentForm(forms.Form):
     agency_id = forms.CharField(widget=forms.HiddenInput, required=False)
-    name = forms.CharField(max_length=100, label="Department", widget=forms.CheckboxSelectMultiple(choices=DEPTS))
-    class Meta:
-        model = Department
-        fields = ['name']
+    dept = forms.CharField(max_length=100, label="Department", widget=forms.CheckboxSelectMultiple(choices=DEPTS))
 
 
-class SpecialityForm(forms.ModelForm):
+class SpecialityForm(forms.Form):
     agency_id = forms.CharField(widget=forms.HiddenInput, required=False)
-    name = forms.CharField(max_length=100, label="Speciality", widget=forms.Textarea(attrs={'rows': 3, 'cols': 40}))
-    class Meta:
-        model = Speciality
-        fields = ['name']
+    spec = forms.CharField(max_length=100, label="Speciality", widget=forms.Textarea(attrs={'rows': 3, 'cols': 40}))
 
 
 def register(request):
@@ -96,11 +90,11 @@ def register(request):
             )
             department = Department(
                 agency_id=agency,
-                name=dept.cleaned_data['name']
+                name=dept.cleaned_data['dept']
             )
             speciality = Speciality(
                 agency_id=agency,
-                name=spec.cleaned_data['name']
+                name=spec.cleaned_data['spec']
             )
             speciality.save()
             department.save()

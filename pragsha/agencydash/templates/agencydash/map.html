@@ -6,15 +6,97 @@
 
 {% block links %}
     <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?key=AoCUncNX_-l6FfT1nHyketx4jOn1zrAIiBzGfYei8zgT9CUyVqxRckBBMZYI18Zx'></script>
+    <!-- <script type='text/javascript'>
+        document.addEventListener("DOMContentLoaded", (event) => {
+            document.getElementById('filter').addEventListener('change', function(e){
+                console.clear();
+                const selectedVals = [...this.selectedOptions].map(o => o.value);
+                console.log(selectedVals);
+            
+            for (var i=0; i<ags.length(); i++){
+                var deps = {{ ags }};
+                console.log(deps);
+                var dep = deps[i]["depts"];
+                for (var j=0; j<dep.length(); j++){
+                    var dept = dep[j];
+                    var badge = document.getElementsByClassName(dept);
+                    const result = badge.filter(check);
+                    function check(d) {
+                        res = d == dept;
+                        if (res == true) {
+                            id = d.dataset.id;
+                            document.getElementById(id).hidden = false;
+                        }
+                    }
+                }
+            }
+        });
+        }
+    </script> -->
 {% endblock %}
 
 {% block main %}
     <div id="map" style="width: 100%; height: 400px;"></div>
+
+    <!-- Table for Agencies -->
+    <!-- <h3>Filters:</h3>
+    <form class="Filter">
+        <select class="form-control" id="filter">
+            <option value="all" selected>All</option>
+            {% for dept in available_departments %}
+                {% for key, value in dept.items %}
+                    <option value="{{ value }}">{{ key }}</option>
+                {% endfor %}
+            {% endfor %}   
+    </form> -->
+    <table id="agencyTable" class="table table-striped">
+      <thead class="thead-dark">
+          <tr>
+              <th><h5>Name</h5></th>
+              <th><h5>Email</h5></th>
+              <th><h5>Departments</h5></th>
+              <th><h5>Specializations</h5></th>
+              <th><h5>Contact</h5></th>
+          </tr>
+      </thead>
+      <tbody>
+          {% for ag in ags %}
+              <tr id="{{ ag.agency_id }}">
+                  <td>{{ ag.name }}</td>
+                  <td>{{ ag.email }}</td>
+                  <td>
+                      <ul class="list">
+                          {% for dept in ag.depts %}
+                              {% for dpt in available_departments %}
+                                  {% for key, value in dpt.items %}
+                                      {% if value == dept %}
+                                          <li><div class="badge badge-primary {{ value }}" data-id="{{ ag.agency_id }}" style="color: black;">{{ key }}</div></li>
+                                      {% endif %}
+                                  {% endfor %}
+                              {% endfor %}                                
+                          {% endfor %}
+                      </ul>
+                  </td>
+                  <td>
+                      {{ ag.specs }}
+                  </td>
+                  <td>
+                        <a href="tel:{{ ag.contact }}">{{ ag.contact }}</a>
+                  </td>
+              </tr>
+              {% empty %}
+                  <tr>
+                      <td colspan="5">No agencies found.</td>
+                  </tr>
+              {% endfor %}
+      </tbody>
+  </table>
+
     <script>
         function initMap() {
-            var map = new Microsoft.Maps.Map(document.getElementById('map'), {
-                credentials: 'AoCUncNX_-l6FfT1nHyketx4jOn1zrAIiBzGfYei8zgT9CUyVqxRckBBMZYI18Zx'
-            });
+          var map = new Microsoft.Maps.Map(document.getElementById('map'), {
+            credentials: 'AoCUncNX_-l6FfT1nHyketx4jOn1zrAIiBzGfYei8zgT9CUyVqxRckBBMZYI18Zx'
+        });
 
             // Add a pushpin for the user's location
             navigator.geolocation.getCurrentPosition(function (position) {
@@ -97,6 +179,7 @@
             return distances;
         }
     }
+        Microsoft.Maps.loadModule('Microsoft.Maps.AutoSuggest', { callback: initMap, errorCallback: function (e) { console.log(e); } });
 
     // Define the haversine function in JavaScript
     function haversine(lat1, lon1, lat2, lon2) {
