@@ -73,7 +73,8 @@ def login(request):
                 })
 
             if check_password(password, user.password):
-                return redirect('/authentification/register')
+                request.session["user_id"] = user.user_id
+                return redirect('/user/dashboard')
             else:
                 return render(request, 'login.html', {
                     'form': form,
