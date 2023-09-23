@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circular Buttons</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('pexels-dana-tentis-370799.jpg'); /* Add your background image URL here */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-left: 20px; /* Adjust the margin to your liking */
+        }
+
+        .button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100px;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+            margin-bottom: 10px; /* Adjust the margin between buttons */
+        }
+
+        .button:hover {
+            transform: scale(1.1);
+        }
+
+        .button img {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .button-name {
+            text-align: center;
+            margin-top: 3px; /* Adjust the margin between the button and button name */
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .text {
+            background-color: rgba(255, 255, 255, 0.8); /* Add background color to the text */
+            padding: 20px;
+            border-radius: 50px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            text-align: left;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="button-container">
+        <div class="button" onclick="toggleText('Say goodbye to manual location input. We leverage the underlying GPS of the registering device, ensuring pinpoint accuracy and efficiency.')">
+            <img src="C:\Users\HP\Downloads\Screenshot 2023-09-12 222900.png" alt="Button 1">
+            <div class="button-name">Seamless GPS Integration</div>
+        </div>
+        <div class="button" onclick="toggleText('Empowering the community is key. Our interactive map empowers citizens to easily locate nearby rescue agencies. With dynamic filters based on disaster type, expertise, availability, and more, help is just a click away.')">
+            <img src="C:\Users\HP\Downloads\Screenshot 2023-09-12 222900 (1).png" alt="Button 2">
+            <div class="button-name">Interactive Citizen Map</div>
+        </div>
+        <div class="button" onclick="toggleText('Our platform is designed for maximum accessibility. Whether youre on a desktop or mobile device, Pragshas responsive and lightweight PWA ensures youre always connected.')">
+            <img src="C:\Users\HP\Downloads\Screenshot 2023-09-12 222900 (2).png" alt="Button 3">
+            <div class="button-name">Progressive Web Application</div>
+        </div>
+        <div class="button" onclick="toggleText('Coordination is crucial during rescue missions. Thats why we are implementing a chat feature that allows agencies and personnel to communicate seamlessly, facilitating better teamwork and faster response times.')">
+            <img src="C:\Users\HP\Downloads\Screenshot 2023-09-12 222900 (3).png" alt="Button 4">
+            <div class="button-name">Real-Time Communication</div>
+        </div>
+        <div class="button" onclick="toggleText('Your datas security is our top priority. Pragsha employs blockchain technology to provide unparalleled encryption and data protection, ensuring the highest level of security for your information.')">
+            <img src="C:\Users\HP\Downloads\Screenshot 2023-09-12 222900 (4).png" alt="Button 5">
+            <div class="button-name">Blockchain Protected Security</div>
+        </div>
+    </div>
+    <div id="text-container" class="hidden" onclick="toggleButtons()">
+        <p id="text" class="text"></p>
+    </div>
+
+    <script>
+        var currentText = null;
+
+        function toggleText(textContent) {
+            var textContainer = document.getElementById('text-container');
+            var text = document.getElementById('text');
+
+            if (textContainer.style.display === 'block' && text.textContent === textContent) {
+                // If the text container is visible and the same text is clicked again, hide it
+                textContainer.style.display = 'none';
+                currentText = null;
+            } else {
+                // If it's a different text or hidden, show the text and hide buttons
+                var buttons = document.querySelectorAll('.button');
+                buttons.forEach(function(button) {
+                    button.style.display = 'none';
+                });
+
+                textContainer.style.display = 'block';
+                text.textContent = textContent;
+                currentText = textContent;
+            }
+        }
+
+        function toggleButtons() {
+            // Show all buttons and hide the text container
+            var buttons = document.querySelectorAll('.button');
+            buttons.forEach(function(button) {
+                button.style.display = 'flex';
+            });
+
+            document.getElementById('text-container').style.display = 'none';
+            currentText = null;
+        }
+    </script>
+</body>
+</html>
