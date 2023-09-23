@@ -8,113 +8,106 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
-          margin: 0 auto;
-          max-width: 800px;
-          padding: 0 20px;
-          background-color: #FFF6EF;
-          font-family: 'againstregular', sans-serif;
+            margin: 0 auto;
+            max-width: 800px;
+            padding: 0 20px;
+            background: #fff6ef;
+            font-family: Arial, sans-serif;
         }
-<<<<<<< HEAD
-        
+
         .container {
-          border: 2px solid #F2C94C;
-          background-color: #F2F2F2;
-          border-radius: 5px;
-          padding: 10px;
-          margin: 10px 0;
+            border: 2px solid #FFA07A;
+            background-color: #FFF8DC;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
         }
-        
+
         .darker {
-          border-color: #CCC;
-          background-color: #DDD;
+            border-color: #D3D3D3;
+            background-color: #F5F5F5;
         }
-        
+
         .container::after {
-          content: "";
-          clear: both;
-          display: table;
+            content: "";
+            clear: both;
+            display: table;
         }
-        
+
         .container img {
-          float: left;
-          max-width: 60px;
-          width: 100%;
-          margin-right: 20px;
-          border-radius: 50%;
+            float: left;
+            max-width: 60px;
+            width: 100%;
+            margin-right: 20px;
+            border-radius: 50%;
         }
-        
+
         .container img.right {
-          float: right;
-          margin-left: 20px;
-          margin-right:0;
+            float: right;
+            margin-left: 20px;
+            margin-right: 0;
         }
-        
+
         .time-right {
-          float: right;
-          color: #AAA;
+            float: right;
+            color: #888;
         }
-        
+
         .time-left {
-          float: left;
-          color: #999;
+            float: left;
+            color: #888;
         }
-        
+
         h2 {
-          font-family: 'forestregular', sans-serif;
-          font-size: 36px;
-          color: #000000;
-          margin-top: 20px;
+            font-size: 36px;
+            color: #333;
+            margin-top: 20px;
         }
-        
+
         input[type=text], select {
-          width: 100%;
-          padding: 12px 20px;
-          margin: 8px 0;
-          display: inline-block;
-          border: 1px solid #CCC;
-          border-radius: 4px;
-          box-sizing: border-box;
-          font-family: 'againstregular', sans-serif;
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #CCC;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
         }
-        
+
         input[type=submit] {
-          width: 100%;
-          background-color: #ffb78f;
-          color: black;
-          padding: 14px 20px;
-          margin: 8px 0;
-          border: none;
-          border-radius: 4px;
-          cursor: pointer;
-          font-family: 'againstregular', sans-serif;
+            width: 100%;
+            background: #FFA07A;
+            color: #FFF;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: Arial, sans-serif;
         }
-        
+
         input[type=submit]:hover {
-          background-color: #ffb78f;
+            background: #FF6347;
         }
-        
+
         label {
-          font-family: 'againstregular', sans-serif;
-          font-size: 18px;
-          color: #000000;
+            font-size: 18px;
+            color: #333;
         }
-        
-        </style>
-=======
 
         .card {
-            border-radius: 15px; /* Add rounded corners to the card */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a 3D box shadow to the card */
-            background-color: #ffb78f; /* Set card background color */
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            background: #FFA07A;
         }
 
-        /* Style the button */
         .btn-broadcast {
-            border-radius: 15px; /* Add rounded corners to the button */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a 3D box shadow to the button */
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            background: #FF6347;
         }
     </style>
->>>>>>> 8e861eb2e9f8c88bc3d618ec1d117614361f97e4
 </head>
 <body>
     <div class="container mt-5">
@@ -122,13 +115,13 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
-                        <h1 class="text-center">Emergency Broadcast Form</h1>
+                        <h1 class="text-center text-white">Emergency Broadcast Form</h1>
                     </div>
                     <div class="card-body">
                         <form method="post" id="broadcast-form">
                             {% csrf_token %}
                             {{ form.as_p }}
-                            <button type="submit" class="btn btn-primary btn-block btn-broadcast">Broadcast</button>
+                            <button type="submit" class="btn btn-broadcast btn-block">Broadcast</button>
                         </form>
                     </div>
                 </div>
