@@ -11,44 +11,58 @@ Map
 {% endblock %}
 
 {% block main %}
-<div id="map" style="width: 100%; height: 400px;"></div>
 
-<!-- Table for Agencies -->
-<h3>Filters:</h3>
-<!-- Add this to your HTML template -->
-<label for="deptFilter">Filter by Department:</label>
-<!-- Modify the select element in your HTML template -->
-<select id="deptFilter">
-    <option value="All">All</option>
-    {% for dept in available_departments %}
-    <option value="{{ dept.value }}">{{ dept.key }}</option>
-    {% endfor %}
-</select>
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <h3 class="card-title">Map</h3>
+            <div id="map" style="width: 100%; height: 400px;"></div>
+        </div>
+    </div>
+    <div class="row">
+        <!-- Filter Column -->
+        <div class="col-md-3">
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h3 class="card-title">Filters:</h3>
+                    <!-- Filter by Department Dropdown -->
+                    <div class="form-group">
+                        <label for="deptFilter">Filter by Department:</label>
+                        <select id="deptFilter" class="form-control">
+                            <option value="All">All</option>
+                            {% for dept in available_departments %}
+                                <option value="{{ dept.value }}">{{ dept.key }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Map Column -->
+        <div class="col-md-9">
+            <!-- Agency Table -->
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h3 class="card-title">Agency Table</h3>
+                    <table id="agencyTable" class="table table-striped">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Departments</th>
+                                <th>Specializations</th>
+                                <th>Contact</th>
+                            </tr>
+                        </thead>
+                        <tbody id="agencyTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<!-- Add this to your HTML template -->
-<table id="agencyTable" class="table table-striped">
-    <thead class="thead-dark">
-        <tr>
-            <th>
-                <h5>Name</h5>
-            </th>
-            <th>
-                <h5>Email</h5>
-            </th>
-            <th>
-                <h5>Departments</h5>
-            </th>
-            <th>
-                <h5>Specializations</h5>
-            </th>
-            <th>
-                <h5>Contact</h5>
-            </th>
-        </tr>
-    </thead>
-    <tbody id="agencyTableBody">
-    </tbody>
-</table>
 
 <script>
     function initMap() {
