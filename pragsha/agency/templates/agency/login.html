@@ -1,16 +1,409 @@
-{% extends "agency/agencylayout.html" %}
-{% block title %}Login{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+{% load pwa %}
 
-{% block main %}
-<div class="login-container">
-    <h2>Login</h2>
-    <form action="{% url 'agency:login' %}" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" class="btn btn-primary" value="Login">
-    </form>
-    {% if error_message %}
-        <p class="error-message">{{ error_message }}</p>
-    {% endif %}
-</div>
-{% endblock %}
+<head>
+	<meta charset="UTF-8">
+	{% progressive_web_app_meta %}
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Pragsha: Authentication</title>
+	{% load static %}
+	<link href="{% static 'favicon.ico' %}" rel="icon">
+	<style>
+		@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+
+		* {
+			box-sizing: border-box;
+		}
+
+		body {
+			background: #fff6ef;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-direction: column;
+			font-family: 'Montserrat', sans-serif;
+			height: 100%;
+			margin: -20px 0 50px;
+            overflow-y: hidden;
+		}
+
+		h1 {
+			font-weight: bold;
+			margin: 0;
+		}
+
+		h2 {
+			text-align: center;
+		}
+
+		p {
+			font-size: 14px;
+			font-weight: 100;
+			line-height: 20px;
+			letter-spacing: 0.5px;
+			margin: 20px 0 30px;
+		}
+
+		span {
+			font-size: 12px;
+		}
+
+		a {
+			color: #333;
+			font-size: 14px;
+			text-decoration: none;
+			margin: 15px 0;
+		}
+
+		button {
+			border-radius: 20px;
+			border: 1px solid #FF4B2B;
+			background-color: #FF4B2B;
+			color: #FFFFFF;
+			font-size: 12px;
+			font-weight: bold;
+			padding: 12px 45px;
+			letter-spacing: 1px;
+			text-transform: uppercase;
+			transition: transform 80ms ease-in;
+		}
+
+		button:active {
+			transform: scale(0.95);
+		}
+
+		button:focus {
+			outline: none;
+		}
+
+		button.ghost {
+			background-color: transparent;
+			border-color: #FFFFFF;
+		}
+
+		form {
+			background-color: #FFFFFF;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+			padding: 0 50px;
+			height: 100%;
+			text-align: center;
+		}
+
+		input, textarea {
+			background-color: #eee;
+			border: none;
+			padding: 12px 15px;
+			margin: 8px 0;
+			width: 100%;
+		}
+
+		.container {
+			background-color: #fff;
+			border-radius: 10px;
+			box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25),
+				0 10px 10px rgba(0, 0, 0, 0.22);
+			position: relative;
+			overflow: hidden;
+			width: 768px;
+			max-width: 100%;
+			min-height: 480px;
+             /* Center the container both horizontally and vertically */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+		}
+
+		.form-container {
+			position: absolute;
+			top: 0;
+			height: 100%;
+			transition: all 0.6s ease-in-out;
+		}
+
+		.sign-in-container {
+			left: 0;
+			width: 50%;
+			z-index: 2;
+		}
+
+		.container.right-panel-active .sign-in-container {
+			transform: translateX(100%);
+		}
+
+		.sign-up-container {
+			left: 0;
+			width: 50%;
+			opacity: 0;
+			z-index: 1;
+		}
+
+		.container.right-panel-active .sign-up-container {
+			transform: translateX(100%);
+			opacity: 1;
+			z-index: 5;
+			animation: show 0.6s;
+		}
+
+		@keyframes show {
+
+			0%,
+			49.99% {
+				opacity: 0;
+				z-index: 1;
+			}
+
+			50%,
+			100% {
+				opacity: 1;
+				z-index: 5;
+			}
+		}
+
+		.overlay-container {
+			position: absolute;
+			top: 0;
+			left: 50%;
+			width: 50%;
+			height: 100%;
+			overflow: hidden;
+			transition: transform 0.6s ease-in-out;
+			z-index: 100;
+		}
+
+		.container.right-panel-active .overlay-container {
+			transform: translateX(-100%);
+		}
+
+		.overlay {
+			background: #ffb78f;
+			background: -webkit-linear-gradient(to right, #FF4B2B, #ffb78f);
+			background: linear-gradient(to right, #FF4B2B, #ffb78f);
+			background-repeat: no-repeat;
+			background-size: cover;
+			background-position: 0 0;
+			color: #FFFFFF;
+			position: relative;
+			left: -100%;
+			height: 100%;
+			width: 200%;
+			transform: translateX(0);
+			transition: transform 0.6s ease-in-out;
+		}
+
+		.container.right-panel-active .overlay {
+			transform: translateX(50%);
+		}
+
+		.overlay-panel {
+			position: absolute;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+			padding: 0 40px;
+			text-align: center;
+			top: 0;
+			height: 100%;
+			width: 50%;
+			transform: translateX(0);
+			transition: transform 0.6s ease-in-out;
+		}
+
+		.overlay-left {
+			transform: translateX(-20%);
+		}
+
+		.container.right-panel-active .overlay-left {
+			transform: translateX(0);
+		}
+
+		.overlay-right {
+			right: 0;
+			transform: translateX(0);
+		}
+
+		.container.right-panel-active .overlay-right {
+			transform: translateX(20%);
+		}
+.scrollable-div {
+        /* Set a fixed height for the div */
+        height: 200px; /* Adjust this value as needed */
+        /* Apply the overflow property to make it scrollable */
+        overflow: auto;
+        /* Add some padding and a border for visual clarity */
+        padding: 10px;
+        border: 1px solid #ccc;
+    }
+
+    .scrollable-div label {
+        font-size: 14px; /* Adjust the font size as needed */
+        display: block; /* Display labels as blocks to stack them vertically */
+        margin-bottom: 5px; /* Add some spacing between labels */
+    }
+
+    /* Style for the checkboxes */
+    .scrollable-div input[type="checkbox"] {
+        width: 16px; /* Adjust the width as needed to make checkboxes smaller */
+        height: 16px; /* Adjust the height as needed to make checkboxes smaller */
+        margin-right: 5px; /* Add some spacing between checkboxes and labels */
+        vertical-align: middle; /* Align checkboxes vertically with labels */
+    }
+
+    /* Left-align the labels */
+    .scrollable-div label {
+        text-align: left;
+    }
+	</style>
+</head>
+
+
+<body>
+    <br>
+    <a onclick="window.location.href = '/';" class="homeBtn" style="position: absolute; top: 0; left: 0; margin: 10px;"><img src="{% static 'wreath.png' %}" alt="Pragsha" width="60" height="60" class="d-inline-block align-text-top"></a>
+    <br>
+    <br>
+    <br>
+    <br>
+	<div class="container" id="container">
+		<div class="form-container sign-up-container">
+			<form id="signUpForm" action="{% url 'agency:register' %}" method="post">
+				<h1>Sign Up</h1>
+				<br>
+                {% csrf_token %}
+				<div class="step login-step">
+					<!-- Login fields -->
+					<input type="text" name="name" class="name" placeholder="Name" maxlength="100" required>
+					<input type="email" name="email" class="email" placeholder="Email" maxlength="100" required>
+					<input type="text" name="regId" class="regId" placeholder="Registration ID" maxlength="100" required>
+					<input type="password" name="password" class="password" placeholder="Password" maxlength="100" required>
+					<input type="password" name="confirm-password" class="confirm-password" placeholder="Confirm Password" maxlength="100" required>
+					<br>
+				</div>
+	
+				<div class="step department-step scrollable-div" style="display: none; height: 70%; font-size: 80%">
+					<!-- Department checkboxes and specialization field -->
+				<label><h3>Department:</h3></label>
+				<label for="id_dept_0"><input type="checkbox" name="dept" value="NDMA" maxlength="100" id="id_dept_0">National Disaster Management Authority</label>
+				<label for="id_dept_1"><input type="checkbox" name="dept" value="NDRF" maxlength="100" id="id_dept_1">National Disaster Response Force</label>
+				<label for="id_dept_2"><input type="checkbox" name="dept" value="IMD" maxlength="100" id="id_dept_2">India Meteorological Department</label>
+				<label for="id_dept_3"><input type="checkbox" name="dept" value="NRSC" maxlength="100" id="id_dept_3">National Remote Sensing Centre</label>
+				<label for="id_dept_4"><input type="checkbox" name="dept" value="CWC" maxlength="100" id="id_dept_4">Central Water Commission</label>
+				<label for="id_dept_5"><input type="checkbox" name="dept" value="FSCD" maxlength="100" id="id_dept_5">Fire Service and Civil Defence</label>
+				<label for="id_dept_6"><input type="checkbox" name="dept" value="ICG" maxlength="100" id="id_dept_6">Indian Coast Guard</label>
+				<label for="id_dept_7"><input type="checkbox" name="dept" value="NHM" maxlength="100" id="id_dept_7">National Health Mission</label>
+				<label for="id_dept_8"><input type="checkbox" name="dept" value="NIDM" maxlength="100" id="id_dept_8">National Institute of Disaster Management</label>
+				<label for="id_dept_9"><input type="checkbox" name="dept" value="NDRelF" maxlength="100" id="id_dept_9">National Disaster Relief Fund</label>
+				<label for="id_dept_10"><input type="checkbox" name="dept" value="SDRF" maxlength="100" id="id_dept_10">State Disaster Relief Fund</label>
+				<label for="id_dept_11"><input type="checkbox" name="dept" value="IRCS" maxlength="100" id="id_dept_11">Indian Red Cross Society</label>
+				<label for="id_dept_12"><input type="checkbox" name="dept" value="CISF" maxlength="100" id="id_dept_12">Central Industrial Security Force</label>
+				<label for="id_dept_13"><input type="checkbox" name="dept" value="NDRC" maxlength="100" id="id_dept_13">National Disaster Response Corps</label>
+				<label for="id_dept_14"><input type="checkbox" name="dept" value="SDMA" maxlength="100" id="id_dept_14">State Disaster Management Authority</label>
+				<label for="id_dept_15"><input type="checkbox" name="dept" value="NGO" maxlength="100" id="id_dept_15">Non-Governmental Organisation</label>
+				<label for="id_dept_16"><input type="checkbox" name="dept" value="Other" maxlength="100" id="id_dept_16">Other</label>
+					<textarea class="specialization" placeholder="Specialization" cols="40" rows="3" maxlength="100" required></textarea>
+					<br>
+				</div>
+	
+				<div class="step location-step" style="display: none;">
+					<!-- Location input fields -->
+					<input type="number" name="latitude" class="latitude" placeholder="Latitude" step="any" id="id_latitude" required>
+					<input type="number" name="longitude" class="longitude" placeholder="Longitude" step="any" id="id_longitude" required>
+					<button type="button" id="getLocationBtn">Get My Location</button>
+					<br>
+				</div>
+				<br>
+				<button type="button" id="nextButton">Next</button>
+			</form>
+		</div>
+		<div class="form-container sign-in-container">
+			<form action="{% url 'agency:login' %}" method="post">
+				<h1>Sign in</h1>
+				<br>
+                    {% csrf_token %}
+					<input type="text" name="regId" placeholder="Registration ID" maxlength="100" required id="id_regId">
+					<input type="password" name="password" placeholder="Password" maxlength="100" required id="id_password">
+				<button type="submit">Login</button>
+			</form>
+		</div>
+		<div class="overlay-container">
+			<div class="overlay">
+				<div class="overlay-panel overlay-left">
+					<h1>Welcome to PRAGSHA!</h1>
+					<p>
+						Enter your agency details and start your journey with us<br><br><br>Already registered?<br><br>
+					<button class="ghost" id="signIn">Sign In</button>
+					</p>
+				</div>
+				<div class="overlay-panel overlay-right">
+					<h1>Welcome Back!</h1>
+					<p>
+						To keep connected with us please login with your agency info<br><br><br>Not registered yet?<br><br>
+					<button class="ghost" id="signUp">Sign Up</button>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="footer" align="center">
+		<p>Pragsha &copy; 2023</p>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			const signUpButton = document.getElementById('signUp');
+			const signInButton = document.getElementById('signIn');
+			const container = document.getElementById('container');
+
+			signUpButton.addEventListener('click', () => {
+				container.classList.add("right-panel-active");
+			});
+
+			signInButton.addEventListener('click', () => {
+				container.classList.remove("right-panel-active");
+			});
+
+			const steps = document.querySelectorAll(".step");
+			const nextButton = document.getElementById("nextButton");
+			const signUpForm = document.getElementById("signUpForm");
+			let currentStep = 0;
+
+			nextButton.addEventListener("click", function () {
+				if (currentStep < steps.length - 1) {
+					// Hide the current step
+					steps[currentStep].style.display = "none";
+					currentStep++;
+
+					// Show the next step
+					steps[currentStep].style.display = "block";
+
+					if ((currentStep + 1) === steps.length) {
+						nextButton.innerHTML = "Submit";
+					}
+				}
+				else {
+					// If all steps are completed, submit the form
+					signUpForm.submit();
+				}
+			});
+			document.getElementById('getLocationBtn').addEventListener('click', function () {
+				if ("geolocation" in navigator) {
+					navigator.geolocation.getCurrentPosition(function (position) {
+						var latitude = position.coords.latitude;
+						var longitude = position.coords.longitude;
+						document.getElementById('id_latitude').value = latitude;
+						document.getElementById('id_longitude').value = longitude;
+					});
+				} else {
+					alert('Geolocation is not available in your browser.');
+				}
+			});
+		});
+
+	</script>
+</body>
+
+</html>

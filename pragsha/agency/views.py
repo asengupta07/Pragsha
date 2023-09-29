@@ -28,11 +28,11 @@ DEPTS = [
 
 
 class RegisterForm(forms.ModelForm):
-    name = forms.CharField(max_length=100, label="Name")
-    email = forms.EmailField(max_length=100, label="Email")
-    regId = forms.CharField(max_length=100, label="Registration ID")
-    password = forms.CharField(max_length=100, label="Password", widget=forms.PasswordInput)
-    confirm_password = forms.CharField(max_length=100, label="Confirm Password", widget=forms.PasswordInput)
+    name = forms.CharField(max_length=100)
+    email = forms.EmailField(max_length=100)
+    regId = forms.CharField(max_length=100)
+    password = forms.CharField(max_length=100, widget=forms.PasswordInput)
+    confirm_password = forms.CharField(max_length=100, widget=forms.PasswordInput)
     class Meta:
         model = Agency
         fields = ['name', 'email', 'regId', 'password']
@@ -55,95 +55,96 @@ class LocationForm(forms.ModelForm):
 
 class DepartmentForm(forms.Form):
     agency_id = forms.CharField(widget=forms.HiddenInput, required=False)
-    dept = forms.CharField(max_length=100, label="Department", widget=forms.CheckboxSelectMultiple(choices=DEPTS))
+    dept = forms.CharField(max_length=100, widget=forms.CheckboxSelectMultiple(choices=DEPTS))
 
 
 class SpecialityForm(forms.Form):
     agency_id = forms.CharField(widget=forms.HiddenInput, required=False)
-    spec = forms.CharField(max_length=100, label="Speciality", widget=forms.Textarea(attrs={'rows': 3, 'cols': 40}))
+    spec = forms.CharField(max_length=100, widget=forms.Textarea(attrs={'rows': 3, 'cols': 40}))
+
+
+
+class LoginForm(forms.Form):
+    regId = forms.CharField(max_length=100)
+    password = forms.CharField(max_length=100, widget=forms.PasswordInput)
 
 
 def register(request):
     if request.method == 'GET':
         if 'agency_id' in request.session:
             return redirect('/agency/dashboard')
-        return render(request, 'agency/registration.html', {
-            'form': RegisterForm(),
-            'loc': LocationForm(),
-            'dept': DepartmentForm(),
-            'spec': SpecialityForm()
-        })
+        return render(request, 'agency/login.html')
     elif request.method == 'POST':
-        form = RegisterForm(request.POST)
-        loc = LocationForm(request.POST)
-        dept = DepartmentForm(request.POST)
-        spec = SpecialityForm(request.POST)
-        if form.is_valid() and form.cleaned_data['password'] == form.cleaned_data['confirm_password'] and loc.is_valid() and dept.is_valid() and spec.is_valid():
-            form.cleaned_data.pop('confirm_password')
-            hashed_password = make_password(form.cleaned_data['password'])
-            form.instance.password = hashed_password
-            agency = form.save()
+        name = request.POST['name']
+        email = request.POST['email']
+        regId = request.POST['regId']
+        password = request.POST['password']
+        confirm_password = request.POST['confirm_password']
+        if not name == '' or not email == '' or not regId == '' or not password == '' or not confirm_password == '' and password == confirm_password:
+            if Agency.objects.filter(regId=regId).exists():
+                return render(request, 'agency/login.html')
+            password = make_password(password)
+            agency = Agency(
+                name=name,
+                email=email,
+                regId=regId,
+                password=password
+            )
+            latitude = request.POST['latitude']
+            longitude = request.POST['longitude']
+            if latitude == '' or longitude == '':
+                return render(request, 'agency/login.html')
             location = Location(
                 agency_id=agency,
-                latitude=loc.cleaned_data['latitude'],
-                longitude=loc.cleaned_data['longitude']
+                latitude=latitude,
+                longitude=longitude
             )
+            dept = request.POST.getlist('dept')
+            if dept == []:
+                return render(request, 'agency/login.html')
             department = Department(
                 agency_id=agency,
-                name=dept.cleaned_data['dept']
+                name=dept
             )
+            spec = request.POST['spec']
+            if spec == '':
+                return render(request, 'agency/login.html')
             speciality = Speciality(
                 agency_id=agency,
-                name=spec.cleaned_data['spec']
+                name=spec
             )
+            agency.save()
             speciality.save()
             department.save()
             location.save()
-            return render(request, 'agency/registration.html', {
-                'form': RegisterForm(),
-                'loc': LocationForm(),
-                'dept': DepartmentForm(),
-                'spec': SpecialityForm(),
-                'success': True
-            })
+            return redirect('/agency/dashboard')
         else:
-            return render(request, 'agency/registration.html', {
-                'form': form,
-                'location': loc
-            })
+            return render(request, 'agency/login.html')
         
 
-class LoginForm(forms.Form):
-    regId = forms.CharField(max_length=100, label="Registration ID")
-    password = forms.CharField(max_length=100, label="Password", widget=forms.PasswordInput)
 
 def login(request):
     if request.method == 'GET':
         if 'agency_id' in request.session:
             return redirect('/agency/dashboard')
-        return render(request, 'agency/login.html', {'form': LoginForm()})
+        return render(request, 'agency/login.html')
 
     elif request.method == 'POST':
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            reg_id = form.cleaned_data['regId']
-            password = form.cleaned_data['password']
+        reg_id = request.POST['regId']
+        password = request.POST['password']
+        if not reg_id == '' or not password == '':
             try:
                 agency = Agency.objects.get(regId=reg_id)
             except Agency.DoesNotExist:
-                return render(request, 'agency/login.html', {
-                    'form': form,
-                    'error_message': 'Invalid Registration ID or Password'
-                })
+                return render(request, 'agency/login.html')
 
             if check_password(password, agency.password):
                 request.session['agency_id'] = agency.agency_id
                 return redirect('/agency/dashboard')
             else:
-                return render(request, 'agency/login.html', {
-                    'form': form,
-                    'error_message': 'Invalid Registration ID or Password'
-                })
+                return render(request, 'agency/login.html')
+        else:
+            return render(request, 'agency/login.html')
             
 
 def logout(request):
