@@ -1,215 +1,137 @@
 {% extends 'agencydash/layout.html' %}
 
 {% block title %}
-    Map
+Map
 {% endblock %}
 
 {% block links %}
-    <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?key=AoCUncNX_-l6FfT1nHyketx4jOn1zrAIiBzGfYei8zgT9CUyVqxRckBBMZYI18Zx'></script>
-    <!-- <script type='text/javascript'>
-        document.addEventListener("DOMContentLoaded", (event) => {
-            document.getElementById('filter').addEventListener('change', function(e){
-                console.clear();
-                const selectedVals = [...this.selectedOptions].map(o => o.value);
-                console.log(selectedVals);
-            
-            for (var i=0; i<ags.length(); i++){
-                var deps = {{ ags }};
-                console.log(deps);
-                var dep = deps[i]["depts"];
-                for (var j=0; j<dep.length(); j++){
-                    var dept = dep[j];
-                    var badge = document.getElementsByClassName(dept);
-                    const result = badge.filter(check);
-                    function check(d) {
-                        res = d == dept;
-                        if (res == true) {
-                            id = d.dataset.id;
-                            document.getElementById(id).hidden = false;
-                        }
-                    }
-                }
-            }
-        });
-        }
-    </script> -->
+<script type='text/javascript'
+    src='https://www.bing.com/api/maps/mapcontrol?key=AoCUncNX_-l6FfT1nHyketx4jOn1zrAIiBzGfYei8zgT9CUyVqxRckBBMZYI18Zx'></script>
+
 {% endblock %}
 
 {% block main %}
-    <div id="map" style="width: 100%; height: 400px;"></div>
+<div id="map" style="width: 100%; height: 400px;"></div>
 
-    <!-- Table for Agencies -->
-    <!-- <h3>Filters:</h3>
-    <form class="Filter">
-        <select class="form-control" id="filter">
-            <option value="all" selected>All</option>
-            {% for dept in available_departments %}
-                {% for key, value in dept.items %}
-                    <option value="{{ value }}">{{ key }}</option>
-                {% endfor %}
-            {% endfor %}   
-    </form> -->
-    <table id="agencyTable" class="table table-striped">
-      <thead class="thead-dark">
-          <tr>
-              <th><h5>Name</h5></th>
-              <th><h5>Email</h5></th>
-              <th><h5>Departments</h5></th>
-              <th><h5>Specializations</h5></th>
-              <th><h5>Contact</h5></th>
-          </tr>
-      </thead>
-      <tbody>
-          {% for ag in ags %}
-              <tr id="{{ ag.agency_id }}">
-                  <td>{{ ag.name }}</td>
-                  <td>{{ ag.email }}</td>
-                  <td>
-                      <ul class="list">
-                          {% for dept in ag.depts %}
-                              {% for dpt in available_departments %}
-                                  {% for key, value in dpt.items %}
-                                      {% if value == dept %}
-                                          <li><div class="badge badge-primary {{ value }}" data-id="{{ ag.agency_id }}" style="color: black;">{{ key }}</div></li>
-                                      {% endif %}
-                                  {% endfor %}
-                              {% endfor %}                                
-                          {% endfor %}
-                      </ul>
-                  </td>
-                  <td>
-                      {{ ag.specs }}
-                  </td>
-                  <td>
-                        <a href="tel:{{ ag.contact }}">{{ ag.contact }}</a>
-                  </td>
-              </tr>
-              {% empty %}
-                  <tr>
-                      <td colspan="5">No agencies found.</td>
-                  </tr>
-              {% endfor %}
-      </tbody>
-  </table>
+<!-- Table for Agencies -->
+<h3>Filters:</h3>
+<!-- Add this to your HTML template -->
+<label for="deptFilter">Filter by Department:</label>
+<!-- Modify the select element in your HTML template -->
+<select id="deptFilter">
+    <option value="All">All</option>
+    {% for dept in available_departments %}
+    <option value="{{ dept.value }}">{{ dept.key }}</option>
+    {% endfor %}
+</select>
 
-    <script>
-        function initMap() {
-          var map = new Microsoft.Maps.Map(document.getElementById('map'), {
+<!-- Add this to your HTML template -->
+<table id="agencyTable" class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                <h5>Name</h5>
+            </th>
+            <th>
+                <h5>Email</h5>
+            </th>
+            <th>
+                <h5>Departments</h5>
+            </th>
+            <th>
+                <h5>Specializations</h5>
+            </th>
+            <th>
+                <h5>Contact</h5>
+            </th>
+        </tr>
+    </thead>
+    <tbody id="agencyTableBody">
+    </tbody>
+</table>
+
+<script>
+    function initMap() {
+        var map = new Microsoft.Maps.Map(document.getElementById('map'), {
             credentials: 'AoCUncNX_-l6FfT1nHyketx4jOn1zrAIiBzGfYei8zgT9CUyVqxRckBBMZYI18Zx'
         });
 
-            // Add a pushpin for the user's location
-            navigator.geolocation.getCurrentPosition(function (position) {
-                var userLocation = new Microsoft.Maps.Location(position.coords.latitude, position.coords.longitude);
-                var userPushpin = new Microsoft.Maps.Pushpin(userLocation, { color: 'green', title: '{{ agency_name|safe }}' });
-                map.entities.push(userPushpin);
-            });
+        // Add a pushpin for the user's location
+        navigator.geolocation.getCurrentPosition(function (position) {
+            var userLocation = new Microsoft.Maps.Location(position.coords.latitude, position.coords.longitude);
+            var userPushpin = new Microsoft.Maps.Pushpin(userLocation, { color: 'green', title: '{{ agency_name|safe }}' });
+            map.entities.push(userPushpin);
+        });
 
-            // Parse the JSON data passed from the view
-            var markerData = JSON.parse('{{ marker_data|safe }}');
+        // Parse the JSON data passed from the view
+        var markerData = JSON.parse('{{ marker_data|safe }}');
 
-            for (var i = 0; i < markerData.length; i++) {
-                var location = new Microsoft.Maps.Location(markerData[i].latitude, markerData[i].longitude);
-                var pushpin = new Microsoft.Maps.Pushpin(location, { title: markerData[i].name });
-                map.entities.push(pushpin);
-            }
-
-            var yellowMarkerData = JSON.parse('{{ yellow_marker_data|safe }}');
-
-            for (var i = 0; i < yellowMarkerData.length; i++) {
-                var yellowLocation = new Microsoft.Maps.Location(yellowMarkerData[i].latitude, yellowMarkerData[i].longitude);
-                var yellowPushpin = new Microsoft.Maps.Pushpin(yellowLocation, { color: 'yellow', title: yellowMarkerData[i].name });
-                map.entities.push(yellowPushpin);
-            }
+        for (var i = 0; i < markerData.length; i++) {
+            var location = new Microsoft.Maps.Location(markerData[i].latitude, markerData[i].longitude);
+            var pushpin = new Microsoft.Maps.Pushpin(location, { title: markerData[i].name });
+            map.entities.push(pushpin);
         }
 
-        Microsoft.Maps.loadModule('Microsoft.Maps.AutoSuggest', { callback: initMap, errorCallback: function (e) { console.log(e); } });
-    </script>
+        var yellowMarkerData = JSON.parse('{{ yellow_marker_data|safe }}');
 
-    <div id="result" style="margin-top: 20px;"></div>
-</div>
+        for (var i = 0; i < yellowMarkerData.length; i++) {
+            var yellowLocation = new Microsoft.Maps.Location(yellowMarkerData[i].latitude, yellowMarkerData[i].longitude);
+            var yellowPushpin = new Microsoft.Maps.Pushpin(yellowLocation, { color: 'yellow', title: yellowMarkerData[i].name });
+            map.entities.push(yellowPushpin);
+        }
+    }
 
+    Microsoft.Maps.loadModule('Microsoft.Maps.AutoSuggest', { callback: initMap, errorCallback: function (e) { console.log(e); } });
+</script>
+<!-- Add this JavaScript code to your HTML template -->
 <script>
-    // Define JavaScript variables for your Python code
-    var threshold_distance = {{ threshold_distance }};
-    var start_vertex = "{{ start_vertex }}";
-    var latitude1 = {{ latitude1 }};
-    var longitude1 = {{ longitude1 }};
-    var latitude2 = {{ latitude2 }};
-    var longitude2 = {{ longitude2 }};
+    document.addEventListener("DOMContentLoaded", function () {
+        const deptFilter = document.getElementById("deptFilter");
+        const agencyTableBody = document.getElementById("agencyTableBody"); // Updated to target the table body
+        const ags = {{ ags|safe }};
 
-    // Define the Graph class in JavaScript
-    class Graph {
-        constructor(vertices) {
-            this.vertices = vertices;
-            this.edges = [];
-        }
-
-        add_edge(u, v, w) {
-            this.edges.push([u, v, w]);
-        }
-
-        bellman_ford(start) {
-            var distances = {};
-            this.vertices.forEach(function (vertex) {
-                distances[vertex] = Infinity;
-            });
-            distances[start] = 0;
-
-            for (var _ = 0; _ < this.vertices.length - 1; _++) {
-                this.edges.forEach(function (edge) {
-                    var u = edge[0];
-                    var v = edge[1];
-                    var w = edge[2];
-                    if (distances[u] !== Infinity && distances[u] + w < distances[v]) {
-                        distances[v] = distances[u] + w;
-                    }
-                });
-            }
-
-            this.edges.forEach(function (edge) {
-                var u = edge[0];
-                var v = edge[1];
-                var w = edge[2];
-                if (distances[u] !== Infinity && distances[u] + w < distances[v]) {
-                    throw "Graph contains a negative weight cycle";
+        // Function to filter agencies based on department
+        function filterAgenciesByDept(dept) {
+            return ags.filter(agency => {
+                if (dept === "All") {
+                    return true; // Show all agencies when "All" is selected
+                } else {
+                    return agency.depts.includes(dept);
                 }
             });
-
-            return distances;
         }
-    }
-    Microsoft.Maps.loadModule('Microsoft.Maps.AutoSuggest', { callback: initMap, errorCallback: function (e) { console.log(e); } });
-    // Define the haversine function in JavaScript
-    function haversine(lat1, lon1, lat2, lon2) {
-        var R = 6371.0;
-        lat1 = radians(lat1);
-        lon1 = radians(lon1);
-        lat2 = radians(lat2);
-        lon2 = radians(lon2);
-        var dlon = lon2 - lon1;
-        var dlat = lat2 - lat1;
-        var a = Math.sin(dlat / 2) * 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dlon / 2) * 2;
-        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        var distance = R * c;
 
-        return distance;
-    }
-
-    // Call the haversine function and perform the Bellman-Ford algorithm
-    var distance = haversine(latitude1, longitude1, latitude2, longitude2);
-    if (distance < threshold_distance) {
-        var graph = new Graph(["Node1", "Node2"]);
-        graph.add_edge("Node1", "Node2", distance);
-
-        try {
-            var shortest_distances = graph.bellman_ford(start_vertex);
-            for (var vertex in shortest_distances) {
-                document.getElementById("result").innerHTML += "Shortest distance from " + start_vertex + " to " + vertex + ": " + shortest_distances[vertex] + "<br>";
-            }
-        } catch (e) {
-            document.getElementById("result").innerHTML += e;
+        // Function to render filtered agencies
+        function renderFilteredAgencies(filteredAgencies) {
+            // Clear existing table rows
+            agencyTableBody.innerHTML = "";
+            filteredAgencies.forEach(agency => {
+                const agencyElement = document.createElement("tr");
+                agencyElement.innerHTML = `
+                    <td>${agency.name}</td>
+                    <td>${agency.email}</td>
+                    <td>Departments: ${agency.depts.join(', ')}</td>
+                    <td>${agency.specs}</td>
+                    <td></td>
+                `;
+                agencyTableBody.appendChild(agencyElement); // Append the <tr> to the table body
+            });
         }
-    }
+
+        // Event listener for department select change
+        deptFilter.addEventListener("change", function () {
+            const selectedDept = deptFilter.value;
+            const filteredAgencies = filterAgenciesByDept(selectedDept);
+            renderFilteredAgencies(filteredAgencies);
+        });
+
+        // Initialize with all agencies
+        renderFilteredAgencies(ags);
+    });
 </script>
+
+
+
+<div id="result" style="margin-top: 20px;"></div>
+</div>
 {% endblock %}

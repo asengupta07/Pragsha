@@ -3,25 +3,25 @@ from django.shortcuts import render, redirect
 from agency.models import Location, Agency, Department, Speciality
 import ast
 
-DEPTS = [
-    {'National Disaster Management Authority': 'NDMA'},
-    {'National Disaster Response Force': 'NDRF'},
-    {'India Meteorological Department': 'IMD'},
-    {'National Remote Sensing Centre': 'NRSC'},
-    {'Central Water Commission': 'CWC'},
-    {'Fire Service and Civil Defence': 'FSCD'},
-    {'Indian Coast Guard': 'ICG'},
-    {'National Health Mission': 'NHM'},
-    {'National Institute of Disaster Management': 'NIDM'},
-    {'National Disaster Relief Fund': 'NDReF'},
-    {'State Disaster Relief Fund': 'SDRF'},
-    {'Indian Red Cross Society': 'IRCS'},
-    {'Central Industrial Security Force': 'CISF'},
-    {'National Disaster Response Corps': 'NDRC'},
-    {'State Disaster Management Authority': 'SDMA'},
-    {'Non-Governmental Organisation': 'NGO'},
-    {'Other': 'Other'}
-]
+DEPTS = {
+    'National Disaster Management Authority': 'NDMA',
+    'National Disaster Response Force': 'NDRF',
+    'India Meteorological Department': 'IMD',
+    'National Remote Sensing Centre': 'NRSC',
+    'Central Water Commission': 'CWC',
+    'Fire Service and Civil Defence': 'FSCD',
+    'Indian Coast Guard': 'ICG',
+    'National Health Mission': 'NHM',
+    'National Institute of Disaster Management': 'NIDM',
+    'National Disaster Relief Fund': 'NDReF',
+    'State Disaster Relief Fund': 'SDRF',
+    'Indian Red Cross Society': 'IRCS',
+    'Central Industrial Security Force': 'CISF',
+    'National Disaster Response Corps': 'NDRC',
+    'State Disaster Management Authority': 'SDMA',
+    'Non-Governmental Organisation': 'NGO',
+    'Other': 'Other'
+}
 
 # Create your views here.
 def map_view(request):
@@ -44,4 +44,6 @@ def map_view(request):
         dept_names = ast.literal_eval([dept.name for dept in depts][0])
         ags.append(dict(agency_id=agency.agency_id, name=agency.name, email=agency.email, depts=dept_names, specs=spec_name))
     agency_name = Agency.objects.get(agency_id=agency_id).name
-    return render(request, 'agencydash/map.html', {'marker_data': marker_data, 'agency_name': agency_name, 'ags': ags, 'available_departments': DEPTS, 'keys': dict.keys})
+    print(json.dumps(ags,indent=4))
+    available_departments = [{'key': key, 'value': value} for key, value in DEPTS.items()]
+    return render(request, 'agencydash/map.html', {'marker_data': marker_data, 'agency_name': agency_name, 'ags': json.dumps(ags), 'available_departments': available_departments})
