@@ -165,7 +165,7 @@
                             <div>
                                 {{ form.as_p }}
                             </div>
-                            <div align="center" style="height:100px; width:100px;"><button class="button-24" id="getLocationBtn"><span style="font-size:75px">SOS</span></button></div>
+                            <div align="center" style="height:100px; width:100px;"><button type="button" class="button-24" id="getLocationBtn"><span style="font-size:75px">SOS</span></button></div>
                         </form>
                     </div>
                 </div>
@@ -174,23 +174,23 @@
     </div>
     <script>
         document.getElementById('getLocationBtn').addEventListener('click', function () {
-            if ("geolocation" in navigator) {
+            if ("geolocation" in window.navigator) {
                 navigator.geolocation.getCurrentPosition(function (position) {
                     var latitude = position.coords.latitude;
                     var longitude = position.coords.longitude;
                     document.getElementById('id_latitude').value = latitude;
                     document.getElementById('id_longitude').value = longitude;
+                    alert("Your location has been sent to the agency")
+                    document.getElementById('broadcast-form').submit();
                 });
             } else {
                 alert('Geolocation is not available in your browser.');
             }
         });
     </script>
-    <!-- Include Bootstrap JS and jQuery (optional) here if needed -->
-    <!--
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    -->
+
 </body>
 </html>
