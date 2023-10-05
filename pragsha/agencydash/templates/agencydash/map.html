@@ -8,6 +8,35 @@ Map
 <script type='text/javascript'
     src='https://www.bing.com/api/maps/mapcontrol?key=AoCUncNX_-l6FfT1nHyketx4jOn1zrAIiBzGfYei8zgT9CUyVqxRckBBMZYI18Zx'></script>
 
+<script type="text/javascript">
+    var map;
+
+    function GetMap() {
+        map = new Microsoft.Maps.Map('#myMap', {
+            credentials: 'YOUR_API_KEY',
+            center: new Microsoft.Maps.Location(47.6062, -122.3321), // Center the map on a specific location
+            zoom: 12
+        });
+
+        // Define coordinates for your road or route (a simple example)
+        var routeCoordinates = [
+            new Microsoft.Maps.Location(47.6062, -122.3321),
+            new Microsoft.Maps.Location(47.6097, -122.3331),
+            new Microsoft.Maps.Location(47.6133, -122.3341),
+            // Add more points to define the road or route
+        ];
+
+        // Create a polyline to highlight the road or route
+        var routeLine = new Microsoft.Maps.Polyline(routeCoordinates, {
+            strokeColor: 'red', // Color of the road highlight
+            strokeThickness: 5 // Thickness of the road highlight
+        });
+
+        // Add the polyline to the map
+        map.entities.push(routeLine);
+    }
+</script>
+
 {% endblock %}
 
 {% block main %}
@@ -31,7 +60,7 @@ Map
                         <select id="deptFilter" class="form-control">
                             <option value="All">All</option>
                             {% for dept in available_departments %}
-                                <option value="{{ dept.value }}">{{ dept.key }}</option>
+                            <option value="{{ dept.value }}">{{ dept.key }}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -102,45 +131,46 @@ Map
     document.addEventListener("DOMContentLoaded", function () {
         const deptFilter = document.getElementById("deptFilter");
         const agencyTableBody = document.getElementById("agencyTableBody"); // Updated to target the table body
-        const ags = {{ ags|safe }};
+        const ags = {{ ags| safe
+    }};
 
-        // Function to filter agencies based on department
-        function filterAgenciesByDept(dept) {
-            return ags.filter(agency => {
-                if (dept === "All") {
-                    return true; // Show all agencies when "All" is selected
-                } else {
-                    return agency.depts.includes(dept);
-                }
-            });
-        }
+    // Function to filter agencies based on department
+    function filterAgenciesByDept(dept) {
+        return ags.filter(agency => {
+            if (dept === "All") {
+                return true; // Show all agencies when "All" is selected
+            } else {
+                return agency.depts.includes(dept);
+            }
+        });
+    }
 
-        // Function to render filtered agencies
-        function renderFilteredAgencies(filteredAgencies) {
-            // Clear existing table rows
-            agencyTableBody.innerHTML = "";
-            filteredAgencies.forEach(agency => {
-                const agencyElement = document.createElement("tr");
-                agencyElement.innerHTML = `
+    // Function to render filtered agencies
+    function renderFilteredAgencies(filteredAgencies) {
+        // Clear existing table rows
+        agencyTableBody.innerHTML = "";
+        filteredAgencies.forEach(agency => {
+            const agencyElement = document.createElement("tr");
+            agencyElement.innerHTML = `
                     <td>${agency.name}</td>
                     <td>${agency.email}</td>
                     <td>Departments: ${agency.depts.join(', ')}</td>
                     <td>${agency.specs}</td>
                     <td></td>
                 `;
-                agencyTableBody.appendChild(agencyElement); // Append the <tr> to the table body
-            });
-        }
-
-        // Event listener for department select change
-        deptFilter.addEventListener("change", function () {
-            const selectedDept = deptFilter.value;
-            const filteredAgencies = filterAgenciesByDept(selectedDept);
-            renderFilteredAgencies(filteredAgencies);
+            agencyTableBody.appendChild(agencyElement); // Append the <tr> to the table body
         });
+    }
 
-        // Initialize with all agencies
-        renderFilteredAgencies(ags);
+    // Event listener for department select change
+    deptFilter.addEventListener("change", function () {
+        const selectedDept = deptFilter.value;
+        const filteredAgencies = filterAgenciesByDept(selectedDept);
+        renderFilteredAgencies(filteredAgencies);
+    });
+
+    // Initialize with all agencies
+    renderFilteredAgencies(ags);
     });
 </script>
 

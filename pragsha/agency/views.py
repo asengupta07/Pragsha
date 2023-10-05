@@ -1,3 +1,4 @@
+
 from django.shortcuts import render, redirect
 from django import forms
 from .models import Agency, Location, Inventory, Department, Speciality
