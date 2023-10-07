@@ -131,8 +131,7 @@ Map
     document.addEventListener("DOMContentLoaded", function () {
         const deptFilter = document.getElementById("deptFilter");
         const agencyTableBody = document.getElementById("agencyTableBody"); // Updated to target the table body
-        const ags = {{ ags| safe
-    }};
+        const ags = {{ ags| safe }};
 
     // Function to filter agencies based on department
     function filterAgenciesByDept(dept) {
