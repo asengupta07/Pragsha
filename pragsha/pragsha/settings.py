@@ -76,7 +76,6 @@ INSTALLED_APPS = [
     "agencydash",
     "chat",
     "userdash",
-    "quora",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
