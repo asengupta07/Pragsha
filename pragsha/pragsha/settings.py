@@ -74,7 +74,6 @@ INSTALLED_APPS = [
     "land",
     "pwa",
     "agencydash",
-    "chat",
     "userdash",
     "django.contrib.admin",
     "django.contrib.auth",
