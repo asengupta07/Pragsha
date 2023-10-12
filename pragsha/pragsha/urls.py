@@ -23,7 +23,7 @@ urlpatterns = [
     path("agency/", include("agency.urls")),
     path("", include("land.urls")),
     path('', include('pwa.urls')),
+    path('chat/', include('chat.urls')),
     path('agency/', include('agencydash.urls')),
-    path('agency/chat/', include('chat.urls')),
     path('user/', include('userdash.urls'))
 ]
