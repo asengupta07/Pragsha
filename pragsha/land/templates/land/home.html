@@ -1,325 +1,357 @@
 <!DOCTYPE html>
 <html lang="en">
-  {% load pwa %}
+{% load pwa %}
+
 <head>
-    <meta charset="UTF-8">
-    {% load static %}
-    {% progressive_web_app_meta %}
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="{% static 'style.css' %}">
-    <link href="{% static 'favicon.ico' %}" rel="icon">
-    <title>Pragsha</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <style>
+  <meta charset="UTF-8">
+  {% load static %}
+  {% progressive_web_app_meta %}
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <link href="{% static 'favicon.ico' %}" rel="icon">
+  <title>Pragsha</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <style>
     @font-face {
-        font-family: 'forestregular';
-        src: url('static/fonts/forest-bf65041ffaef795-webfont.woff2') format('woff2'),
-            url('static/fonts/forest-bf65041ffaef795-webfont.woff') format('woff');
-        font-weight: normal;
-        font-style: normal;
+      font-family: 'forestregular';
+      src: url('static/fonts/forest-bf65041ffaef795-webfont.woff2') format('woff2'),
+        url('static/fonts/forest-bf65041ffaef795-webfont.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
     }
+
     @font-face {
-        font-family: 'againstregular';
-        src: url('static/fonts/against_regular-webfont.woff2') format('woff2');
-        font-weight: normal;
-        font-style: normal;
+      font-family: 'againstregular';
+      src: url('static/fonts/against_regular-webfont.woff2') format('woff2');
+      font-weight: normal;
+      font-style: normal;
     }
+
     body {
-        background-color: #fff6ef;
-        overflow-x: hidden;
-        /* padding: 20px;  */
+      background-color: #fff6ef;
+      overflow-x: hidden;
+      /* padding: 20px;  */
     }
+
     .hundo {
-        width: 100% !important;
+      width: 100% !important;
     }
+
     .butt {
-        width: 100px;
+      width: 100px;
     }
+
     .gg {
-        font-family: 'againstregular';
+      font-family: 'againstregular';
     }
+
     .prag {
-        font-family: 'forestregular';
+      font-family: 'forestregular';
     }
+
     .hero {
-        padding: 20px;
+      padding: 20px;
     }
+
     h1 {
-        font-family: 'Times New Roman', serif;
-        font-size: 60px;
+      font-family: 'Times New Roman', serif;
+      font-size: 60px;
     }
+
     #fixed-button {
-        position: fixed;      /* Set the position to fixed */
-        bottom: 20px;         /* Adjust the distance from the bottom */
-        right: 20px;          /* Adjust the distance from the right */
-        z-index: 999;         /* Ensure it's on top of other content */
+      position: fixed;
+      /* Set the position to fixed */
+      bottom: 20px;
+      /* Adjust the distance from the bottom */
+      right: 20px;
+      /* Adjust the distance from the right */
+      z-index: 999;
+      /* Ensure it's on top of other content */
     }
 
     /* Style the button as desired */
     #fixed-button button {
-        padding: 10px 20px;
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        cursor: pointer;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      cursor: pointer;
     }
 
-      /* CSS */
-      .button-33 {
-        background-color: #c2fbd7 !important;
-        border-radius: 100px;
-        box-shadow: rgba(44, 187, 99, .2) 0 -25px 18px -14px inset,rgba(44, 187, 99, .15) 0 1px 2px,rgba(44, 187, 99, .15) 0 2px 4px,rgba(44, 187, 99, .15) 0 4px 8px,rgba(44, 187, 99, .15) 0 8px 16px,rgba(44, 187, 99, .15) 0 16px 32px;
-        color: green !important;
-        cursor: pointer;
-        display: inline-block;
-        font-family: CerebriSans-Regular,-apple-system,system-ui,Roboto,sans-serif;
-        padding: 7px 20px;
-        text-align: center;
-        text-decoration: none;
-        transition: all 250ms;
-        border: 0;
-        font-size: 16px;
-        user-select: none;
-        -webkit-user-select: none;
-        touch-action: manipulation;
-      }
+    /* CSS */
+    .button-33 {
+      background-color: #c2fbd7 !important;
+      border-radius: 100px;
+      box-shadow: rgba(44, 187, 99, .2) 0 -25px 18px -14px inset, rgba(44, 187, 99, .15) 0 1px 2px, rgba(44, 187, 99, .15) 0 2px 4px, rgba(44, 187, 99, .15) 0 4px 8px, rgba(44, 187, 99, .15) 0 8px 16px, rgba(44, 187, 99, .15) 0 16px 32px;
+      color: green !important;
+      cursor: pointer;
+      display: inline-block;
+      font-family: CerebriSans-Regular, -apple-system, system-ui, Roboto, sans-serif;
+      padding: 7px 20px;
+      text-align: center;
+      text-decoration: none;
+      transition: all 250ms;
+      border: 0;
+      font-size: 16px;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+    }
 
-      .button-33:hover {
-        box-shadow: rgba(44,187,99,.35) 0 -25px 18px -14px inset,rgba(44,187,99,.25) 0 1px 2px,rgba(44,187,99,.25) 0 2px 4px,rgba(44,187,99,.25) 0 4px 8px,rgba(44,187,99,.25) 0 8px 16px,rgba(44,187,99,.25) 0 16px 32px;
-        transform: scale(1.05) rotate(-1deg);
-      }
-    </style>
+    .button-33:hover {
+      box-shadow: rgba(44, 187, 99, .35) 0 -25px 18px -14px inset, rgba(44, 187, 99, .25) 0 1px 2px, rgba(44, 187, 99, .25) 0 2px 4px, rgba(44, 187, 99, .25) 0 4px 8px, rgba(44, 187, 99, .25) 0 8px 16px, rgba(44, 187, 99, .25) 0 16px 32px;
+      transform: scale(1.05) rotate(-1deg);
+    }
+
+    .wreath {
+      filter: drop-shadow(1px 1px 1px #000);
+    }
+  </style>
 </head>
+
 <body>
-    <div id="fixed-button">
-        <button class="button-33" type="button" id="installApp">Download</button>
+  <div id="fixed-button">
+    <button class="button-33" type="button" id="installApp">Download</button>
+  </div>
+  <span style="padding:10px;">
+    <div align="center">
+      {% load static %}
+      <img src="{% static 'logo.png' %}" alt="logo" width="500px">
     </div>
-    <span style="padding:10px;">
-      <div align="center">
-        {% load static %}
-          <img src="{% static 'logo.png' %}" alt="logo" width="500px">
+    <br>
+  </span>
+  <nav class="navbar sticky-top navbar-expand-lg" style="background-color: #ffb78f;">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <img class="wreath" src="{% static 'wreath.png' %}" alt="Pragsha" width="40" height="40"
+              style="margin-right: 5px;">
+          </li>
+          <div class="vr"></div>
+          <li class="nav-item">
+            <a class="nav-link" href="agency/login" style="text-shadow: #000 1px 1px 1px;">AGENCY PORTAL</a>
+          </li>
+          <div class="vr"></div>
+          <li class="nav-item">
+            <a class="nav-link" href="user/login" style="text-shadow: #000 1px 1px 1px;">CITIZEN PORTAL</a>
+          </li>
+        </ul>
+        <ul class="nav navbar-nav justify-content-end">
+          <li class="nav-item">
+            <a class="nav-link" href="#vision" style="text-shadow: #000 1px 1px 1px;">Our Vision</a>
+          </li>
+          <div class="vr"></div>
+          <li class="nav-item">
+            <a class="nav-link" href="#team" style="text-shadow: #000 1px 1px 1px;">Our Team</a>
+          </li>
+          <div class="vr"></div>
+          <li class="nav-item">
+            <a class="nav-link" href="faq" style="text-shadow: #000 1px 1px 1px;">FAQ</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <br>
+  <div class="container">
+    <div class="row d-md-none d-table-cell justify-content-evenly">
+      <div class="col-6" align="center">
+        <button type="button" class="btn hundo btn-warning"><a class="dropdown-item" href="agency/login">AGENCY
+            PORTAL</a></button>
+      </div>
+      <div class="col-6" align="center">
+        <button type="button" class="btn hundo btn-warning"><a class="dropdown-item" href="user/login">CITIZEN
+            PORTAL</a></button>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-header" style="background-color: #fff6ef;">
+      <h2 class="offcanvas-title" id="offcanvasExampleLabel">PORTALS</h2>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body" style="background-color: #fff6ef;">
+      <div style="padding-right: 15px;" align="justify">
+        Are you an organization dedicated to providing aid and support to individuals during times of crisis, or are you
+        an individual seeking assistance and solace in the face of disasters? Look no further; we are here to help.
+        <br><br>
+        Join us today, and together, we can ensure that help is readily available to those in need.
       </div>
       <br>
+      <br>
+      <button type="button" class="btn hundo btn-outline-success"><a class="dropdown-item" href="agency/register">
+          <h3>AGENCY PORTAL</h3>
+        </a></button>
+      <br>
+      <br>
+      <button type="button" class="btn hundo btn-outline-success"><a class="dropdown-item" href="user/register">
+          <h3>USER PORTAL</h3>
+        </a></button>
+    </div>
+  </div>
+  <main>
+    <section class="hero">
+      <h1 style="font-size:75px;" class="gg" align="center">WELCOME TO<br>PRAGSHA</h1>
+      <p></p>
+    </section>
+    <br>
+    <div align="center">
+      <video width="100%" autoplay loop muted>
+        <source src="{% static 'vid.mp4' %}" type="video/mp4" />
+      </video>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <section class="hero" id="vision" style="padding-left: 300px; padding-right: 300px;">
+      <h1 style="font-size:70px;" class="gg" align="left"><span style="font-size: 50px;">OUR</span><br>VISION</h1>
+      <p></p>
+      <span align="justify">
+        <h5>We had an idea.</h5>
+        <h6><br>An idea to make a change in this world.<br>
+          We aspired to somehow merge Pragati and Raksha together to make this world a better place, starting with our
+          very own country. So that is the story of how “PRAGSHA” was born.<br><br>
+          We work towards an ideal desi utopian vision for every single person from all cultures and ethnicities to live
+          in harmony.<br><br>
+          We ensure that every part of untouched India grows as a whole to make the entire country have its biggest glow
+          up and to become the greatest of all time in every single aspect of world competition in providing premium
+          disaster management software for both natural and societal calamities which include earthquakes, fires, as
+          well as lack of emergency healthcare and resources for all, alike.<br><br>
+          <i>Kyuki agar ek baar jud gaya India, tabhi aage badhega India.</i><br><br>
+          Because at the end of the day our ultimate vision is to revitalize India, striving to match and even surpass
+          the greatness it once embodied, owing to its abundant wealth and treasured heritage. Within the intricate
+          tapestry of its walls and roads lie countless untold stories, waiting to be discovered, and we aspire to be a
+          small part of those stories.
+        </h6>
       </span>
-      <nav class="navbar sticky-top navbar-expand-lg" style="background-color: #ffb78f;">
-        <div class="container-fluid">
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item d-none d-md-table-cell">
-                    <button class="btn butt btn-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
-                        <span class="navbar-toggler-icon"></span>
-                      </button>
-                    </li>
-                </ul>
-                <ul class="nav navbar-nav justify-content-end">
-              <li class="nav-item">
-                <a class="nav-link" href="#">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#vision">Our Vision</a>
-              </li>
-              
-              <li class="nav-item">
-                <a class="nav-link" href="#team">Our Team</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="faq">FAQ</a>
-              </li>
-            </ul>
+    </section>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <img src="{% static 'quote.jpeg' %}" width="100%">
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <section id="team" class="hero">
+      <h1 style="font-size:70px;" class="gg" align="center"><span style="font-size: 50px;">OUR</span><br>TEAM</h1>
+      <div class="row" style="padding: 50px; text-align: center;">
+        <div class="col-sm-4" style="padding: 10px;">
+          <div class="card" style="width: 18rem;">
+            <img src="{% static 'pd.jpeg' %}" class="card-img-top" alt="prayas">
+            <div class="card-body">
+              <p class="card-text">
+              <p class="h2 prag">Pradyumna<br>Bhowmick</p>
+              </p>
+            </div>
           </div>
         </div>
-      </nav>
-
-      <br>
-      <div class="container">
-        <div class="row d-md-none d-table-cell justify-content-evenly">
-          <div class="col-6" align="center">
-            <button type="button" class="btn hundo btn-warning"><a class="dropdown-item" href="agency/login">AGENCY PORTAL</a></button>
-          </div>
-          <div class="col-6" align="center">
-            <button type="button" class="btn hundo btn-warning"><a class="dropdown-item" href="user/login">CITIZEN PORTAL</a></button>
+        <div class="col-sm-4" style="padding: 10px;">
+          <div class="card" style="width: 18rem;">
+            <img src="{% static 'arnab.jpg' %}" class="card-img-top" alt="srijan">
+            <div class="card-body">
+              <p class="card-text">
+              <p class="h2 prag">Arnab<br>Sengupta</p>
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-      
-
-      <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-        <div class="offcanvas-header" style="background-color: #fff6ef;">
-          <h2 class="offcanvas-title" id="offcanvasExampleLabel">PORTALS</h2>
-          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body" style="background-color: #fff6ef;">
-          <div style="padding-right: 15px;" align="justify">
-            Are you an organization dedicated to providing aid and support to individuals during times of crisis, or are you an individual seeking assistance and solace in the face of disasters? Look no further; we are here to help.
-            <br><br>
-            Join us today, and together, we can ensure that help is readily available to those in need.
-          </div>
-          <br>
-          <br>
-          <button type="button" class="btn hundo btn-outline-success"><a class="dropdown-item" href="agency/register"><h3>AGENCY PORTAL</h3></a></button>
-          <div class="accordion mt-3" id="citizenAccordion">
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="citizenLoginHeading">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#citizenLogin" aria-expanded="true" aria-controls="citizenLogin">
-                  <h4>CITIZEN PORTAL</h4>
-                </button>
-              </h2>
-              <div id="citizenLogin" class="accordion-collapse collapse" aria-labelledby="citizenLoginHeading" data-bs-parent="#citizenAccordion">
-                <div class="accordion-body">
-                  <button type="button" class="btn hundo btn-outline-success"><a class="dropdown-item" href="user/login">Login</a></button>
-                  <br><br>
-                  <button type="button" class="btn hundo btn-outline-success"><a class="dropdown-item" href="user/register">Register</a></button>
-                </div>
-              </div>
+        <div class="col-sm-4" style="padding: 10px;">
+          <div class="card" style="width: 18rem;">
+            <img src="{% static 'aishi.jpg' %}" class="card-img-top" alt="arya">
+            <div class="card-body">
+              <p class="card-text">
+              <p class="h2 prag">Aishi<br>Mukhopadhyay</p>
+              </p>
             </div>
           </div>
         </div>
       </div>
-    <main>
-        <section class="hero">
-            <h1 style="font-size:75px;" class="gg" align="center">WELCOME TO<br>PRAGSHA</h1>
-            <p></p>
-        </section>
-        <br>
-        <div align="center">
-        <video width="100%" autoplay loop muted>
-            <source src="{% static 'vid.mp4' %}" type="video/mp4" />
-          </video>
-        </div>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <section class="hero" id="vision" style="padding-left: 300px; padding-right: 300px;">
-          <h1 style="font-size:70px;" class="gg" align="left"><span style="font-size: 50px;">OUR</span><br>VISION</h1>
-          <p></p>
-          <span align="justify">
-          <h5>We had an idea.</h5>
-            <h6><br>An idea to make a change in this world.<br>
-            We aspired to somehow merge Pragati and Raksha together to make this world a better place, starting with our very own country. So that is the story of how “PRAGSHA” was born.<br><br>
-            We work towards an ideal desi utopian vision for every single person from all cultures and ethnicities to live in harmony.<br><br>
-            We ensure that every part of untouched India grows as a whole to make the entire country have its biggest glow up and to become the greatest of all time in every single aspect of world competition in providing premium disaster management software for both natural and societal calamities which include earthquakes, fires, as well as lack of emergency healthcare and resources for all, alike.<br><br>
-            <i>Kyuki agar ek baar jud gaya India, tabhi aage badhega India.</i><br><br>
-            Because at the end of the day our ultimate vision is to revitalize India, striving to match and even surpass the greatness it once embodied, owing to its abundant wealth and treasured heritage. Within the intricate tapestry of its walls and roads lie countless untold stories, waiting to be discovered, and we aspire to be a small part of those stories.</h6>
-            </span>
-        </section>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <img src="{% static 'quote.jpeg' %}" width="100%">
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <section id="team" class="hero">
-          <h1 style="font-size:70px;" class="gg" align="center"><span style="font-size: 50px;">OUR</span><br>TEAM</h1>
-        <div class="row" style="padding: 50px; text-align: center;">
-          <div class="col-sm-4" style="padding: 10px;">
-              <div class="card" style="width: 18rem;">
-                  <img src="{% static 'pd.jpeg' %}" class="card-img-top" alt="prayas">
-                  <div class="card-body">
-                  <p class="card-text">
-                      <p class="h2 prag">Pradyumna<br>Bhowmick</p>
-                  </p>
-                  </div>
-              </div>
-          </div>
-          <div class="col-sm-4" style="padding: 10px;">
-              <div class="card" style="width: 18rem;">
-                  <img src="{% static 'arnab.jpg' %}" class="card-img-top" alt="srijan">
-                  <div class="card-body">
-                  <p class="card-text">
-                      <p class="h2 prag">Arnab<br>Sengupta</p>
-                  </p>
-                  </div>
-              </div>
-          </div>
-          <div class="col-sm-4" style="padding: 10px;">
-              <div class="card" style="width: 18rem;">
-                  <img src="{% static 'aishi.jpg' %}" class="card-img-top" alt="arya">
-                  <div class="card-body">
-                  <p class="card-text">
-                      <p class="h2 prag">Aishi<br>Mukhopadhyay</p>
-                  </p>
-                  </div>
-              </div>
-          </div>
-      </div>
       <div class="row" style="padding: 50px; text-align: center">
-          <div class="col-sm-4" style="padding: 10px;">
-              <div class="card" style="width: 18rem;">
-                  <img src="{% static 'srijan.jpeg' %}" class="card-img-top" alt="deba">
-                  <div class="card-body">
-                  <p class="card-text">
-                      <p class="h2 prag">Srijan<br>Sarkar</p>
-                  </p>
-                  </div>
-              </div>
+        <div class="col-sm-4" style="padding: 10px;">
+          <div class="card" style="width: 18rem;">
+            <img src="{% static 'srijan.jpeg' %}" class="card-img-top" alt="deba">
+            <div class="card-body">
+              <p class="card-text">
+              <p class="h2 prag">Srijan<br>Sarkar</p>
+              </p>
+            </div>
           </div>
-          <div class="col-sm-4" style="padding: 10px;">
-              <div class="card" style="width: 18rem;">
-                  <img src="{% static 'ayush.jpeg' %}" class="card-img-top" alt="chandra">
-                  <div class="card-body">
-                  <p class="card-text">
-                      <p class="h2 prag">Ayush<br>Bhuwalka</p>
-                  </p>
-                  </div>
-              </div>
+        </div>
+        <div class="col-sm-4" style="padding: 10px;">
+          <div class="card" style="width: 18rem;">
+            <img src="{% static 'ayush.jpeg' %}" class="card-img-top" alt="chandra">
+            <div class="card-body">
+              <p class="card-text">
+              <p class="h2 prag">Ayush<br>Bhuwalka</p>
+              </p>
+            </div>
           </div>
-          <div class="col-sm-4" style="padding: 10px;">
-              <div class="card" style="width: 18rem;">
-                  <img src="{% static 'kanishk.jpeg' %}" class="card-img-top" alt="suwo">
-                  <div class="card-body">
-                  <p class="card-text">
-                      <p class="h2 prag">Kanishk<br>Paul</p>
-                  </p>
-                  </div>
-              </div>
+        </div>
+        <div class="col-sm-4" style="padding: 10px;">
+          <div class="card" style="width: 18rem;">
+            <img src="{% static 'kanishk.jpeg' %}" class="card-img-top" alt="suwo">
+            <div class="card-body">
+              <p class="card-text">
+              <p class="h2 prag">Kanishk<br>Paul</p>
+              </p>
+            </div>
           </div>
-          </section>
-      </div>
-    </main>
-    <footer align="center">
-        <p>Pragsha&copy; 2023</p>
-    </footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    <script>
-      let deferredPrompt;
+        </div>
+    </section>
+    </div>
+  </main>
+  <footer align="center">
+    <p>Pragsha&copy; 2023</p>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
+  <script>
+    let deferredPrompt;
 
-      window.addEventListener('beforeinstallprompt', (e) => {
-          // Store the event
-          deferredPrompt = e;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      // Store the event
+      deferredPrompt = e;
 
-          // Check if the app is already installed
-          if (window.matchMedia('(display-mode: standalone)').matches) {
-              // If it's installed, hide the "Install" button
-              document.getElementById('installApp').style.display = 'none';
-          } else {
-              // If it's not installed, show the "Install" button
-              document.getElementById('installApp').style.display = 'block';
-          }
-      });
+      // Check if the app is already installed
+      if (window.matchMedia('(display-mode: standalone)').matches) {
+        // If it's installed, hide the "Install" button
+        document.getElementById('installApp').style.display = 'none';
+      } else {
+        // If it's not installed, show the "Install" button
+        document.getElementById('installApp').style.display = 'block';
+      }
+    });
 
-      const installApp = document.getElementById('installApp');
+    const installApp = document.getElementById('installApp');
 
-      installApp.addEventListener('click', async () => {
-          if (deferredPrompt !== null) {
-              deferredPrompt.prompt();
-              const { outcome } = await deferredPrompt.userChoice;
-              if (outcome === 'accepted') {
-                  deferredPrompt = null;
-                  // Hide the "Install" button after installation
-                  installApp.style.display = 'none';
-              }
-          }
-      });
-    </script>
+    installApp.addEventListener('click', async () => {
+      if (deferredPrompt !== null) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+          deferredPrompt = null;
+          // Hide the "Install" button after installation
+          installApp.style.display = 'none';
+        }
+      }
+    });
+  </script>
 </body>
+
 </html>

@@ -7,36 +7,6 @@ Map
 {% block links %}
 <script type='text/javascript'
     src='https://www.bing.com/api/maps/mapcontrol?key=AoCUncNX_-l6FfT1nHyketx4jOn1zrAIiBzGfYei8zgT9CUyVqxRckBBMZYI18Zx'></script>
-
-<script type="text/javascript">
-    var map;
-
-    function GetMap() {
-        map = new Microsoft.Maps.Map('#myMap', {
-            credentials: 'YOUR_API_KEY',
-            center: new Microsoft.Maps.Location(47.6062, -122.3321), // Center the map on a specific location
-            zoom: 12
-        });
-
-        // Define coordinates for your road or route (a simple example)
-        var routeCoordinates = [
-            new Microsoft.Maps.Location(47.6062, -122.3321),
-            new Microsoft.Maps.Location(47.6097, -122.3331),
-            new Microsoft.Maps.Location(47.6133, -122.3341),
-            // Add more points to define the road or route
-        ];
-
-        // Create a polyline to highlight the road or route
-        var routeLine = new Microsoft.Maps.Polyline(routeCoordinates, {
-            strokeColor: 'red', // Color of the road highlight
-            strokeThickness: 5 // Thickness of the road highlight
-        });
-
-        // Add the polyline to the map
-        map.entities.push(routeLine);
-    }
-</script>
-
 {% endblock %}
 
 {% block main %}
@@ -126,12 +96,11 @@ Map
 
     Microsoft.Maps.loadModule('Microsoft.Maps.AutoSuggest', { callback: initMap, errorCallback: function (e) { console.log(e); } });
 </script>
-<!-- Add this JavaScript code to your HTML template -->
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const deptFilter = document.getElementById("deptFilter");
         const agencyTableBody = document.getElementById("agencyTableBody"); // Updated to target the table body
-        const ags = {{ ags| safe }};
+        const ags = {{ ags | safe }};
 
     // Function to filter agencies based on department
     function filterAgenciesByDept(dept) {

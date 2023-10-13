@@ -44,6 +44,5 @@ def map_view(request):
         dept_names = ast.literal_eval([dept.name for dept in depts][0])
         ags.append(dict(agency_id=agency.agency_id, name=agency.name, email=agency.email, depts=dept_names, specs=spec_name))
     agency_name = Agency.objects.get(agency_id=agency_id).name
-    print(json.dumps(ags,indent=4))
     available_departments = [{'key': key, 'value': value} for key, value in DEPTS.items()]
     return render(request, 'agencydash/map.html', {'marker_data': marker_data, 'agency_name': agency_name, 'ags': json.dumps(ags), 'available_departments': available_departments})

@@ -1,16 +1,416 @@
-{% extends "userlayout.html" %}
-{% block title %}Login{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+    {% load pwa %}
+<head>
+    <meta charset="UTF-8">
+    {% progressive_web_app_meta %}
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Pragsha: Authentication</title>
+	{% load static %}
+	<link href="{% static 'favicon.ico' %}" rel="icon">
+    <style>
+        @import url("https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap");
 
-{% block main %}
-<div class="login-container">
-    <h2>Login</h2>
-    <form action="{% url 'authentification:login' %}" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" class="btn btn-primary" value="Login">
-    </form>
-    {% if error_message %}
-        <p class="error-message">{{ error_message }}</p>
-    {% endif %}
-</div>
-{% endblock %}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        html,
+        body {
+            display: grid;
+            height: 100%;
+            width: 100%;
+            place-items: center;
+            /* background-color: #fff6ef; */
+            background: -webkit-linear-gradient(to right, #fff6ef, #ffb78f);
+            background: linear-gradient(to right, #fff6ef, #ffb78f);
+        }
+
+        ::selection {
+            background: #1a75ff;
+            color: #fff;
+        }
+
+        .wrapper {
+            overflow: hidden;
+            max-width: 390px;
+            background: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .wrapper .title-text {
+            display: flex;
+            width: 200%;
+        }
+
+        .wrapper .title {
+            width: 50%;
+            font-size: 35px;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .wrapper .slide-controls {
+            position: relative;
+            display: flex;
+            height: 50px;
+            width: 100%;
+            overflow: hidden;
+            margin: 30px 0 10px 0;
+            justify-content: space-between;
+            border: 1px solid lightgrey;
+            border-radius: 15px;
+        }
+
+        .slide-controls .slide {
+            height: 100%;
+            width: 100%;
+            color: #fff;
+            font-size: 18px;
+            font-weight: 500;
+            text-align: center;
+            line-height: 48px;
+            cursor: pointer;
+            z-index: 1;
+            transition: all 0.6s ease;
+        }
+
+        .slide-controls label.signup {
+            color: #000;
+        }
+
+        .slide-controls .slider-tab {
+            position: absolute;
+            height: 100%;
+            width: 50%;
+            left: 0;
+            z-index: 0;
+            border-radius: 15px;
+            background: -webkit-linear-gradient(to right, #FF4B2B, #ffb78f);
+            background: linear-gradient(to right, #FF4B2B, #ffb78f);
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        input[type="radio"] {
+            display: none;
+        }
+
+        #signup:checked~.slider-tab {
+            left: 50%;
+        }
+
+        #signup:checked~label.signup {
+            color: #fff;
+            cursor: default;
+            user-select: none;
+        }
+
+        #signup:checked~label.login {
+            color: #000;
+        }
+
+        #login:checked~label.signup {
+            color: #000;
+        }
+
+        #login:checked~label.login {
+            cursor: default;
+            user-select: none;
+        }
+
+        .wrapper .form-container {
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .form-container .form-inner {
+            display: flex;
+            width: 200%;
+        }
+
+        .form-container .form-inner form {
+            width: 50%;
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .form-inner form .field {
+            height: 40px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .form-inner form .field input, textarea {
+            height: 100%;
+            width: 100%;
+            outline: none;
+            padding-left: 15px;
+            border-radius: 15px;
+            border: 1px solid lightgrey;
+            border-bottom-width: 2px;
+            font-size: 17px;
+            transition: all 0.3s ease;
+        }
+
+        
+        .form-inner form .textarea {
+            height: 80px !important;
+        }
+
+
+        .form-inner form .field input:focus, textarea:focus {
+            border-color: #1a75ff;
+            /* box-shadow: inset 0 0 3px #fb6aae; */
+        }
+
+        .form-inner form .field input::placeholder, textarea::placeholder {
+            color: #999;
+            transition: all 0.3s ease;
+        }
+
+        form .field input:focus::placeholder, textarea:focus::placeholder {
+            color: #1a75ff;
+        }
+
+        .form-inner form .pass-link {
+            margin-top: 5px;
+        }
+
+        .form-inner form .signup-link {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .form-inner form .pass-link a,
+        .form-inner form .signup-link a {
+            color: #1a75ff;
+            text-decoration: none;
+        }
+
+        .form-inner form .pass-link a:hover,
+        .form-inner form .signup-link a:hover {
+            text-decoration: underline;
+        }
+
+        form .btn {
+            height: 50px;
+            width: 100%;
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        form .btn .btn-layer {
+            height: 100%;
+            width: 300%;
+            position: absolute;
+            left: -100%;
+            background: -webkit-linear-gradient(to right, #FF4B2B, #ffb78f);
+            background: linear-gradient(to right, #FF4B2B, #ffb78f);
+            border-radius: 15px;
+            transition: all 0.4s ease;
+        }
+
+        form .btn:hover .btn-layer {
+            left: 0;
+        }
+
+        form .btn input[type="submit"],
+        form .btn input[type="button"] {
+            height: 100%;
+            width: 100%;
+            z-index: 1;
+            position: relative;
+            background: none;
+            border: none;
+            color: #fff;
+            padding-left: 0;
+            border-radius: 15px;
+            font-size: 20px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        img {
+			filter: drop-shadow(3px 3px 1px #000);
+		}
+    </style>
+</head>
+
+<body>
+    <a onclick="window.location.href = '/';" class="homeBtn"
+		style="position: absolute; top: 0; left: 0; margin: 10px;"><img src="{% static 'wreath.png' %}" alt="Pragsha"
+			width="60" height="60" class="d-inline-block align-text-top"></a>
+    <div class="wrapper">
+        <div class="title-text">
+            <div class="title login">Welcome Back!</div>
+            <div class="title signup">Join Pragsha!</div>
+        </div>
+        <div class="form-container">
+            <div class="slide-controls">
+                <input type="radio" name="slide" id="login" checked>
+                <input type="radio" name="slide" id="signup">
+                <label for="login" class="slide login">Login</label>
+                <label for="signup" class="slide signup">Signup</label>
+                <div class="slider-tab"></div>
+            </div>
+            <div class="form-inner">
+                <form action="{% url 'agency:login' %}" class="login">
+                    <div class="field">
+                        <input type="text" name="name" placeholder="Name*" maxlength="100" required id="id_name">
+                    </div>
+                    <div class="field">
+                        <input type="number" name="aadhar" placeholder="Aadhar Number*" maxlength="100" required id="id_aadhar">
+                    </div>
+                    <div class="field">
+                        <input type="password" name="password" placeholder="Password*" maxlength="100" required id="id_password">
+                    </div>
+                    <div class="field btn">
+                        <div class="btn-layer"></div>
+                        <input type="submit" value="Login">
+                    </div>
+                    <div class="signup-link">Not a member? <a href="">Signup now</a></div>
+                </form>
+                <form action="{% url 'agency:register' %}" class="signup">
+                    <div class="step">
+                        <div class="field">
+                            <input type="text" name="name" placeholder="Name*" maxlength="100" required id="id_name">
+                        </div>
+                        <div class="field">
+                            <input type="text" name="phone" placeholder="Phone Number*" maxlength="10" required
+                                id="id_phone">
+                        </div>
+                        <div class="field">
+                            <input type="text" name="dob" placeholder="Date of Birth*" required id="id_dob"
+                                onfocus="(this.type='date')">
+                        </div>
+                        <div class="field">
+                            <input type="password" name="password" placeholder="Password*" maxlength="100" required
+                                id="id_password">
+                        </div>
+                        <div class="field">
+                            <input type="password" name="confirm_password" placeholder="Confirm Password*"
+                                maxlength="100" required id="id_confirm_password">
+                        </div>
+                    </div>
+                    <div class="step" style="display: none;">
+                        <div class="field">
+                            <input type="password" name="aaadhar" placeholder="Aadhar Number*" maxlength="12" minlength="12" required
+                                id="id_aaadhar">
+                        </div>
+                        <div class="field textarea">
+                            <textarea name="address" placeholder="Address*" cols="40" rows="10" maxlength="100" required id="id_address"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="step" style="display: none;">
+                        <h3 align="center">Emergency Contact 1</h3>
+                        <div class="field">
+                            <input type="text" name="emer1_name" placeholder="Name*" maxlength="100" required id="id_emer1_name">
+                        </div>
+                        <div class="field">
+                            <input type="text" name="emer1_number" placeholder="Phone Number*" maxlength="10" required id="id_emer1_number">
+                        </div>
+                        <div class="field textarea">
+                            <textarea name="emer1_address" value="No Address Given" placeholder="Address" cols="40" rows="10" maxlength="100" id="id_emer1_address"></textarea>
+                        </div>
+                    </div>
+                    <div class="step" style="display: none;">
+                        <h3 align="center">Emergency Contact 2</h3>
+                        <div class="field">
+                            <input type="text" name="emer2_name" placeholder="Name*" maxlength="100" required id="id_emer2_name">
+                        </div>
+                        <div class="field">
+                            <input type="text" name="emer2_number" placeholder="Phone Number*" maxlength="10" required id="id_emer2_number">
+                        </div>
+                        <div class="field textarea">
+                            <textarea name="emer2_address" value="No Address Given" placeholder="Address" cols="40" rows="10" maxlength="100" id="id_emer2_address"></textarea>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="field btn backButton" style="display: none;">
+                        <div class="btn-layer"></div>
+                        <input type="button" id="backButton" value="Back">
+                    </div>
+                    <div class="field btn">
+                        <div class="btn-layer"></div>
+                        <input type="button" id="nextButton" value="Next">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        const inputDob = document.getElementById("id_dob");
+        inputDob.addEventListener("blur", function () {
+            if (inputDob.value === "" || isNaN(Date.parse(inputDob.value))) {
+                inputDob.type = "text";
+            }
+        });
+        inputDob.addEventListener("input", function () {
+            if (inputDob.value !== "" && !isNaN(Date.parse(inputDob.value))) {
+                inputDob.type = "date";
+            }
+        });
+        const steps = document.querySelectorAll(".step");
+        const nextButton = document.getElementById("nextButton");
+        const signUpForm = document.getElementById("signUpForm");
+        const back = document.querySelector(".backButton");
+        const backButton = document.getElementById("backButton");
+        let currentStep = 0;
+
+        nextButton.addEventListener("click", function () {
+            if (currentStep < steps.length - 1) {
+                steps[currentStep].style.display = "none";
+                currentStep++;
+                steps[currentStep].style.display = "block";
+                if (currentStep === 1) {
+                    back.style.display = "block";
+                }
+                if ((currentStep + 1) === steps.length) {
+                    nextButton.value = "Submit";
+                }
+            }
+            else {
+                signUpForm.submit();
+            }
+        });
+
+        backButton.addEventListener("click", function() {
+            steps[currentStep].style.display = "none";
+            currentStep--;
+            steps[currentStep].style.display = "block";
+            if (currentStep === 0) {
+                back.style.display = "none";
+            }
+            if ((currentStep + 1) < steps.length) {
+                nextButton.value = "Next";
+            }
+        });
+
+        const loginText = document.querySelector(".title-text .login");
+        const loginForm = document.querySelector("form.login");
+        const loginBtn = document.querySelector("label.login");
+        const signupBtn = document.querySelector("label.signup");
+        const signupLink = document.querySelector("form .signup-link a");
+        signupBtn.onclick = (() => {
+            loginForm.style.marginLeft = "-50%";
+            loginText.style.marginLeft = "-50%";
+        });
+        loginBtn.onclick = (() => {
+            loginForm.style.marginLeft = "0%";
+            loginText.style.marginLeft = "0%";
+        });
+        signupLink.onclick = (() => {
+            signupBtn.click();
+            return false;
+        });
+
+    </script>
+</body>
+
+</html>

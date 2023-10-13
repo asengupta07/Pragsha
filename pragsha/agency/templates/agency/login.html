@@ -17,7 +17,8 @@
 		}
 
 		body {
-			background: #fff6ef;
+			background: -webkit-linear-gradient(to right, #fff6ef, #ffb78f);
+			background: linear-gradient(to right, #fff6ef, #ffb78f);
 			display: flex;
 			justify-content: center;
 			align-items: center;
@@ -25,7 +26,7 @@
 			font-family: 'Montserrat', sans-serif;
 			height: 100%;
 			margin: -20px 0 50px;
-            overflow-y: hidden;
+			overflow-y: hidden;
 		}
 
 		h1 {
@@ -66,11 +67,14 @@
 			padding: 12px 45px;
 			letter-spacing: 1px;
 			text-transform: uppercase;
+			cursor: pointer;
 			transition: transform 80ms ease-in;
+			box-shadow: -5px -5px 10px #fff, 5px 5px 8px #babebc;
 		}
 
 		button:active {
 			transform: scale(0.95);
+			box-shadow: inset 1px 1px 2px #babebc, inset -1px -1px 2px #fff;
 		}
 
 		button:focus {
@@ -79,11 +83,12 @@
 
 		button.ghost {
 			background-color: transparent;
-			border-color: #FFFFFF;
+			border: none;
+			box-shadow: -5px -5px 10px #f7ab94, 5px 5px 8px #e07e63;
 		}
 
 		form {
-			background-color: #FFFFFF;
+			background-color: #ebecf0;
 			display: flex;
 			align-items: center;
 			justify-content: center;
@@ -93,16 +98,54 @@
 			text-align: center;
 		}
 
-		input, textarea {
+		input,
+		textarea {
 			background-color: #eee;
-			border: none;
+			border: 0;
 			padding: 12px 15px;
 			margin: 8px 0;
 			width: 100%;
+			border-radius: 20px;
+			box-shadow: inset 7px 2px 10px #babebc, inset -5px -5px 12px #fff;
+		}
+
+
+		#nextButton {
+			box-shadow: -5px -5px 10px #fff, 5px 5px 8px #babebc;
+			background-color: #ebecf0;
+			border: none;
+			color: black;
+		}
+
+		#nextButton:active {
+			box-shadow: inset 1px 1px 2px #babebc, inset -1px -1px 2px #fff;
+		}
+
+		
+		#backButton {
+			box-shadow: -5px -5px 10px #fff, 5px 5px 8px #babebc;
+			background-color: #ebecf0;
+			border: none;
+			color: black;
+		}
+
+		#backButton:active {
+			box-shadow: inset 1px 1px 2px #babebc, inset -1px -1px 2px #fff;
+		}
+
+		.lgn {
+			box-shadow: -5px -5px 10px #fff, 5px 5px 8px #babebc;
+			background-color: #ebecf0;
+			border: none;
+			color: black;
+		}
+
+		.lgn:active {
+			box-shadow: inset 1px 1px 2px #babebc, inset -1px -1px 2px #fff;
 		}
 
 		.container {
-			background-color: #fff;
+			background-color: #ebecf0;
 			border-radius: 10px;
 			box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25),
 				0 10px 10px rgba(0, 0, 0, 0.22);
@@ -111,10 +154,10 @@
 			width: 768px;
 			max-width: 100%;
 			min-height: 480px;
-             /* Center the container both horizontally and vertically */
-            display: flex;
-            justify-content: center;
-            align-items: center;
+			/* Center the container both horizontally and vertically */
+			display: flex;
+			justify-content: center;
+			align-items: center;
 		}
 
 		.form-container {
@@ -229,92 +272,131 @@
 		.container.right-panel-active .overlay-right {
 			transform: translateX(20%);
 		}
-.scrollable-div {
-        /* Set a fixed height for the div */
-        height: 200px; /* Adjust this value as needed */
-        /* Apply the overflow property to make it scrollable */
-        overflow: auto;
-        /* Add some padding and a border for visual clarity */
-        padding: 10px;
-        border: 1px solid #ccc;
-    }
 
-    .scrollable-div label {
-        font-size: 14px; /* Adjust the font size as needed */
-        display: block; /* Display labels as blocks to stack them vertically */
-        margin-bottom: 5px; /* Add some spacing between labels */
-    }
+		.scrollable-div {
+			height: 150px;
+			overflow: auto;
+			padding: 10px;
+			border-radius: 20px;
+			
+		}
 
-    /* Style for the checkboxes */
-    .scrollable-div input[type="checkbox"] {
-        width: 16px; /* Adjust the width as needed to make checkboxes smaller */
-        height: 16px; /* Adjust the height as needed to make checkboxes smaller */
-        margin-right: 5px; /* Add some spacing between checkboxes and labels */
-        vertical-align: middle; /* Align checkboxes vertically with labels */
-    }
+		.scrollable-div label {
+			font-size: 14px;
+			/* Adjust the font size as needed */
+			display: block;
+			/* Display labels as blocks to stack them vertically */
+			margin-bottom: 5px;
+			/* Add some spacing between labels */
+		}
 
-    /* Left-align the labels */
-    .scrollable-div label {
-        text-align: left;
-    }
-	</style>
+		/* Style for the checkboxes */
+		.scrollable-div input[type="checkbox"] {
+			width: 16px;
+			/* Adjust the width as needed to make checkboxes smaller */
+			height: 16px;
+			/* Adjust the height as needed to make checkboxes smaller */
+			margin-right: 5px;
+			/* Add some spacing between checkboxes and labels */
+			vertical-align: middle;
+			/* Align checkboxes vertically with labels */
+		}
+
+		/* Left-align the labels */
+		.scrollable-div label {
+			text-align: left;
+		}
+
+		img {
+			filter: drop-shadow(3px 3px 1px #000);
+		}
+	</style>>
 </head>
 
 
 <body>
-    <br>
-    <a onclick="window.location.href = '/';" class="homeBtn" style="position: absolute; top: 0; left: 0; margin: 10px;"><img src="{% static 'wreath.png' %}" alt="Pragsha" width="60" height="60" class="d-inline-block align-text-top"></a>
-    <br>
-    <br>
-    <br>
-    <br>
+	<br>
+	<a onclick="window.location.href = '/';" class="homeBtn"
+		style="position: absolute; top: 0; left: 0; margin: 10px;"><img src="{% static 'wreath.png' %}" alt="Pragsha"
+			width="60" height="60" class="d-inline-block align-text-top"></a>
+	<br>
+	<br>
+	<br>
+	<br>
 	<div class="container" id="container">
 		<div class="form-container sign-up-container">
 			<form id="signUpForm" action="{% url 'agency:register' %}" method="post">
 				<h1>Sign Up</h1>
 				<br>
-                {% csrf_token %}
+				{% csrf_token %}
 				<div class="step login-step">
 					<!-- Login fields -->
 					<input type="text" name="name" class="name" placeholder="Name" maxlength="100" required>
 					<input type="email" name="email" class="email" placeholder="Email" maxlength="100" required>
-					<input type="text" name="regId" class="regId" placeholder="Registration ID" maxlength="100" required>
-					<input type="password" name="password" class="password" placeholder="Password" maxlength="100" required>
-					<input type="password" name="confirm-password" class="confirm-password" placeholder="Confirm Password" maxlength="100" required>
+					<input type="text" name="regId" class="regId" placeholder="Registration ID" maxlength="100"
+						required>
+					<input type="password" name="password" class="password" placeholder="Password" maxlength="100"
+						required>
+					<input type="password" name="confirm-password" class="confirm-password"
+						placeholder="Confirm Password" maxlength="100" required>
 					<br>
 				</div>
-	
-				<div class="step department-step scrollable-div" style="display: none; height: 70%; font-size: 80%">
+
+				<div class="step department-step scrollable-div" style="display: none; height: 50%; font-size: 80%">
 					<!-- Department checkboxes and specialization field -->
-				<label><h3>Department:</h3></label>
-				<label for="id_dept_0"><input type="checkbox" name="dept" value="NDMA" maxlength="100" id="id_dept_0">National Disaster Management Authority</label>
-				<label for="id_dept_1"><input type="checkbox" name="dept" value="NDRF" maxlength="100" id="id_dept_1">National Disaster Response Force</label>
-				<label for="id_dept_2"><input type="checkbox" name="dept" value="IMD" maxlength="100" id="id_dept_2">India Meteorological Department</label>
-				<label for="id_dept_3"><input type="checkbox" name="dept" value="NRSC" maxlength="100" id="id_dept_3">National Remote Sensing Centre</label>
-				<label for="id_dept_4"><input type="checkbox" name="dept" value="CWC" maxlength="100" id="id_dept_4">Central Water Commission</label>
-				<label for="id_dept_5"><input type="checkbox" name="dept" value="FSCD" maxlength="100" id="id_dept_5">Fire Service and Civil Defence</label>
-				<label for="id_dept_6"><input type="checkbox" name="dept" value="ICG" maxlength="100" id="id_dept_6">Indian Coast Guard</label>
-				<label for="id_dept_7"><input type="checkbox" name="dept" value="NHM" maxlength="100" id="id_dept_7">National Health Mission</label>
-				<label for="id_dept_8"><input type="checkbox" name="dept" value="NIDM" maxlength="100" id="id_dept_8">National Institute of Disaster Management</label>
-				<label for="id_dept_9"><input type="checkbox" name="dept" value="NDRelF" maxlength="100" id="id_dept_9">National Disaster Relief Fund</label>
-				<label for="id_dept_10"><input type="checkbox" name="dept" value="SDRF" maxlength="100" id="id_dept_10">State Disaster Relief Fund</label>
-				<label for="id_dept_11"><input type="checkbox" name="dept" value="IRCS" maxlength="100" id="id_dept_11">Indian Red Cross Society</label>
-				<label for="id_dept_12"><input type="checkbox" name="dept" value="CISF" maxlength="100" id="id_dept_12">Central Industrial Security Force</label>
-				<label for="id_dept_13"><input type="checkbox" name="dept" value="NDRC" maxlength="100" id="id_dept_13">National Disaster Response Corps</label>
-				<label for="id_dept_14"><input type="checkbox" name="dept" value="SDMA" maxlength="100" id="id_dept_14">State Disaster Management Authority</label>
-				<label for="id_dept_15"><input type="checkbox" name="dept" value="NGO" maxlength="100" id="id_dept_15">Non-Governmental Organisation</label>
-				<label for="id_dept_16"><input type="checkbox" name="dept" value="Other" maxlength="100" id="id_dept_16">Other</label>
-					<textarea class="specialization" placeholder="Specialization" cols="40" rows="3" maxlength="100" required></textarea>
+					<label>
+						<h3>Department:</h3>
+					</label>
+					<label for="id_dept_0"><input type="checkbox" name="dept" value="NDMA" maxlength="100"
+							id="id_dept_0">National Disaster Management Authority</label>
+					<label for="id_dept_1"><input type="checkbox" name="dept" value="NDRF" maxlength="100"
+							id="id_dept_1">National Disaster Response Force</label>
+					<label for="id_dept_2"><input type="checkbox" name="dept" value="IMD" maxlength="100"
+							id="id_dept_2">India Meteorological Department</label>
+					<label for="id_dept_3"><input type="checkbox" name="dept" value="NRSC" maxlength="100"
+							id="id_dept_3">National Remote Sensing Centre</label>
+					<label for="id_dept_4"><input type="checkbox" name="dept" value="CWC" maxlength="100"
+							id="id_dept_4">Central Water Commission</label>
+					<label for="id_dept_5"><input type="checkbox" name="dept" value="FSCD" maxlength="100"
+							id="id_dept_5">Fire Service and Civil Defence</label>
+					<label for="id_dept_6"><input type="checkbox" name="dept" value="ICG" maxlength="100"
+							id="id_dept_6">Indian Coast Guard</label>
+					<label for="id_dept_7"><input type="checkbox" name="dept" value="NHM" maxlength="100"
+							id="id_dept_7">National Health Mission</label>
+					<label for="id_dept_8"><input type="checkbox" name="dept" value="NIDM" maxlength="100"
+							id="id_dept_8">National Institute of Disaster Management</label>
+					<label for="id_dept_9"><input type="checkbox" name="dept" value="NDRelF" maxlength="100"
+							id="id_dept_9">National Disaster Relief Fund</label>
+					<label for="id_dept_10"><input type="checkbox" name="dept" value="SDRF" maxlength="100"
+							id="id_dept_10">State Disaster Relief Fund</label>
+					<label for="id_dept_11"><input type="checkbox" name="dept" value="IRCS" maxlength="100"
+							id="id_dept_11">Indian Red Cross Society</label>
+					<label for="id_dept_12"><input type="checkbox" name="dept" value="CISF" maxlength="100"
+							id="id_dept_12">Central Industrial Security Force</label>
+					<label for="id_dept_13"><input type="checkbox" name="dept" value="NDRC" maxlength="100"
+							id="id_dept_13">National Disaster Response Corps</label>
+					<label for="id_dept_14"><input type="checkbox" name="dept" value="SDMA" maxlength="100"
+							id="id_dept_14">State Disaster Management Authority</label>
+					<label for="id_dept_15"><input type="checkbox" name="dept" value="NGO" maxlength="100"
+							id="id_dept_15">Non-Governmental Organisation</label>
+					<label for="id_dept_16"><input type="checkbox" name="dept" value="Other" maxlength="100"
+							id="id_dept_16">Other</label>
+					<textarea class="specialization" name="spec" placeholder="Specialization" cols="40" rows="3"
+						maxlength="100" required></textarea>
 					<br>
 				</div>
-	
+
 				<div class="step location-step" style="display: none;">
 					<!-- Location input fields -->
-					<input type="number" name="latitude" class="latitude" placeholder="Latitude" step="any" id="id_latitude" required>
-					<input type="number" name="longitude" class="longitude" placeholder="Longitude" step="any" id="id_longitude" required>
+					<input type="number" name="latitude" class="latitude" placeholder="Latitude" step="any"
+						id="id_latitude" required>
+					<input type="number" name="longitude" class="longitude" placeholder="Longitude" step="any"
+						id="id_longitude" required>
 					<button type="button" id="getLocationBtn">Get My Location</button>
 					<br>
 				</div>
+				<br>
+				<button type="button" id="backButton" style="display: none;">Back</button>
 				<br>
 				<button type="button" id="nextButton">Next</button>
 			</form>
@@ -323,10 +405,10 @@
 			<form action="{% url 'agency:login' %}" method="post">
 				<h1>Sign in</h1>
 				<br>
-                    {% csrf_token %}
-					<input type="text" name="regId" placeholder="Registration ID" maxlength="100" required id="id_regId">
-					<input type="password" name="password" placeholder="Password" maxlength="100" required id="id_password">
-				<button type="submit">Login</button>
+				{% csrf_token %}
+				<input type="text" name="regId" placeholder="Registration ID" maxlength="100" required id="id_regId">
+				<input type="password" name="password" placeholder="Password" maxlength="100" required id="id_password">
+				<button class="lgn" type="submit">Login</button>
 			</form>
 		</div>
 		<div class="overlay-container">
@@ -335,14 +417,15 @@
 					<h1>Welcome to PRAGSHA!</h1>
 					<p>
 						Enter your agency details and start your journey with us<br><br><br>Already registered?<br><br>
-					<button class="ghost" id="signIn">Sign In</button>
+						<button class="ghost" id="signIn">Sign In</button>
 					</p>
 				</div>
 				<div class="overlay-panel overlay-right">
 					<h1>Welcome Back!</h1>
 					<p>
-						To keep connected with us please login with your agency info<br><br><br>Not registered yet?<br><br>
-					<button class="ghost" id="signUp">Sign Up</button>
+						To keep connected with us please login with your agency info<br><br><br>Not registered
+						yet?<br><br>
+						<button class="ghost" id="signUp">Sign Up</button>
 					</p>
 				</div>
 			</div>
@@ -367,26 +450,36 @@
 			});
 
 			const steps = document.querySelectorAll(".step");
+			const backButton = document.getElementById("backButton");
 			const nextButton = document.getElementById("nextButton");
 			const signUpForm = document.getElementById("signUpForm");
 			let currentStep = 0;
 
 			nextButton.addEventListener("click", function () {
 				if (currentStep < steps.length - 1) {
-					// Hide the current step
 					steps[currentStep].style.display = "none";
 					currentStep++;
-
-					// Show the next step
 					steps[currentStep].style.display = "block";
-
+					if (currentStep === 1) {
+						backButton.style.display = "block";
+					}
 					if ((currentStep + 1) === steps.length) {
 						nextButton.innerHTML = "Submit";
 					}
 				}
 				else {
-					// If all steps are completed, submit the form
 					signUpForm.submit();
+				}
+			});
+			backButton.addEventListener("click", function () {
+				steps[currentStep].style.display = "none";
+				currentStep--;
+				steps[currentStep].style.display = "block";
+				if (currentStep === 0) {
+					backButton.style.display = "none";
+				}
+				if ((currentStep + 1) < steps.length) {
+					nextButton.innerHTML = "Next";
 				}
 			});
 			document.getElementById('getLocationBtn').addEventListener('click', function () {
