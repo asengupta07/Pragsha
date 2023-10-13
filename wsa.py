@@ -1,3 +1,5 @@
+import math
+
 TYPE = [
     "landslide",
     "earthquake",
@@ -34,18 +36,17 @@ WEIGHT = [
 ]
 PROXIMITY = -25
 
-
 def hash_type(type):
     return TYPE.index(type)
-
 
 def hash_equipment(equipment):
     return EQUIPMENT.index(equipment)
 
-
 def get_weight(type, equipment):
     return WEIGHT[hash_type(type)][hash_equipment(equipment)]
 
+def sigmoid(x):
+    return 1 / (1 + math.exp(-x))
 
 def score(type, agency, proximity):
     s = 0
@@ -53,8 +54,10 @@ def score(type, agency, proximity):
         if equipment in agency:
             s += agency[equipment] * (get_weight(type, equipment) / 2)
     s += proximity * PROXIMITY
-    return s
 
+    # Apply the sigmoid function to the final score
+    final_score = sigmoid(s)
+    return final_score
 
 def calc_score(type, agencies):
     for agency in agencies:
