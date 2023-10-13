@@ -46,7 +46,7 @@ def get_weight(type, equipment):
     return WEIGHT[hash_type(type)][hash_equipment(equipment)]
 
 def sigmoid(x):
-    return 1 / (1 + math.exp(-x))
+    return x
 
 def score(type, agency, proximity):
     s = 0

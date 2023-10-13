@@ -1,4 +1,4 @@
-from wsm import calc_score
+from wsa import calc_score
 
 DUMMY_AGENCIES = [
     {
