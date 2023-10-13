@@ -80,3 +80,9 @@ def login(request):
             return render(
                 request, "login.html", {"message": "Invalid Name or Password"}
             )
+        
+
+def logout(request):
+    if "user_id" in request.session:
+        del request.session["user_id"]
+    return redirect("/user/login")

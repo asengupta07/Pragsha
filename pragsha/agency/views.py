@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django import forms
+import json
 from .models import Agency, Location, Inventory, Department, Speciality
 from django.contrib.auth.hashers import make_password, check_password
 from django.http import JsonResponse
@@ -24,6 +25,63 @@ from django.views.decorators.csrf import csrf_exempt
 #     ('NGO', 'Non-Governmental Organisation'),
 #     ('Other', 'Other')
 # ]
+
+INVENTORY = {
+    "Firefighting Equipment": [
+        "Fire Extinguishers",
+        "Fire Hoses and Nozzles",
+        "Fire Hydrant Wrenches",
+        "Wildland Firefighting Tools",
+    ],
+    "Medical Supplies": [
+        "Defibrillators",
+        "Medical Kits and Supplies",
+        "Oxygen Tanks and Masks",
+        "Triage Kits",
+        "Stretchers and Backboards",
+        "Airway Management Equipment",
+    ],
+    "Emergency Food and Water Supplies": [
+        "Non-Perishable Food Items",
+        "Water Bottles or Water Purification Systems",
+        "Food Preparation and Cooking Equipment",
+    ],
+    "Shelter and Bedding": [
+        "Tents and Shelters",
+        "Sleeping Bags and Blankets",
+        "Tarps and Plastic Sheeting",
+        "Portable Toilets and Sanitation Kits",
+    ],
+    "Search and Rescue Tools": [
+        "First Aid Kits",
+        "Stretchers",
+        "Shovels and Picks",
+        "Flashlights and Headlamps",
+        "Life Vests and Personal Flotation Devices",
+        "Rope and Harnesses",
+        "Hydraulic Rescue Tools",
+    ],
+    "Personal Protective Equipment (PPE)": [
+        "Helmets",
+        "Gloves",
+        "Respirators and Masks",
+        "Hazmat Suits",
+        "Safety Goggles",
+    ],
+    "Transportation": [
+        "Emergency Vehicles",
+        "Boats and Watercraft",
+        "Helicopters and Aircraft",
+    ],
+    "Communication, Navigation, and Mapping Tools": [
+        "GPS Devices",
+        "Topographic Maps",
+        "Compasses",
+        "Two-Way Radios",
+        "Satellite Phones",
+        "Cell Phone Signal Boosters",
+    ],
+}
 
 
 class InventoryForm(forms.ModelForm):
@@ -118,53 +176,57 @@ def logout(request):
 @csrf_exempt
 def add_inventory(request):
     if request.method == "POST":
-        form = InventoryForm(request.POST)
-        if form.is_valid():
-            form.instance.agency_id = Agency.objects.get(
-                agency_id=request.session["agency_id"]
-            )
-            if Inventory.objects.filter(
-                name=form.cleaned_data["name"], agency_id=request.session["agency_id"]
+        name = request.POST["name"]
+        number = request.POST["number"]
+        agency_id = Agency.objects.get(
+            agency_id=request.session["agency_id"]
+        )
+        if Inventory.objects.filter(
+            name=name,
+            agency_id=agency_id
             ).exists():
-                Inventory.objects.filter(
-                    name=form.cleaned_data["name"],
-                    agency_id=request.session["agency_id"],
-                ).update(
-                    number=Inventory.objects.filter(
-                        name=form.cleaned_data["name"],
-                        agency_id=request.session["agency_id"],
-                    )
-                    .values("number")
-                    .first()["number"]
-                    + form.cleaned_data["number"]
+            Inventory.objects.filter(
+                name=name,
+                agency_id=agency_id,
+            ).update(
+                number=Inventory.objects.filter(
+                    name=name,
+                    agency_id=agency_id,
                 )
-                data = {
-                    "id": Inventory.objects.filter(
-                        name=form.cleaned_data["name"],
-                        agency_id=request.session["agency_id"],
-                    )
-                    .values("inventory_id")
-                    .first()["inventory_id"],
-                    "name": form.cleaned_data["name"],
-                    "number": Inventory.objects.filter(
-                        name=form.cleaned_data["name"],
-                        agency_id=request.session["agency_id"],
-                    )
-                    .values("number")
-                    .first()["number"],
-                }
-            else:
-                inventory = form.save()
-                data = {
-                    "id": inventory.inventory_id,
-                    "name": inventory.name,
-                    "number": inventory.number,
-                }
-            return JsonResponse({"status": "success", "data": data})
+                .values("number")
+                .first()["number"]
+                + int(number)
+            )
+            data = {
+                "id": Inventory.objects.filter(
+                    name=name,
+                    agency_id=agency_id,
+                )
+                .values("inventory_id")
+                .first()["inventory_id"],
+                "name": name,
+                "number": Inventory.objects.filter(
+                    name=name,
+                    agency_id=agency_id,
+                )
+                .values("number")
+                .first()["number"],
+            }
         else:
-            return JsonResponse({"status": "error", "errors": form.errors})
+            inventory = Inventory(
+                agency_id=agency_id,
+                name=name,
+                number=number,
+            )
+            inventory.save()
+            data = {
+                "id": inventory.inventory_id,
+                "name": inventory.name,
+                "number": inventory.number,
+            }
+        return JsonResponse({"status": "success", "data": data})
     else:
         inv = Inventory.objects.filter(agency_id=request.session["agency_id"]).values()
         return render(
-            request, "agency/inventory.html", {"form": InventoryForm(), "inv": inv}
+            request, "agency/inventory.html", {"form": InventoryForm(), "inv": inv, "inventory": INVENTORY}
         )
