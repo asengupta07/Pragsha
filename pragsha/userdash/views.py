@@ -31,3 +31,4 @@ def dashboard(request):
         return render(request, 'dashboard.html', {'form': form})
     else:
         return redirect("/user/login")
+

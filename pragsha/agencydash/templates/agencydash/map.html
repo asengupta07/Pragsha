@@ -1,17 +1,40 @@
 {% extends 'agencydash/layout.html' %}
 
 {% block title %}
-Map
+Mission
 {% endblock %}
 
 {% block links %}
-<script type='text/javascript'
-    src='https://www.bing.com/api/maps/mapcontrol?key=AoCUncNX_-l6FfT1nHyketx4jOn1zrAIiBzGfYei8zgT9CUyVqxRckBBMZYI18Zx'></script>
+<script type='text/javascript' src='http://www.bing.com/api/maps/mapcontrol?callback=initMap' async defer></script>
 {% endblock %}
 
 {% block main %}
 
 <div class="container">
+    <div class="card">
+        <div class="card-body">
+            <h3 class="card-title">Mission Details</h3>
+            <div class="row">
+                <div class="col">
+                    <p><b>ID:</b> {{ mission.id }}</p>
+                    <p><b>Name:</b> {{ mission.name }}</p>
+                </div>
+                <div class="col">
+                    <p><b>Timestamp:</b> {{ mission.timestamp }}</p>
+                    <p><b>Type:</b> {{ mission.type }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p><b>Latitude:</b> {{ mission.latitude }}</p>
+                    <p><b>Longitude:</b> {{ mission.longitude }}</p>
+                </div>
+                <div class="col">
+                    <p><b>Address:</b> {{ mission.address }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="card">
         <div class="card-body">
             <h3 class="card-title">Map</h3>
@@ -46,6 +69,7 @@ Map
                     <table id="agencyTable" class="table table-striped">
                         <thead class="thead-dark">
                             <tr>
+                                <th>ID</th>
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Departments</th>
@@ -69,32 +93,48 @@ Map
             credentials: 'AoCUncNX_-l6FfT1nHyketx4jOn1zrAIiBzGfYei8zgT9CUyVqxRckBBMZYI18Zx'
         });
 
-        // Add a pushpin for the user's location
+        var emergencyLocation = JSON.parse('{{ emergency|safe }}');
+        var mylat;
+        var mylong;
+
         navigator.geolocation.getCurrentPosition(function (position) {
-            var userLocation = new Microsoft.Maps.Location(position.coords.latitude, position.coords.longitude);
-            var userPushpin = new Microsoft.Maps.Pushpin(userLocation, { color: 'green', title: '{{ agency_name|safe }}' });
-            map.entities.push(userPushpin);
+            mylat = position.coords.latitude;
+            mylong = position.coords.longitude;
         });
 
-        // Parse the JSON data passed from the view
-        var markerData = JSON.parse('{{ marker_data|safe }}');
+        Microsoft.Maps.loadModule('Microsoft.Maps.Directions', function () {
+                //Create an instance of the directions manager.
+                directionsManager = new Microsoft.Maps.Directions.DirectionsManager(map);
 
+                //Create waypoints to route between.
+                var seattleWaypoint = new Microsoft.Maps.Directions.Waypoint({ address: 'YOU', location: new Microsoft.Maps.Location(mylat, mylong) });
+                directionsManager.addWaypoint(seattleWaypoint);
+
+                var workWaypoint = new Microsoft.Maps.Directions.Waypoint({ address: 'SOS', location: new Microsoft.Maps.Location(emergencyLocation.latitude, emergencyLocation.longitude) });
+                directionsManager.addWaypoint(workWaypoint);
+
+                //Specify the element in which the itinerary will be rendered.
+                directionsManager.setRenderOptions({ routeMode: Microsoft.Maps.Directions.RouteMode.driving });
+
+                //Calculate directions.
+                directionsManager.calculateDirections();
+            });
+            navigator.geolocation.getCurrentPosition(function (position) {
+                var userLocation = new Microsoft.Maps.Location(position.coords.latitude, position.coords.longitude);
+                var userPushpin = new Microsoft.Maps.Pushpin(userLocation, { color: 'green', title: 'YOU' });
+                map.entities.push(userPushpin);
+            });
+
+        var markerData = JSON.parse('{{ marker_data|safe }}');
         for (var i = 0; i < markerData.length; i++) {
             var location = new Microsoft.Maps.Location(markerData[i].latitude, markerData[i].longitude);
-            var pushpin = new Microsoft.Maps.Pushpin(location, { title: markerData[i].name });
+            var pushpin = new Microsoft.Maps.Pushpin(location, { color: 'blue', title: markerData[i].name, text: `${markerData[i].id}` });
             map.entities.push(pushpin);
         }
-
-        var yellowMarkerData = JSON.parse('{{ yellow_marker_data|safe }}');
-
-        for (var i = 0; i < yellowMarkerData.length; i++) {
-            var yellowLocation = new Microsoft.Maps.Location(yellowMarkerData[i].latitude, yellowMarkerData[i].longitude);
-            var yellowPushpin = new Microsoft.Maps.Pushpin(yellowLocation, { color: 'yellow', title: yellowMarkerData[i].name });
-            map.entities.push(yellowPushpin);
-        }
+        var location = new Microsoft.Maps.Location(emergencyLocation.latitude, emergencyLocation.longitude);
+        var pushpin = new Microsoft.Maps.Pushpin(location, { color: 'red', title: 'SOS' });
+        map.entities.push(pushpin);
     }
-
-    Microsoft.Maps.loadModule('Microsoft.Maps.AutoSuggest', { callback: initMap, errorCallback: function (e) { console.log(e); } });
 </script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -120,6 +160,7 @@ Map
         filteredAgencies.forEach(agency => {
             const agencyElement = document.createElement("tr");
             agencyElement.innerHTML = `
+                    <td>${agency.id}</td>
                     <td>${agency.name}</td>
                     <td>${agency.email}</td>
                     <td>Departments: ${agency.depts.join(', ')}</td>
