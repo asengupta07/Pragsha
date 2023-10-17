@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="5">
+    <title>Document</title>
+    <style>
+        @charset "UTF-8";
+
+        *,
+        *:before,
+        *:after {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --white: #fff;
+            --black: #000;
+            --bg: #f8f8f8;
+            --grey: #999;
+            --dark: #1a1a1a;
+            --light: #e6e6e6;
+            --wrapper: 1000px;
+            --blue: #ffb78f;
+        }
+
+        body {
+            background-color: var(--bg);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+            font-family: "Source Sans Pro", sans-serif;
+            font-weight: 400;
+            height: 100vh !important;
+            background: -webkit-linear-gradient(to right, #fff6ef, #ffb78f);
+            background: linear-gradient(to right, #fff6ef, #ffb78f);
+            background-size: cover;
+            background-repeat: none;
+            overflow-y: hidden;
+        }
+
+        .wrapper {
+            position: relative;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            transform: translate(-50%, 0);
+        }
+
+        .container {
+            position: relative;
+            top: 50%;
+            left: 50%;
+            width: 80%;
+            height: 75%;
+            background-color: var(--white);
+            transform: translate(-50%, -50%);
+        }
+
+        .container .left {
+            float: left;
+            width: 37.6%;
+            height: 100%;
+            border: 1px solid var(--light);
+            background-color: var(--white);
+        }
+
+        .container .left .top {
+            position: relative;
+            width: 100%;
+            height: auto;
+            padding: 15px;
+            text-align: center;
+            font-family: "Source Sans Pro", sans-serif;
+        }
+
+        .container .left .top:after {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            display: block;
+            width: 80%;
+            height: 2px;
+            content: "";
+            background-color: var(--light);
+            transform: translate(-50%, 0);
+        }
+
+        .container .left .people {
+            margin-left: -1px;
+            border-right: 1px solid var(--light);
+            border-left: 1px solid var(--light);
+            width: calc(100% + 2px);
+        }
+
+        .container .left .people .person {
+            position: relative;
+            width: 100%;
+            padding: 12px 10% 16px;
+            cursor: pointer;
+            background-color: var(--white);
+        }
+
+        .container .left .people .person:after {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            display: block;
+            width: 80%;
+            height: 1px;
+            content: "";
+            background-color: var(--light);
+            transform: translate(-50%, 0);
+        }
+
+        .container .left .people .person img {
+            float: left;
+            width: 40px;
+            height: 40px;
+            margin-right: 12px;
+            border-radius: 50%;
+            -o-object-fit: cover;
+            object-fit: cover;
+        }
+
+        .container .left .people .person .name {
+            font-size: 14px;
+            line-height: 22px;
+            color: var(--dark);
+            font-family: "Source Sans Pro", sans-serif;
+            font-weight: 600;
+        }
+
+        .container .left .people .person .time {
+            font-size: 14px;
+            position: absolute;
+            top: 16px;
+            right: 10%;
+            padding: 0 0 5px 5px;
+            color: var(--grey);
+            background-color: var(--white);
+        }
+
+        .container .left .people .person .preview {
+            font-size: 14px;
+            display: inline-block;
+            overflow: hidden !important;
+            width: 70%;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            color: var(--grey);
+        }
+
+        .container .left .people .person.active,
+        .container .left .people .person:hover {
+            margin-top: -1px;
+            margin-left: -1px;
+            padding-top: 13px;
+            border: 0;
+            background-color: var(--blue);
+            width: calc(100% + 2px);
+            padding-left: calc(10% + 1px);
+        }
+
+        .container .left .people .person.active span,
+        .container .left .people .person:hover span {
+            color: var(--white);
+            background: transparent;
+        }
+
+        .container .left .people .person.active:after,
+        .container .left .people .person:hover:after {
+            display: none;
+        }
+
+        .container .right {
+            position: relative;
+            float: left;
+            width: 62.4%;
+            height: 100%;
+        }
+
+        .container .right .top {
+            width: 100%;
+            height: 47px;
+            padding: 15px 29px;
+            background-color: #eceff1;
+        }
+
+        .container .right .top span {
+            font-size: 15px;
+            color: var(--grey);
+        }
+
+        .container .right .top span .name {
+            color: var(--dark);
+            font-family: "Source Sans Pro", sans-serif;
+            font-weight: 600;
+        }
+        .scroll{
+            overflow-x: hidden;
+            overflow-y: scroll;
+            height: 100%;
+        }
+        .scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .container .right .chat {
+            position: relative;
+            display: none;
+            overflow: hidden;
+            padding: 0 35px 92px;
+            border-width: 1px 1px 1px 0;
+            border-style: solid;
+            border-color: var(--light);
+            height: calc(100% - 48px);
+            justify-content: flex-end;
+            flex-direction: column;
+        }
+
+        .container .right .chat.active-chat {
+            display: block;
+            display: flex;
+        }
+
+        .container .right .chat.active-chat .bubble {
+            transition-timing-function: cubic-bezier(0.4, -0.04, 1, 1);
+        }
+
+        .container .right .chat.active-chat .bubble:nth-of-type(1) {
+            -webkit-animation-duration: 0.15s;
+            animation-duration: 0.15s;
+        }
+
+        .container .right .chat.active-chat .bubble:nth-of-type(2) {
+            -webkit-animation-duration: 0.3s;
+            animation-duration: 0.3s;
+        }
+
+        .container .right .chat.active-chat .bubble:nth-of-type(3) {
+            -webkit-animation-duration: 0.45s;
+            animation-duration: 0.45s;
+        }
+
+        .container .right .chat.active-chat .bubble:nth-of-type(4) {
+            -webkit-animation-duration: 0.6s;
+            animation-duration: 0.6s;
+        }
+
+        .container .right .chat.active-chat .bubble:nth-of-type(5) {
+            -webkit-animation-duration: 0.75s;
+            animation-duration: 0.75s;
+        }
+
+        .container .right .chat.active-chat .bubble:nth-of-type(6) {
+            -webkit-animation-duration: 0.9s;
+            animation-duration: 0.9s;
+        }
+
+        .container .right .chat.active-chat .bubble:nth-of-type(7) {
+            -webkit-animation-duration: 1.05s;
+            animation-duration: 1.05s;
+        }
+
+        .container .right .chat.active-chat .bubble:nth-of-type(8) {
+            -webkit-animation-duration: 1.2s;
+            animation-duration: 1.2s;
+        }
+
+        .container .right .chat.active-chat .bubble:nth-of-type(9) {
+            -webkit-animation-duration: 1.35s;
+            animation-duration: 1.35s;
+        }
+
+        .container .right .chat.active-chat .bubble:nth-of-type(10) {
+            -webkit-animation-duration: 1.5s;
+            animation-duration: 1.5s;
+        }
+
+        .container .right .write {
+            position: absolute;
+            bottom: 29px;
+            left: 30px;
+            height: 42px;
+            padding-left: 8px;
+            border: 1px solid var(--light);
+            background-color: #eceff1;
+            width: calc(100% - 58px);
+            border-radius: 5px;
+        }
+
+        .container .right .write input {
+            font-size: 16px;
+            float: left;
+            width: 500px;
+            height: 40px;
+            color: var(--dark);
+            border: 0;
+            outline: none;
+            background-color: #eceff1;
+            font-family: "Source Sans Pro", sans-serif;
+            font-weight: 400;
+        }
+
+        .custom-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            width: 50px;
+            height: 42px;
+        }
+        ul{
+            list-style-type: none;
+        }
+
+        .container .right .bubble {
+            font-size: 16px;
+            position: relative;
+            display: inline-block;
+            clear: both;
+            margin-bottom: 8px;
+            padding: 13px 14px;
+            vertical-align: top;
+            border-radius: 5px;
+        }
+
+        .container .right .bubble:before {
+            position: absolute;
+            top: 19px;
+            display: block;
+            width: 8px;
+            height: 6px;
+            content: " ";
+            transform: rotate(29deg) skew(-35deg);
+        }
+
+        .container .right .bubble.you {
+            float: left;
+            color: var(--white);
+            background-color: var(--blue);
+            align-self: flex-start;
+            -webkit-animation-name: slideFromLeft;
+            animation-name: slideFromLeft;
+        }
+
+        .container .right .bubble.you:before {
+            left: -3px;
+            background-color: var(--blue);
+        }
+
+        .container .right .bubble.me {
+            float: right;
+            color: var(--dark);
+            background-color: #eceff1;
+            align-self: flex-end;
+            -webkit-animation-name: slideFromRight;
+            animation-name: slideFromRight;
+        }
+
+        .container .right .bubble.me:before {
+            right: -3px;
+            background-color: #eceff1;
+        }
+
+        .container .right .conversation-start {
+            position: relative;
+            width: 100%;
+            margin-bottom: 27px;
+            text-align: center;
+        }
+
+        .container .right .conversation-start span {
+            font-size: 14px;
+            display: inline-block;
+            color: var(--grey);
+        }
+
+        .container .right .conversation-start span:before,
+        .container .right .conversation-start span:after {
+            position: absolute;
+            top: 10px;
+            display: inline-block;
+            width: 30%;
+            height: 1px;
+            content: "";
+            background-color: var(--light);
+        }
+
+        .container .right .conversation-start span:before {
+            left: 0;
+        }
+
+        .container .right .conversation-start span:after {
+            right: 0;
+        }
+
+        @keyframes slideFromLeft {
+            0% {
+                margin-left: -200px;
+                opacity: 0;
+            }
+
+            100% {
+                margin-left: 0;
+                opacity: 1;
+            }
+        }
+
+        @-webkit-keyframes slideFromLeft {
+            0% {
+                margin-left: -200px;
+                opacity: 0;
+            }
+
+            100% {
+                margin-left: 0;
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideFromRight {
+            0% {
+                margin-right: -200px;
+                opacity: 0;
+            }
+
+            100% {
+                margin-right: 0;
+                opacity: 1;
+            }
+        }
+
+        @-webkit-keyframes slideFromRight {
+            0% {
+                margin-right: -200px;
+                opacity: 0;
+            }
+
+            100% {
+                margin-right: 0;
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="container">
+            <div class="left">
+                <div class="top">
+                    CHATS
+                </div>
+                <ul class="people">
+                    {% for i, user in users %}
+                    <li class="person" data-chat="person{{ i }}"> 
+                        <span class="name">Agency Id: {{ user }}</span>
+                        {% for key, val in rev.items %}
+                        {% if key == user %}
+                        {% for v in val %}
+                        {% if forloop.last %}
+                        <span class="time">{{ v.time }}</span>
+                        <span class="preview">{{ v.message }}</span>
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                        {% endfor %}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="right">
+                <div class="top"><span>To: <span class="name">Agency {{ users.0.1 }}</span></span></div>
+                {% for i, user in users %}
+                <div class="chat" data-chat="person{{ i }}">
+                    <span id="scroll" class="scroll">
+                    <div class="conversation-start">
+                        <span>Conversation starts here!</span>
+                    </div>
+                    {% for key, value in rev.items %}
+                    {% if key == user %}
+                    {% for text in value %}
+                    <div class="bubble {{ text.type }}">
+                        {{ text.message }}
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    {% endfor %}
+                    </span>
+                    <div class="write">
+                        <form action="/chat/" method="post">
+                            {% csrf_token %}
+                            <input type="text" name="message" autofocus autocomplete="off" required/>
+                            <input type="hidden" name="user" value="{{ user }}">
+                            <button type="submit" class="custom-button">
+                                <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/382994/send.png" alt="Button Image">
+                              </button>
+                        </form>
+                
+                </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <script>
+        document.querySelector('.chat[data-chat=person0]').classList.add('active-chat');
+        document.querySelector('.person[data-chat=person0]').classList.add('active');
+
+        let friends = {
+            list: document.querySelector('ul.people'),
+            all: document.querySelectorAll('.left .person'),
+            name: ''
+        },
+
+            chat = {
+                container: document.querySelector('.container .right'),
+                current: null,
+                person: null,
+                name: document.querySelector('.container .right .top .name')
+            };
+
+
+        friends.all.forEach(f => {
+            f.addEventListener('mousedown', () => {
+                f.classList.contains('active') || setAciveChat(f);
+            });
+        });
+
+        function setAciveChat(f) {
+            friends.list.querySelector('.active').classList.remove('active');
+            f.classList.add('active');
+            chat.current = chat.container.querySelector('.active-chat');
+            chat.person = f.getAttribute('data-chat');
+            chat.current.classList.remove('active-chat');
+            chat.container.querySelector('[data-chat="' + chat.person + '"]').classList.add('active-chat');
+            friends.name = f.querySelector('.name').innerText;
+            chat.name.innerHTML = friends.name;
+        }
+        function scrollToBottom() {
+      var element = document.getElementById("scroll");
+      element.scrollTop = element.scrollHeight;
+    }
+
+    // Call the scrollToBottom function when the page loads
+    window.addEventListener("load", scrollToBottom);
+    </script>
+</body>
+
+</html>

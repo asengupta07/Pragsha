@@ -259,7 +259,7 @@
                 <div class="slider-tab"></div>
             </div>
             <div class="form-inner">
-                <form action="{% url 'agency:login' %}" class="login">
+                <form action="{% url 'authentification:login' %}" class="login">
                     <div class="field">
                         <input type="text" name="name" placeholder="Name*" maxlength="100" required id="id_name">
                     </div>
@@ -275,7 +275,7 @@
                     </div>
                     <div class="signup-link">Not a member? <a href="">Signup now</a></div>
                 </form>
-                <form action="{% url 'agency:register' %}" class="signup">
+                <form action="{% url 'authentification:register' %}" class="signup">
                     <div class="step">
                         <div class="field">
                             <input type="text" name="name" placeholder="Name*" maxlength="100" required id="id_name">
