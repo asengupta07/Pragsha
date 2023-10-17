@@ -51,7 +51,8 @@
                 style="width:50% !important;" required>
             </div>
             <br>
-            <button type="submit" class="btn btn-primary">Add</button>
+            <button type="submit" id="add" class="btn btn-primary">Add</button>
+            <button type="submit" id="remove" class="btn btn-primary">Remove</button>
         </div>
     </div>
       
@@ -93,47 +94,51 @@
 {% block scripts %}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-  $(function () {
-    // Submit the form using AJAX
-    $('#inventory-form').submit(function (e) {
-      e.preventDefault();
-      // Submit the form using AJAX
-      $.ajax({
-        url: '{% url "agency:inventory" %}',
-        method: 'POST',
-        data: $(this).serialize(),
-        success: function (data) {
-          if (data.status === 'success') {
-            // Do nothing
-            var name = $('select[name="name"]').val();
-            var number = parseInt($('input[name="number"]').val());
-            var existingRow = $('#inventory-list').find('tr').filter(function () {
-              return $(this).find('td:first').text() === name;
-            });
-            if (existingRow.length) {
-              // Update the existing row with the new number
-              var existingNumber = parseInt(existingRow.find('td:last').text());
-              existingRow.find('td:last').text(existingNumber + number);
-            } else {
-              // Add a new row to the table
-              var row = $('<tr>');
-              row.append($('<td>').text(name));
-              row.append($('<td>').text(number));
-              $('#inventory-list').append(row);
-            }
-            // Clear the form
-            $('#inventory-form')[0].reset();
+$(function () {
+  $('#inventory-form').submit(function (e) {
+    e.preventDefault();
+    var addButton = $('#add');
+    var removeButton = $('#remove');
+    var numberField = $('input[name="number"]');
+    var number = parseInt(numberField.val());
+
+    if (addButton.is(':focus')) {
+      number = Math.abs(number);
+    } else if (removeButton.is(':focus')) {
+      number = -Math.abs(number);
+    }
+    $.ajax({
+      url: '{% url "agency:inventory" %}',
+      method: 'POST',
+      data: $(this).serialize() + '&number=' + number,
+      success: function (data) {
+        if (data.status === 'success') {
+          // Do nothing
+          var name = $('select[name="name"]').val();
+          var existingRow = $('#inventory-list').find('tr').filter(function () {
+            return $(this).find('td:first').text() === name;
+          });
+          if (existingRow.length) {
+            var existingNumber = parseInt(existingRow.find('td:last').text());
+            existingRow.find('td:last').text(existingNumber + number);
           } else {
-            // Display the form errors
-            alert('Error: ' + JSON.stringify(data.errors));
+            var row = $('<tr>');
+            row.append($('<td>').text(name));
+            row.append($('<td>').text(number));
+            $('#inventory-list').append(row);
           }
-        },
-        error: function () {
-          alert('Error: Failed to submit form');
+          $('#inventory-form')[0].reset();
+        } else {
+          alert('Error: ' + JSON.stringify(data.errors));
         }
-      });
+      },
+      error: function () {
+        alert('Error: Failed to submit form');
+      }
     });
   });
+});
+
 </script>
 <script>
   const inv = {{ inventory|safe }};
