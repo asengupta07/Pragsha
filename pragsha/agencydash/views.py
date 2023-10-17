@@ -1,6 +1,6 @@
 import json
 from django.shortcuts import render, redirect
-from agency.models import Location, Agency, Department, Speciality, Inventory
+from agency.models import Location, Agency, Department, Speciality
 import ast
 from userdash.models import Broadcast
 from agencydash.helper import funky
@@ -56,27 +56,21 @@ def response(request):
             'latitude': mission['latitude'],
             'longitude': mission['longitude'],
         })
-        agencies = Agency.objects.exclude(agency_id=agency_id)
+        agencies = Agency.objects.all()
         ags = []
-        inv = []
         for agency in agencies:
             specs = Speciality.objects.filter(agency_id=agency)
             depts = Department.objects.filter(agency_id=agency)
             spec_name = [spec.name for spec in specs][0]
             dept_names = ast.literal_eval([dept.name for dept in depts][0])
             ags.append(dict(agency_id=agency.agency_id, name=agency.name, email=agency.email, depts=dept_names, specs=spec_name))
-            inv.append({agency.agency_id : dict(Inventory.objects.filter(agency_id=agency).values_list('name', 'number'))})
         
-        # for agency in inv:
-        #     score = calc(agency, broadcast.type)
-
-        print(json.dumps(inv, indent=4))
+        agency_name = Agency.objects.get(agency_id=agency_id).name
         available_departments = [{'key': key, 'value': value} for key, value in DEPTS.items()]
-
-        
         
         return render(request, 'agencydash/map.html', {
             'marker_data': marker_data,
+            'agency_name': agency_name,
             'ags': json.dumps(ags),
             'available_departments': available_departments,
             'mission': mission,

@@ -31,7 +31,6 @@ Mission
                 </div>
                 <div class="col">
                     <p><b>Address:</b> {{ mission.address }}</p>
-                    <p id="dist"><b>Distance:</b></p>
                 </div>
             </div>
         </div>
@@ -115,8 +114,8 @@ Mission
                 directionsManager.addWaypoint(workWaypoint);
 
                 //Specify the element in which the itinerary will be rendered.
-                directionsManager.setRenderOptions({ routeMode: Microsoft.Maps.Directions.RouteMode.driving, firstWaypointPushpinOptions: { visible: false }, lastWaypointPushpinOptions: { visible: false } });
-                Microsoft.Maps.Events.addHandler(directionsManager, 'directionsUpdated', directionsUpdated);
+                directionsManager.setRenderOptions({ routeMode: Microsoft.Maps.Directions.RouteMode.driving });
+
                 //Calculate directions.
                 directionsManager.calculateDirections();
             });
@@ -125,6 +124,7 @@ Mission
                 var userPushpin = new Microsoft.Maps.Pushpin(userLocation, { color: 'green', title: 'YOU' });
                 map.entities.push(userPushpin);
             });
+
         var markerData = JSON.parse('{{ marker_data|safe }}');
         for (var i = 0; i < markerData.length; i++) {
             var location = new Microsoft.Maps.Location(markerData[i].latitude, markerData[i].longitude);
@@ -135,25 +135,6 @@ Mission
         var pushpin = new Microsoft.Maps.Pushpin(location, { color: 'red', title: 'SOS' });
         map.entities.push(pushpin);
     }
-    function directionsUpdated(e) {
-            var routeIdx = directionsManager.getRequestOptions().routeIndex;
-
-            var distance = Math.round(e.routeSummary[routeIdx].distance * 100)/100;
-
-            var units = directionsManager.getRequestOptions().distanceUnit;
-            var distanceUnits = '';
-
-            if (units == Microsoft.Maps.Directions.DistanceUnit.km) {
-                distanceUnits = 'km';
-            } else {
-                distanceUnits = 'miles';
-            }
-
-            document.getElementById('dist').innerHTML = '<b>Distance:</b> ' + distance + ' ' + distanceUnits;
-        }
-        function directionsError(e) {
-            alert('Error: ' + e.message + '\r\nResponse Code: ' + e.responseCode);
-        }
 </script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -179,7 +160,7 @@ Mission
         filteredAgencies.forEach(agency => {
             const agencyElement = document.createElement("tr");
             agencyElement.innerHTML = `
-                    <td>${agency.agency_id}</td>
+                    <td>${agency.id}</td>
                     <td>${agency.name}</td>
                     <td>${agency.email}</td>
                     <td>Departments: ${agency.depts.join(', ')}</td>
