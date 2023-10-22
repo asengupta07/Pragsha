@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-
+    {% load pwa %}
 <head>
+    {% progressive_web_app_meta %}
+    {% load static %}
+    <link href="{% static 'favicon.ico' %}" rel="icon">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="refresh" content="5">
-    <title>Document</title>
+    <!-- <meta http-equiv="refresh" content="5"> -->
+    <title>Pragsha: Chat</title>
     <style>
         @charset "UTF-8";
 
@@ -226,7 +229,7 @@
             display: flex;
         }
 
-        .container .right .chat.active-chat .bubble {
+        /* .container .right .chat.active-chat .bubble {
             transition-timing-function: cubic-bezier(0.4, -0.04, 1, 1);
         }
 
@@ -278,7 +281,7 @@
         .container .right .chat.active-chat .bubble:nth-of-type(10) {
             -webkit-animation-duration: 1.5s;
             animation-duration: 1.5s;
-        }
+        } */
 
         .container .right .write {
             position: absolute;
@@ -444,10 +447,19 @@
                 opacity: 1;
             }
         }
+        img {
+			filter: drop-shadow(2px 2px 1px #000);
+            cursor: pointer;
+		}
     </style>
 </head>
 
 <body>
+    {% load static %}
+    <br>
+	<a onclick="window.location.href = '/agency/dashboard';" class="homeBtn"
+		style="position: absolute; top: 0; left: 0; margin: 10px;"><img src="{% static 'wreath.png' %}" alt="Pragsha"
+			width="60" height="60" class="d-inline-block align-text-top"></a>
     <div class="wrapper">
         <div class="container">
             <div class="left">
@@ -484,7 +496,7 @@
                     {% if key == user %}
                     {% for text in value %}
                     <div class="bubble {{ text.type }}">
-                        {{ text.message }}
+                        {{ text.message|linebreaksbr }}
                     </div>
                     {% endfor %}
                     {% endif %}
@@ -527,6 +539,8 @@
         friends.all.forEach(f => {
             f.addEventListener('mousedown', () => {
                 f.classList.contains('active') || setAciveChat(f);
+                var element = document.querySelector('.active#scroll');
+                element.scrollTop = element.scrollHeight;
             });
         });
 
@@ -541,12 +555,28 @@
             chat.name.innerHTML = friends.name;
         }
         function scrollToBottom() {
-      var element = document.getElementById("scroll");
-      element.scrollTop = element.scrollHeight;
+            var element = document.getElementById("scroll");
+            element.scrollTop = element.scrollHeight;
+        }
+    window.addEventListener("load", scrollToBottom);
+    function fetchData() {
+        fetch('/chat/update')
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                console.log(data.new)
+                if (data && data.new === true) {
+                    
+                    location.reload(); // Reload the page
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
     }
 
-    // Call the scrollToBottom function when the page loads
-    window.addEventListener("load", scrollToBottom);
+    // Fetch data periodically (every 5 seconds)
+    setInterval(fetchData, 5000);
     </script>
 </body>
 

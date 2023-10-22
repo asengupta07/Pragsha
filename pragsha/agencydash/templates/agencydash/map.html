@@ -160,12 +160,28 @@ Mission
         filteredAgencies.forEach(agency => {
             const agencyElement = document.createElement("tr");
             agencyElement.innerHTML = `
-                    <td>${agency.id}</td>
+                    <td>${agency.agency_id}</td>
                     <td>${agency.name}</td>
                     <td>${agency.email}</td>
-                    <td>Departments: ${agency.depts.join(', ')}</td>
+                    <td>${agency.depts.join(', ')}</td>
                     <td>${agency.specs}</td>
-                    <td></td>
+                    <td>
+                        <form action="/chat/create" method="post">
+                            {% csrf_token %}
+                            <input type="text" name="to" value="${agency.agency_id}" hidden>
+                            <textarea name="message" hidden>
+                                Mission Details:\n
+                                ID: {{ mission.id }}\n
+                                Name: {{ mission.name }}\n
+                                Timestamp: {{ mission.timestamp }}\n
+                                Type: {{ mission.type }}\n
+                                Latitude: {{ mission.latitude }}\n
+                                Longitude: {{ mission.longitude }}\n
+                                Address: {{ mission.address }}\n
+                            </textarea>
+                            <button class="btn btn-primary" type="submit">Contact</button>
+                        </form>
+                    </td>
                 `;
             agencyTableBody.appendChild(agencyElement); // Append the <tr> to the table body
         });

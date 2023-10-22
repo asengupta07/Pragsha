@@ -8,3 +8,8 @@ class Message(models.Model):
     from_agency = models.ForeignKey(Agency, related_name="from_agency", on_delete=models.CASCADE)
     message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+
+
+# class Unread(models.Model):
+#     agency = models.ForeignKey(Agency, on_delete=models.CASCADE)
+#     Unread = models.BooleanField(default=True)
