@@ -5,7 +5,7 @@
         body {
             margin: 0;
             padding: 0;
-            background-color: rgb(243, 238, 238);
+            background-color: rgb(197, 82, 82);
         }
 
         .navbar {
@@ -30,14 +30,14 @@
         }
 
         .sos-button {
-            width: 300px;
-            height: 300px;
-            background-color: #8B0000;
+            width: 350px;
+            height: 350px;
+            background-color: white;
             border: 2px solid transparent;
             border-radius: 50%;
             text-align: center;
-            line-height: 300px;
-            color: white;
+            line-height: 350px;
+            color: red;
             font-size: 100px;
             font-weight: bold;
             cursor: pointer;
@@ -47,16 +47,16 @@
 
         @keyframes glow {
             0% {
-                box-shadow: 0 0 10px 10px rgba(139, 0, 0, 0.7);
-                border: 4px solid rgba(139, 0, 0, 0.7);
+                box-shadow: 0 0 10px 10px rgba(253, 251, 251, 0.7);
+                border: 4px solid rgba(253, 251, 251, 0.7);
             }
             50% {
-                box-shadow: 0 0 30px 20px rgba(139, 0, 0, 0.9);
-                border: 4px solid rgba(139, 0, 0, 0.9);
+                box-shadow: 0 0 30px 20px rgba(253,251,251, 0.9);
+                border: 4px solid rgba(253,251,251, 0.9);
             }
             100% {
-                box-shadow: 0 0 10px 10px rgba(139, 0, 0, 0.7);
-                border: 4px solid rgba(139, 0, 0, 0.7);
+                box-shadow: 0 0 10px 10px rgba(253,251,251, 0.7);
+                border: 4px solid rgba(253,251,251, 0.7);
             }
         }
 
@@ -83,36 +83,38 @@
     </style>
 </head>
 <body>
+    <a onclick="window.location.href = '/user/logout';" class="homeBtn"
+		style="position: absolute; top: 0; left: 0; margin: 10px;"><img src="{% static 'wreath.png' %}" alt="Pragsha"
+			width="60" height="60" class="d-inline-block align-text-top"></a>
     <div class="navbar">
         <a href="#" style="color: white;">EMERGENCY</a>
     </div>
-    <div class="sos-button-container">
-        <div class="sos-button" onclick="sendSOS()">SOS</div>
+    <div class="d-none d-sm-block d-md-none">
+        <div class="sos-button-container">
+            <div class="sos-button" style="width: 400px; height: 400px; line-height: 400px; font-size: 180px;">SOS</div>
+        </div>
     </div>
+    <!-- <div class="d-sm-none d-md-block">
+        <div class="sos-button-container">
+            <div class="sos-button" onclick="sendSOS()">SOS</div>
+        </div>
+    </div> -->
 
     <div>
-        <h1 style="text-align: center; font-size: 40px;">
-            After pressing the SOS button, we will contact the nearest agency to your current location.
+        <h1 style="text-align: center; font-size: 45px;">
+            Please standby, help is on its way to your current location.
         </h1>
     </div>
 
     <script>
-        function sendSOS() {
-            if ("geolocation" in navigator) {
-                navigator.geolocation.getCurrentPosition(function (position) {
-                    var latitude = position.coords.latitude;
-                    var longitude = position.coords.longitude;
+        // Retrieve the location data from localStorage
+        var latitude = localStorage.getItem("latitude");
+        var longitude = localStorage.getItem("longitude");
 
-                    // Store the location data in localStorage
-                    localStorage.setItem("latitude", latitude);
-                    localStorage.setItem("longitude", longitude);
-
-                    // Redirect to another page
-                    window.location.href = "sos1.html";
-                });
-            } else {
-                alert("Geolocation is not available in your browser. Please enable it to send your location.");
-            }
+        if (latitude && longitude) {
+            alert("Agency has received your location:\nLatitude: " + latitude + "\nLongitude: " + longitude);
+        } else {
+            alert("Location data not found. Please ensure you clicked the SOS button on the previous page.");
         }
     </script>
 </body>
