@@ -31,31 +31,31 @@
       {% csrf_token %}
       <div class="card mt-3">
         <div class="card-body">
-            <div class="form-group">
-                <label for="type">Type of Equipment:</label>
-                <select id="type" class="form-control mr-2">
-                    {% for type in inventory %}
-                    <option value="{{ type }}">{{ type }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <br>
-            <div class="form-group">
-              <label for="name">Equipment:</label>
-              <select id="name" name="name" class="form-control mr-2">
-              </select>
+          <div class="form-group">
+            <label for="type">Type of Equipment:</label>
+            <select id="type" class="form-control mr-2">
+              {% for type in inventory %}
+              <option value="{{ type }}">{{ type }}</option>
+              {% endfor %}
+            </select>
           </div>
-            <br>
-            <div class="form-group">
-              <input type="number" name="number" id="number" class="form-control mr-2" placeholder="Number"
-                style="width:50% !important;" required>
-            </div>
-            <br>
-            <button id="add" type="submit" class="btn btn-primary">Add</button>
-            <button id="remove" type="submit" class="btn btn-primary">Remove</button>
+          <br>
+          <div class="form-group">
+            <label for="name">Equipment:</label>
+            <select id="name" name="name" class="form-control mr-2">
+            </select>
+          </div>
+          <br>
+          <div class="form-group">
+            <input type="number" name="number" id="number" class="form-control mr-2" placeholder="Number"
+              style="width:50% !important;" required>
+          </div>
+          <br>
+          <button id="add" type="submit" class="btn btn-primary">Add</button>
+          <button id="remove" type="submit" class="btn btn-primary">Remove</button>
         </div>
-    </div>
-      
+      </div>
+
     </form>
     <table id="inventory-table">
       <thead>
@@ -95,59 +95,59 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
   $(function () {
-  // Submit the form using AJAX
-  $('#inventory-form').submit(function (e) {
-    e.preventDefault();
-    // Determine which button was clicked
-    var addButton = $('#add');
-    var removeButton = $('#remove');
-    var numberField = $('input[name="number"]');
-    var number = parseInt(numberField.val());
-
-    if (addButton.is(':focus')) {
-      // If the "Add" button is clicked, add the number
-      number = Math.abs(number);
-    } else if (removeButton.is(':focus')) {
-      // If the "Remove" button is clicked, subtract the number
-      number = -Math.abs(number);
-    }
-
     // Submit the form using AJAX
-    $.ajax({
-      url: '{% url "agency:inventory" %}',
-      method: 'POST',
-      data: $(this).serialize() + '&number=' + number, // Include the adjusted number in the data
-      success: function (data) {
-        if (data.status === 'success') {
-          // Do nothing
-          var name = $('select[name="name"]').val();
-          var existingRow = $('#inventory-list').find('tr').filter(function () {
-            return $(this).find('td:first').text() === name;
-          });
-          if (existingRow.length) {
-            // Update the existing row with the new number
-            var existingNumber = parseInt(existingRow.find('td:last').text());
-            existingRow.find('td:last').text(existingNumber + number);
-          } else {
-            // Add a new row to the table
-            var row = $('<tr>');
-            row.append($('<td>').text(name));
-            row.append($('<td>').text(number));
-            $('#inventory-list').append(row);
-          }
-          // Clear the form
-          $('#inventory-form')[0].reset();
-        } else {
-          // Display the form errors
-          alert('Error: ' + JSON.stringify(data.errors));
-        }
-      },
-      error: function () {
-        alert('Error: Failed to submit form');
+    $('#inventory-form').submit(function (e) {
+      e.preventDefault();
+      // Determine which button was clicked
+      var addButton = $('#add');
+      var removeButton = $('#remove');
+      var numberField = $('input[name="number"]');
+      var number = parseInt(numberField.val());
+
+      if (addButton.is(':focus')) {
+        // If the "Add" button is clicked, add the number
+        number = Math.abs(number);
+      } else if (removeButton.is(':focus')) {
+        // If the "Remove" button is clicked, subtract the number
+        number = -Math.abs(number);
       }
+
+      // Submit the form using AJAX
+      $.ajax({
+        url: '{% url "agency:inventory" %}',
+        method: 'POST',
+        data: $(this).serialize() + '&number=' + number, // Include the adjusted number in the data
+        success: function (data) {
+          if (data.status === 'success') {
+            // Do nothing
+            var name = $('select[name="name"]').val();
+            var existingRow = $('#inventory-list').find('tr').filter(function () {
+              return $(this).find('td:first').text() === name;
+            });
+            if (existingRow.length) {
+              // Update the existing row with the new number
+              var existingNumber = parseInt(existingRow.find('td:last').text());
+              existingRow.find('td:last').text(existingNumber + number);
+            } else {
+              // Add a new row to the table
+              var row = $('<tr>');
+              row.append($('<td>').text(name));
+              row.append($('<td>').text(number));
+              $('#inventory-list').append(row);
+            }
+            // Clear the form
+            $('#inventory-form')[0].reset();
+          } else {
+            // Display the form errors
+            alert('Error: ' + JSON.stringify(data.errors));
+          }
+        },
+        error: function () {
+          alert('Error: Failed to submit form');
+        }
+      });
     });
   });
-});
 
 </script>
 <script>
