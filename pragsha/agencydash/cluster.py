@@ -1,48 +1,65 @@
-from geopy.distance import geodesic
-import rancoord as rc
-import json
+import random
+import math
 
-poly = rc.Polygon(
-    [
-        (22.62368419083518, 88.41940793401186),
-        (22.628560169387445, 88.41640046113686),
-        (22.62832744786009, 88.42883244483792),
-        (22.620504194986193, 88.42697055648333)
+def euclidean_distance(point1, point2):
+    return sum((a - b) ** 2 for a, b in zip(point1, point2)) ** 0.5
+
+def calculate_radius(cluster, centroid):
+    return max(euclidean_distance(point, centroid) for point in cluster)
+
+def initialize_centroids(data, k):
+    return random.sample(data, k)
+
+def assign_clusters(data, centroids):
+    clusters = [[] for _ in range(len(centroids))]
+    for point in data:
+        closest_centroid = min(centroids, key=lambda centroid: euclidean_distance(point, centroid))
+        cluster_index = centroids.index(closest_centroid)
+        clusters[cluster_index].append(point)
+    return clusters
+
+def update_centroids(clusters):
+    new_centroids = []
+    for cluster in clusters:
+        if cluster:
+            new_centroid = [sum(x) / len(cluster) for x in zip(*cluster)]
+            new_centroids.append(new_centroid)
+        else:
+            new_centroids.append(cluster[0])
+    return new_centroids
+
+def kmeans(data, k, max_iterations=100):
+    centroids = initialize_centroids(data, k)
+    for _ in range(max_iterations):
+        clusters = assign_clusters(data, centroids)
+        new_centroids = update_centroids(clusters)
+        if new_centroids == centroids:
+            return clusters, centroids
+        centroids = new_centroids
+    return clusters, centroids
+
+if __name__ == "__main__":
+    data = [
+        [45.24575, 23.22643],
+        [46.12055, 24.32123],
+        [44.56321, 23.54321],
+        [47.65432, 22.98765],
+        [46.98765, 23.09876],
+        [45.12345, 22.87654],
+        [47.87654, 24.23456],
+        [44.65432, 23.98765],
+        [45.98765, 24.87654],
+        [46.56789, 22.98765]
     ]
-)
 
-poly2 = rc.Polygon(
-    [
-        (22.6009269720376, 88.4147718678721),
-        (22.58974725201452, 88.43193276473102),
-        (22.58213354891588, 88.41350894472664),
-        (22.592353648259863, 88.40147403004634)
-    ]
-)
+    k = 3
+    clusters, centroids = kmeans(data, k)
 
-lat,lon = rc.coordinates_randomizer(polygon = poly, num_locations = 40, plot = True, save = True)[:-1]
-
-lat2,lon2 = rc.coordinates_randomizer(polygon = poly2, num_locations = 20, plot = True, save = True)[:-1]
-
-
-print(json.dumps([lat2,lon2], indent=4))
-
-
-emergencies = [
-    {"lat": 40.7128, "lon": -70.0060},
-    {"lat": 41.7130, "lon": -71.0061},
-    {"lat": 42.7135, "lon": -72.0058},
-    {"lat": 39.7110, "lon": -69.0055},
-    {"lat": 39.7105, "lon": -72.0065},
-    {"lat": 40.7120, "lon": -72.0070},
-    {"lat": 40.7145, "lon": -74.0062},
-]
-
-coords = [
-    (emergency['lat'], emergency['lon']) for emergency in emergencies
-]
-
-# for coord1 in coords:
-#     for coord2 in coords:
-#         if coord1 != coord2:
-            # print(geodesic(coord1, coord2).kilometers)
+    for i, cluster in enumerate(clusters):
+        print(f"Cluster {i + 1}: {cluster}")
+        if cluster:
+            centroid = centroids[i]
+            radius = calculate_radius(cluster, centroid)
+            print(f"Radius of Cluster {i + 1}: {radius:.5f}")
+    
+    print(f"Centroids: {centroids}")

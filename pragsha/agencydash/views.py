@@ -4,6 +4,7 @@ from agency.models import Location, Agency, Department, Speciality
 import ast
 from userdash.models import Broadcast
 from agencydash.helper import funky
+import agencydash.cluster as cluster
 
 DEPTS = {
     'National Disaster Management Authority': 'NDMA',
@@ -56,7 +57,7 @@ def response(request):
             'latitude': mission['latitude'],
             'longitude': mission['longitude'],
         })
-        agencies = Agency.objects.all()
+        agencies = Agency.objects.all().exclude(agency_id=agency_id)
         ags = []
         for agency in agencies:
             specs = Speciality.objects.filter(agency_id=agency)
@@ -97,10 +98,27 @@ def dash(request):
         'type': marker.type,
         'id': marker.id,
     } for marker in markers]
+    coords = [[marker.latitude, marker.longitude] for marker in markers]
+    clusters, centroids = cluster.kmeans(coords, 2)
+    zones = []
+    for i, clust in enumerate(clusters):
+        print(f"Cluster {i + 1}: {cluster}")
+        if clust:
+            centroid = centroids[i]
+            radius = cluster.calculate_radius(clust, centroid)
+            zones.append(
+                {
+                    'centroid': centroid,
+                    'radius': radius*1000,
+                }
+            )
+    print(json.dumps(zones, indent=4))
+    zones = json.dumps(zones)
     return render (request, 'agencydash/dash.html', {
         'marker_data': marker_data,
         'disasters': disasters,
         'agency_name': 'YOU',
+        'zones': zones,
     })
     
     

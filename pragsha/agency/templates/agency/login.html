@@ -331,7 +331,7 @@
 				{% csrf_token %}
 				<div class="step login-step">
 					<!-- Login fields -->
-					<input type="text" name="name" class="name" placeholder="Name" maxlength="100" required>
+					<input type="text" autofocus name="name" class="name" placeholder="Name" maxlength="100" required>
 					<input type="email" name="email" class="email" placeholder="Email" maxlength="100" required>
 					<input type="text" name="regId" class="regId" placeholder="Registration ID" maxlength="100"
 						required>
@@ -406,7 +406,7 @@
 				<h1>Sign in</h1>
 				<br>
 				{% csrf_token %}
-				<input type="text" name="regId" placeholder="Registration ID" maxlength="100" required id="id_regId">
+				<input type="text" name="regId" autofocus placeholder="Registration ID" maxlength="100" required id="id_regId">
 				<input type="password" name="password" placeholder="Password" maxlength="100" required id="id_password">
 				<button class="lgn" type="submit">Login</button>
 			</form>
@@ -465,6 +465,7 @@
 					}
 					if ((currentStep + 1) === steps.length) {
 						nextButton.innerHTML = "Submit";
+						nextButton.attributes.type.value = "submit";
 					}
 				}
 				else {
@@ -480,6 +481,7 @@
 				}
 				if ((currentStep + 1) < steps.length) {
 					nextButton.innerHTML = "Next";
+					nextButton.attributes.type.value = "button";
 				}
 			});
 			document.getElementById('getLocationBtn').addEventListener('click', function () {

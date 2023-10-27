@@ -152,10 +152,13 @@ def login(request):
     elif request.method == "POST":
         reg_id = request.POST["regId"]
         password = request.POST["password"]
+        print(f"reg_id: {reg_id}")
+        print(f"password: {password}")
         if not reg_id == "" or not password == "":
             try:
                 agency = Agency.objects.get(regId=reg_id)
             except Agency.DoesNotExist:
+                print("Does not exist")
                 return render(request, "agency/login.html")
 
             if check_password(password, agency.password):

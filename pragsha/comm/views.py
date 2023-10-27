@@ -14,7 +14,6 @@ def chat(request):
         agency_id = request.session["agency_id"]
         agency = Agency.objects.get(agency_id=agency_id)
         to = request.POST["user"]
-        print(to)
         message = Message(
             to_agency=Agency.objects.get(agency_id=to),
             from_agency=agency,
@@ -22,7 +21,6 @@ def chat(request):
         )
         message.save()
         NEW[int(to)] = True
-        print(NEW)
         return redirect("/chat/")
     agency_id = request.session["agency_id"]
     agency = Agency.objects.get(agency_id=agency_id)
@@ -78,9 +76,6 @@ def create(request):
         agency_id = request.session["agency_id"]
         agency = Agency.objects.get(agency_id=agency_id)
         to = request.POST["to"]
-        print(to)
-        text = request.POST["message"]
-        print(text)
         message = Message(
             to_agency=Agency.objects.get(agency_id=to),
             from_agency=agency,

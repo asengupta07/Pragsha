@@ -20,12 +20,27 @@ Dashboard
 
         // Parse the JSON data passed from the view
         var markerData = JSON.parse('{{ marker_data|safe }}');
+        var zones = JSON.parse('{{ zones|safe }}');
 
         for (var i = 0; i < markerData.length; i++) {
             var location = new Microsoft.Maps.Location(markerData[i].latitude, markerData[i].longitude);
             var pushpin = new Microsoft.Maps.Pushpin(location, { color: 'red', title: markerData[i].name, text: `${markerData[i].id}` });
             map.entities.push(pushpin);
         }
+        Microsoft.Maps.loadModule("Microsoft.Maps.SpatialMath", function () {
+        for (var i = 0; i < zones.length; i++) {
+            var loc = new Microsoft.Maps.Location(zones[i].centroid[0], zones[i].centroid[1]);
+
+            //Create an accuracy circle
+            var path = Microsoft.Maps.SpatialMath.getRegularPolygon(loc, zones[i].radius*110, 36,  Microsoft.Maps.SpatialMath.Meters);
+            var poly = new Microsoft.Maps.Polygon(path);
+            map.entities.push(poly);
+
+            //Add a pushpin at the user's location.
+            var pin = new Microsoft.Maps.Pushpin(loc);
+            map.entities.push(pin);
+        }
+    });
         
     }
 </script>

@@ -7,6 +7,7 @@ class Message(models.Model):
     to_agency = models.ForeignKey(Agency, related_name="to_agency", on_delete=models.CASCADE)
     from_agency = models.ForeignKey(Agency, related_name="from_agency", on_delete=models.CASCADE)
     message = models.TextField()
+    key = models.BinaryField()
     created_at = models.DateTimeField(auto_now_add=True)
 
 

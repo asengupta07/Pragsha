@@ -29,6 +29,9 @@ def register(request):
                     "login.html",
                     {"message": "Already registered! Please log in!"},
                 )
+            print(name, phone, dob, aadhar, address, password)
+            print(emer1_name, emer1_number, emer1_address)
+            print(emer2_name, emer2_number, emer2_address)
             password = make_password(password)
             user = User(
                 name=name,
@@ -67,9 +70,11 @@ def login(request):
         name = request.POST["name"]
         password = request.POST["password"]
         aadhar = request.POST["aadhar"]
+        print(name, password, aadhar)
         try:
             user = User.objects.get(aaadhar=aadhar)
         except User.DoesNotExist:
+            print("Does not exist")
             return render(
                 request, "login.html", {"message": "Invalid Name or Password"}
             )
