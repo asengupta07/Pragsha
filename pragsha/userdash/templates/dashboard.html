@@ -1,200 +1,284 @@
 <!DOCTYPE html>
 <html lang="en">
+{% load pwa %}
+{% load static %}
+
 <head>
-    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Emergency Broadcast Form</title>
-    <!-- Include Bootstrap CSS link here -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Forum</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <style>
+        .card {
+            background-color: #fff6ef;
+        }
+
         body {
-            margin: 0 auto;
-            max-width: 800px;
-            padding: 0 20px;
-            background: #fff6ef;
-            font-family: Arial, sans-serif;
+            background: -webkit-linear-gradient(to right, #ffffff, #ffb78f);
+            background: linear-gradient(to right, #ffffff, #ffb78f);
+        }
+
+        .card-text {
+            -webkit-line-clamp: 2;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+        }
+
+        .form-control-root {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 300px;
+            flex-wrap: wrap;
+            flex-direction: row;
+            border: 2px solid lightgray;
+            padding: 4px;
+            border-radius: 4px;
         }
 
         .container {
-            border: 2px solid #FFA07A;
-            background-color: #FFF8DC;
-            border-radius: 5px;
-            padding: 10px;
-            margin: 10px 0;
+            gap: 6px;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
         }
 
-        .darker {
-            border-color: #D3D3D3;
-            background-color: #F5F5F5;
-        }
-
-        .container::after {
-            content: "";
-            clear: both;
-            display: table;
-        }
-
-        .container img {
-            float: left;
-            max-width: 60px;
-            width: 100%;
-            margin-right: 20px;
-            border-radius: 50%;
-        }
-
-        .container img.right {
-            float: right;
-            margin-left: 20px;
-            margin-right: 0;
-        }
-
-        .time-right {
-            float: right;
-            color: #888;
-        }
-
-        .time-left {
-            float: left;
-            color: #888;
-        }
-
-        h2 {
-            font-size: 36px;
-            color: #333;
-            margin-top: 20px;
-        }
-
-        input[type=text], select {
-            width: 100%;
-            padding: 12px 20px;
-            margin: 8px 0;
-            display: inline-block;
-            border: 1px solid #CCC;
+        .container span {
+            background-color: gray;
+            padding: 1px 3px;
             border-radius: 4px;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
         }
 
-        input[type=submit] {
-            width: 100%;
-            background: #FFA07A;
-            color: #FFF;
-            padding: 14px 20px;
-            margin: 8px 0;
-            border: none;
+        /* Add styles for the close button icon */
+        .chip {
+            color: white;
+            background-color: gray;
+            padding: 1px 3px;
             border-radius: 4px;
+            display: flex;
+            align-items: center;
+            margin: 2px;
+        }
+
+        .close-button {
             cursor: pointer;
-            font-family: Arial, sans-serif;
+            margin-left: 4px;
         }
 
-        input[type=submit]:hover {
-            background: #FF6347;
+        ::-webkit-scrollbar {
+            width: 5px;
+            /* Adjust the width as needed */
         }
 
-        label {
-            font-size: 18px;
-            color: #333;
+        ::-webkit-scrollbar-thumb {
+            background: transparent;
+            /* Make the thumb (the draggable part) invisible */
         }
-
-        .card {
-            border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            background: #FFA07A;
-        }
-
-        .btn-broadcast {
-            border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            background: #FF6347;
-        }
-        textarea {
-            width: 100%;
-            height: 30px;
-        }
-        .button-24 {
-        width: 310px !important;
-        height: 100px !important;
-        background: #FF4742;
-        border: 1px solid #FF4742;
-        border-radius: 6px;
-        box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
-        box-sizing: border-box;
-        color: #FFFFFF;
-        cursor: pointer;
-        display: inline-block;
-        font-family: nunito,roboto,proxima-nova,"proxima nova",sans-serif;
-        font-size: 16px;
-        font-weight: 800;
-        line-height: 20px;
-        min-height: 40px;
-        outline: 0;
-        padding: 12px 12px;
-        padding-top: 25px !important;
-        text-align: center;
-        text-rendering: geometricprecision;
-        text-transform: none;
-        user-select: none;
-        -webkit-user-select: none;
-        touch-action: manipulation;
-        vertical-align: middle;
-    }
-
-    .button-24:hover,
-    .button-24:active {
-        background-color: initial;
-        background-position: 0 0;
-        color: #FF4742;
-        }
-
-    .button-24:active {
-        opacity: .5;
-        }
+        
+        img {
+			filter: drop-shadow(2px 2px 1px #000);
+		}
     </style>
 </head>
+
 <body>
-    <a onclick="window.location.href = '/user/logout';" class="homeBtn"
-		style="position: absolute; top: 0; left: 0; margin: 10px;"><img src="{% static 'wreath.png' %}" alt="Pragsha"
-			width="60" height="60" class="d-inline-block align-text-top"></a>
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h1 class="text-center text-white">Emergency Broadcast</h1>
-                    </div>
-                    <div class="card-body">
-                        <form method="post" id="broadcast-form">
-                            {% csrf_token %}
-                            <div>
-                                {{ form.as_p }}
-                            </div>
-                            <div align="center" style="height:100px; width:100px;"><button type="button" class="button-24" id="getLocationBtn"><span style="font-size:75px">SOS</span></button></div>
-                        </form>
-                    </div>
+    <nav class="navbar navbar-expand-lg sticky-top" style="background-color: #ffb78f;">
+        <div class="container-fluid">
+            <a  class="me-3" href="/"><img src="{% static 'wreath.png' %}" alt="logo" width="50px"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item ms-3 me-3 text-center">
+                        <a class="nav-link active" aria-current="page" href="#"><b>Home</b></a>
+                    </li>
+                    <li class="nav-item ms-3 me-3 text-center">
+                        <a class="nav-link" href="#"><b>SOS</b></a>
+                    </li>
+
+                    <li class="nav-item dropdown ms-3 me-3 text-center">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            <b>Resources</b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item text-center href="#">Resource 1</a></li>
+                            <li><a class="dropdown-item text-center" href="#">Another Resource</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item text-center" href="#">Resource Strikes Back</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="navbar-nav me-2">
+                    <li class="nav-item ms-3 me-3 text-center">
+                        <a class="nav-link" href="/user/logout"><b>Log Out</b></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Ask a Query!</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">Ask your Question:</label>
+                            <input type="text" class="form-control" id="recipient-name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="message-text" class="col-form-label">Describe your question: <span
+                                    style="float: right; color: grey;">&nbsp;&nbsp;&nbsp;[optional]</span></label>
+                            <textarea class="form-control" id="message-text"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">Tags:</label>
+                            <div class="container" id="chip-container" class="form-control"></div>
+                            <input type="text" id="input" class="form-control" id="recipient-name"
+                                oninput="handleChange(event)" onkeydown="handleKeyUp(event)">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Send message</button>
                 </div>
             </div>
         </div>
     </div>
+    <div class="card text-center" style="margin-left:10px; margin-right: 10px; margin-top: 20px;">
+        <h1 class="card-header" style="text-align: left;">
+            FORUM:
+            <span style="float: right;">
+                <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">Ask a
+                    Query!</button>
+            </span>
+        </h1>
+        <ul class="nav nav-tabs text-center">
+            <li class="nav-item flex-fill">
+                <a class="nav-link active" href="#">
+                    <h4>Local Queries</h4>
+                </a>
+            </li>
+            <li class="nav-item flex-fill">
+                <a class="nav-link" href="#">
+                    <h4>Your Queries</h4>
+                </a>
+            </li>
+        </ul>
+        <div class="queries">
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
     <script>
-        document.getElementById('getLocationBtn').addEventListener('click', function () {
-            if ("geolocation" in window.navigator) {
-                navigator.geolocation.getCurrentPosition(function (position) {
-                    var latitude = position.coords.latitude;
-                    var longitude = position.coords.longitude;
-                    document.getElementById('id_latitude').value = latitude;
-                    document.getElementById('id_longitude').value = longitude;
-                    alert("Your location has been sent to the agency")
-                    document.getElementById('broadcast-form').submit();
+        queries = document.querySelector(".queries");
+        fetch('/user/get_queries')
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+                for (var i = 0; i < data.length; i++) {
+                    var card = `<div class="card text-center" style="margin:20px;">
+            <div class="card-header">
+                <ul class="list-group list-group-horizontal" style="overflow-x: auto;">
+                    <h5 class="card-header">
+                        Tags:
+                    </h5>`;
+                    for (var j = 0; j < data[i].tags.length; j++) {
+                        card += `<li class="list-group-item">${data[i].tags[j]}</li>`;
+                    }
+                card+=`</ul>
+            </div>
+            <div class="card-body" style="text-align: left;">
+                <h4 class="card-title" style="text-align: left;">${data[i].question}
+                </h4>
+                <p class="card-text" style="text-align: left;">${data[i].description}</p>
+                <a href="#" class="btn btn-dark">Check Answers <span class="badge text-bg-secondary">3</span></a>
+            </div>
+            <div class="card-footer text-body-secondary" style="text-align: right !important;">
+                By <b>${data[i].author}</b> on <b>${data[i].timestamp}</b>
+            </div>
+        </div>`
+                    queries.innerHTML += card;
+                }
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    </script>
+    <script>
+        nav = document.querySelectorAll(".nav-link");
+        nav.forEach(element => {
+            element.addEventListener("click", function () {
+                nav.forEach(element => {
+                    element.classList.remove("active");
                 });
-            } else {
-                alert('Geolocation is not available in your browser.');
-            }
+                element.classList.add("active");
+
+            });
         });
     </script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        const chipContainer = document.getElementById('chip-container');
+        const input = document.getElementById('input');
+        let values = [];
+        let currValue = '';
 
+        function handleKeyUp(e) {
+            if (e.keyCode === 32) {
+                values.push(currValue); // Push the current value, not e.target.value
+                currValue = ''; // Clear the input box
+                input.value = ''; // Clear the input element's value
+                renderChips();
+            }
+        }
+
+        function handleChange(e) {
+            currValue = e.target.value;
+        }
+
+        function renderChips() {
+            chipContainer.innerHTML = '';
+            values.forEach((item, index) => {
+                const chip = document.createElement('span');
+                chip.textContent = item;
+                chip.classList.add('chip');
+
+                // Create a close button icon
+                const closeButton = document.createElement('span');
+                closeButton.textContent = 'x';
+                closeButton.classList.add('close-button');
+                closeButton.addEventListener('click', () => handleDelete(index));
+
+                chip.appendChild(closeButton);
+                chipContainer.appendChild(chip);
+            });
+        }
+
+
+        function handleDelete(index) {
+            values.splice(index, 1);
+            renderChips();
+        }
+
+        renderChips();
+
+    </script>
 </body>
+
 </html>
