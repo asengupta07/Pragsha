@@ -14,15 +14,15 @@
         }
 
         .navbar {
-            background-color: rgb(197, 82, 82);
+            background-color: #ffb78f;
             text-align: center;
-            padding: 20px 0;
+            justify-content: center;
         }
 
         .navbar a {
             color: white;
             text-transform: uppercase;
-            font-size: 54px;
+            font-size: 50px;
             text-decoration: none;
             font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
         }
@@ -65,26 +65,29 @@
             }
         }
 
-        /* Responsive Styling */
         @media (max-width: 768px) {
-            .navbar {
-                padding: 40px 0;
-            }
+    /* .navbar {
+        padding: 40px 0;
+    } */
+    img {
+        width: 50px;
+        height: 50px;
+    }
+    .navbar a {
+        font-size: 2.5rem; /* Adjust font size for small screens */
+    }
 
-            .navbar a {
-                font-size: 48px;
-            }
+    .sos-button-container {
+        min-height: 60vh;
+    }
 
-            .sos-button-container {
-                min-height: 20vh;
-            }
-
-            .sos-button {
-                width: 300px;
-                height: 300px;
-                font-size: 100px;
-            }
-        }
+    .sos-button {
+        width: 200px; /* Adjust button size for small screens */
+        height: 200px; /* Adjust button size for small screens */
+        font-size: 3rem; /* Adjust font size for small screens */
+        line-height: 200px; /* Center the text vertically in the button */
+    }
+}
     </style>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -143,7 +146,7 @@
     </div>
 
     <div>
-        <h1 style="text-align: center; font-size: 40px;">
+        <h1 style="text-align: center; font-size: 30px;">
             After pressing the SOS button, we will contact the nearest agency to your current location.
         </h1>
     </div>

@@ -3,6 +3,13 @@
 {% load pwa %}
 
 <head>
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({ pageLanguage: 'en', layout: google.translate.TranslateElement.FloatPosition.TOP_LEFT }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript"
+        src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     {% load static %}
     {% progressive_web_app_meta %}
     <meta charset="UTF-8">
@@ -68,6 +75,26 @@
         .faq .card .card-header:hover {
             background: rgba(255, 183, 143, 0.1);
             padding-left: 10px;
+        }
+
+        #fixed-button-2 {
+            position: fixed;
+            /* Set the position to fixed */
+            bottom: 20px;
+            /* Adjust the distance from the bottom */
+            left: 20px;
+            /* Adjust the distance from the right */
+            z-index: 999;
+            /* Ensure it's on top of other content */
+        }
+
+        /* Style the button as desired */
+        #fixed-button-2 button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
         }
 
         .faq .card .card-header .faq-title {
@@ -153,8 +180,38 @@
 </head>
 
 <body>
-
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        // Simulate a click on the Google Translate element to trigger translation.
+        setTimeout(function () {
+          $('#google_translate_element > div > div > div > div > a').trigger('click');
+        }, 2000); // Adjust the delay (in milliseconds) as needed.
+      });
+    </script>
+    <!-- Button trigger modal -->
+    <div id="fixed-button-2">
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Translate
+      </button>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Translate</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div id="google_translate_element"></div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- partial:index.partial.html -->
     <section class="faq-section">
         <a onclick="window.location.href = '/';" class="homeBtn"

@@ -1,13 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-    {% load pwa %}
+{% load pwa %}
+
 <head>
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({ pageLanguage: 'en', layout: google.translate.TranslateElement.FloatPosition.TOP_LEFT }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript"
+        src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <meta charset="UTF-8">
     {% progressive_web_app_meta %}
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Pragsha: Authentication</title>
-	{% load static %}
-	<link href="{% static 'favicon.ico' %}" rel="icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pragsha: Authentication</title>
+    {% load static %}
+    <link href="{% static 'favicon.ico' %}" rel="icon">
     <style>
         @import url("https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap");
 
@@ -145,7 +153,8 @@
             margin-top: 20px;
         }
 
-        .form-inner form .field input, textarea {
+        .form-inner form .field input,
+        textarea {
             height: 100%;
             width: 100%;
             outline: none;
@@ -157,23 +166,46 @@
             transition: all 0.3s ease;
         }
 
-        
+
+        #fixed-button-2 {
+            position: fixed;
+            /* Set the position to fixed */
+            bottom: 20px;
+            /* Adjust the distance from the bottom */
+            left: 20px;
+            /* Adjust the distance from the right */
+            z-index: 999;
+            /* Ensure it's on top of other content */
+        }
+
+        /* Style the button as desired */
+        #fixed-button-2 button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
         .form-inner form .textarea {
             height: 80px !important;
         }
 
 
-        .form-inner form .field input:focus, textarea:focus {
+        .form-inner form .field input:focus,
+        textarea:focus {
             border-color: #1a75ff;
             /* box-shadow: inset 0 0 3px #fb6aae; */
         }
 
-        .form-inner form .field input::placeholder, textarea::placeholder {
+        .form-inner form .field input::placeholder,
+        textarea::placeholder {
             color: #999;
             transition: all 0.3s ease;
         }
 
-        form .field input:focus::placeholder, textarea:focus::placeholder {
+        form .field input:focus::placeholder,
+        textarea:focus::placeholder {
             color: #1a75ff;
         }
 
@@ -235,23 +267,57 @@
             font-weight: 500;
             cursor: pointer;
         }
+
         img {
-			filter: drop-shadow(3px 3px 1px #000);
-		}
+            filter: drop-shadow(3px 3px 1px #000);
+        }
     </style>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
 
 <body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Simulate a click on the Google Translate element to trigger translation.
+            setTimeout(function () {
+                $('#google_translate_element > div > div > div > div > a').trigger('click');
+            }, 2000); // Adjust the delay (in milliseconds) as needed.
+        });
+    </script>
+    <!-- Button trigger modal -->
+    <div id="fixed-button-2">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Translate
+        </button>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Translate</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="google_translate_element"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <a onclick="window.location.href = '/';" class="homebttn"
-		style="position: absolute; top: 0; left: 0; margin: 10px;"><img src="{% static 'wreath.png' %}" alt="Pragsha"
-			width="60" height="60" class="d-inline-block align-text-top"></a>
-            {% if message %}
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-              </div>
-            {% endif %}
+        style="position: absolute; top: 0; left: 0; margin: 10px;"><img src="{% static 'wreath.png' %}" alt="Pragsha"
+            width="60" height="60" class="d-inline-block align-text-top"></a>
+    {% if message %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
     <div class="wrapper">
         <div class="title-text">
             <div class="title login">Welcome Back!</div>
@@ -272,10 +338,12 @@
                         <input type="text" name="name" placeholder="Name*" maxlength="100" required id="id_name">
                     </div>
                     <div class="field">
-                        <input type="number" name="aadhar" placeholder="Aadhar Number*" minlength="12" maxlength="12" required id="id_aadhar">
+                        <input type="number" name="aadhar" placeholder="Aadhar Number*" minlength="12" maxlength="12"
+                            required id="id_aadhar">
                     </div>
                     <div class="field">
-                        <input type="password" name="password" placeholder="Password*" maxlength="100" required id="id_password">
+                        <input type="password" name="password" placeholder="Password*" maxlength="100" required
+                            id="id_password">
                     </div>
                     <div class="field bttn">
                         <div class="bttn-layer"></div>
@@ -308,36 +376,43 @@
                     </div>
                     <div class="step" style="display: none;">
                         <div class="field">
-                            <input type="password" name="aaadhar" placeholder="Aadhar Number*" maxlength="12" minlength="12" required
-                                id="id_aaadhar">
+                            <input type="password" name="aaadhar" placeholder="Aadhar Number*" maxlength="12"
+                                minlength="12" required id="id_aaadhar">
                         </div>
                         <div class="field textarea">
-                            <textarea name="address" placeholder="Address*" cols="40" rows="10" maxlength="100" required id="id_address"></textarea>
+                            <textarea name="address" placeholder="Address*" cols="40" rows="10" maxlength="100" required
+                                id="id_address"></textarea>
                         </div>
                     </div>
 
                     <div class="step" style="display: none;">
                         <h3 align="center">Emergency Contact 1</h3>
                         <div class="field">
-                            <input type="text" name="emer1_name" placeholder="Name*" maxlength="100" required id="id_emer1_name">
+                            <input type="text" name="emer1_name" placeholder="Name*" maxlength="100" required
+                                id="id_emer1_name">
                         </div>
                         <div class="field">
-                            <input type="text" name="emer1_number" placeholder="Phone Number*" maxlength="10" required id="id_emer1_number">
+                            <input type="text" name="emer1_number" placeholder="Phone Number*" maxlength="10" required
+                                id="id_emer1_number">
                         </div>
                         <div class="field textarea">
-                            <textarea name="emer1_address" value="No Address Given" placeholder="Address" cols="40" rows="10" maxlength="100" id="id_emer1_address"></textarea>
+                            <textarea name="emer1_address" value="No Address Given" placeholder="Address" cols="40"
+                                rows="10" maxlength="100" id="id_emer1_address"></textarea>
                         </div>
                     </div>
                     <div class="step" style="display: none;">
                         <h3 align="center">Emergency Contact 2</h3>
                         <div class="field">
-                            <input type="text" name="emer2_name" placeholder="Name*" maxlength="100" required id="id_emer2_name">
+                            <input type="text" name="emer2_name" placeholder="Name*" maxlength="100" required
+                                id="id_emer2_name">
                         </div>
                         <div class="field">
-                            <input type="text" name="emer2_number" placeholder="Phone Number*" maxlength="10" required id="id_emer2_number">
+                            <input type="text" name="emer2_number" placeholder="Phone Number*" maxlength="10" required
+                                id="id_emer2_number">
                         </div>
                         <div class="field textarea">
-                            <textarea name="emer2_address" value="No Address Given" placeholder="Address" cols="40" rows="10" maxlength="100" id="id_emer2_address"></textarea>
+                            <textarea name="emer2_address" value="No Address Given" placeholder="Address" cols="40"
+                                rows="10" maxlength="100" id="id_emer2_address"></textarea>
                         </div>
                     </div>
                     <br>
@@ -390,7 +465,7 @@
             }
         });
 
-        backButton.addEventListener("click", function() {
+        backButton.addEventListener("click", function () {
             steps[currentStep].style.display = "none";
             currentStep--;
             steps[currentStep].style.display = "block";
@@ -422,7 +497,9 @@
         });
 
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>

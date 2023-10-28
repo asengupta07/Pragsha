@@ -3,6 +3,13 @@
 {% load pwa %}
 
 <head>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({ pageLanguage: 'en', layout: google.translate.TranslateElement.FloatPosition.TOP_LEFT }, 'google_translate_element');
+    }
+  </script>
+  <script type="text/javascript"
+    src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
   <meta charset="UTF-8">
   {% load static %}
   {% progressive_web_app_meta %}
@@ -74,6 +81,26 @@
 
     /* Style the button as desired */
     #fixed-button button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+
+    #fixed-button-2 {
+      position: fixed;
+      /* Set the position to fixed */
+      bottom: 20px;
+      /* Adjust the distance from the bottom */
+      left: 20px;
+      /* Adjust the distance from the right */
+      z-index: 999;
+      /* Ensure it's on top of other content */
+    }
+
+    /* Style the button as desired */
+    #fixed-button-2 button {
       padding: 10px 20px;
       background-color: #007bff;
       color: #fff;
@@ -306,6 +333,38 @@
 </head>
 
 <body>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      // Simulate a click on the Google Translate element to trigger translation.
+      setTimeout(function () {
+        $('#google_translate_element > div > div > div > div > a').trigger('click');
+      }, 2000); // Adjust the delay (in milliseconds) as needed.
+    });
+  </script>
+  <!-- Button trigger modal -->
+  <div id="fixed-button-2">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      Translate
+    </button>
+  </div>
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Translate</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div id="google_translate_element"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <div id="fixed-button">
     <button class="button-33" type="button" id="installApp">Download</button>
   </div>
@@ -415,7 +474,9 @@
       <span align="justify">
         <!-- <h5>We had an idea.</h5> -->
         <h6 style="font-size: 30px;">
-          <br><b>Uniting Pragati and Raksha for a harmonious India.</b><br><br>Our vision is to uplift every corner of our diverse nation, leading in global disaster management solutions.<br>From earthquakes to healthcare, we're here to reignite India's greatness and uncover untold stories, enriching our cherished heritage.<br>
+          <br><b>Uniting Pragati and Raksha for a harmonious India.</b><br><br>Our vision is to uplift every corner of
+          our diverse nation, leading in global disaster management solutions.<br>From earthquakes to healthcare, we're
+          here to reignite India's greatness and uncover untold stories, enriching our cherished heritage.<br>
         </h6>
       </span>
     </section>
@@ -434,7 +495,7 @@
       <h1 style="font-size:70px;" class="gg" align="center"><span style="font-size: 50px;">OUR</span><br>TEAM</h1>
       <div class="row" style="padding: 50px; text-align: center;">
         <div class="col" style="padding: 10px;">
-          <div class="card" >
+          <div class="card">
             <img src="{% static 'pd.jpeg' %}" class="card-img-top" alt="prayas">
             <div class="card-body">
               <p class="card-text">
@@ -444,7 +505,7 @@
           </div>
         </div>
         <div class="col" style="padding: 10px;">
-          <div class="card" >
+          <div class="card">
             <img src="{% static 'arnab.jpg' %}" class="card-img-top" alt="srijan">
             <div class="card-body">
               <p class="card-text">
@@ -454,7 +515,7 @@
           </div>
         </div>
         <div class="col" style="padding: 10px;">
-          <div class="card" >
+          <div class="card">
             <img src="{% static 'aishi.jpg' %}" class="card-img-top" alt="arya">
             <div class="card-body">
               <p class="card-text">
@@ -466,7 +527,7 @@
       </div>
       <div class="row" style="padding: 50px; text-align: center">
         <div class="col" style="padding: 10px;">
-          <div class="card" >
+          <div class="card">
             <img src="{% static 'srijan.jpeg' %}" class="card-img-top" alt="deba">
             <div class="card-body">
               <p class="card-text">
@@ -476,7 +537,7 @@
           </div>
         </div>
         <div class="col" style="padding: 10px;">
-          <div class="card" >
+          <div class="card">
             <img src="{% static 'ayush.jpeg' %}" class="card-img-top" alt="chandra">
             <div class="card-body">
               <p class="card-text">

@@ -4,12 +4,40 @@
 {% load static %}
 
 <head>
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({ pageLanguage: 'en', layout: google.translate.TranslateElement.FloatPosition.TOP_LEFT }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript"
+        src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    {% progressive_web_app_meta %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forum</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <style>
+        #fixed-button-2 {
+            position: fixed;
+            /* Set the position to fixed */
+            bottom: 20px;
+            /* Adjust the distance from the bottom */
+            left: 20px;
+            /* Adjust the distance from the right */
+            z-index: 999;
+            /* Ensure it's on top of other content */
+        }
+
+        /* Style the button as desired */
+        #fixed-button-2 button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
         .card {
             background-color: #fff6ef;
         }
@@ -77,17 +105,49 @@
             background: transparent;
             /* Make the thumb (the draggable part) invisible */
         }
-        
+
         img {
-			filter: drop-shadow(2px 2px 1px #000);
-		}
+            filter: drop-shadow(2px 2px 1px #000);
+        }
     </style>
 </head>
 
 <body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Simulate a click on the Google Translate element to trigger translation.
+            setTimeout(function () {
+                $('#google_translate_element > div > div > div > div > a').trigger('click');
+            }, 2000); // Adjust the delay (in milliseconds) as needed.
+        });
+    </script>
+    <!-- Button trigger modal -->
+    <div id="fixed-button-2">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Translate
+        </button>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Translate</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="google_translate_element"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <nav class="navbar navbar-expand-lg sticky-top" style="background-color: #ffb78f;">
         <div class="container-fluid">
-            <a  class="me-3" href="/"><img src="{% static 'wreath.png' %}" alt="logo" width="50px"></a>
+            <a class="me-3" href="/"><img src="{% static 'wreath.png' %}" alt="logo" width="50px"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -99,22 +159,13 @@
                         <a class="nav-link active" aria-current="page" href="#"><b>Home</b></a>
                     </li>
                     <li class="nav-item ms-3 me-3 text-center">
-                        <a class="nav-link" href="#"><b>SOS</b></a>
+                        <a class="nav-link" href="/user/sos"><b>SOS</b></a>
                     </li>
-
-                    <li class="nav-item dropdown ms-3 me-3 text-center">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            <b>Resources</b>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item text-center href="#">Resource 1</a></li>
-                            <li><a class="dropdown-item text-center" href="#">Another Resource</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item text-center" href="#">Resource Strikes Back</a></li>
-                        </ul>
+                    <li class="nav-item ms-3 me-3 text-center">
+                        <a class="nav-link" href="/user/forum/"><b>Forum</b></a>
+                    </li>
+                    <li class="nav-item ms-3 me-3 text-center">
+                        <a class="nav-link" href="/user/chatbot/"><b>PragshaGPT</b></a>
                     </li>
                 </ul>
                 <ul class="navbar-nav me-2">
@@ -202,7 +253,7 @@
                     for (var j = 0; j < data[i].tags.length; j++) {
                         card += `<li class="list-group-item">${data[i].tags[j]}</li>`;
                     }
-                card+=`</ul>
+                    card += `</ul>
             </div>
             <div class="card-body" style="text-align: left;">
                 <h4 class="card-title" style="text-align: left;">${data[i].question}

@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load pwa %}
+{% load static %}
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({ pageLanguage: 'en', layout: google.translate.TranslateElement.FloatPosition.TOP_LEFT }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript"
+        src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    {% progressive_web_app_meta %}
+    <meta charset="UTF-8">
+    <title>Pragsha: Chatbot</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        #fixed-button-2 {
+            position: fixed;
+            /* Set the position to fixed */
+            bottom: 20px;
+            /* Adjust the distance from the bottom */
+            left: 20px;
+            /* Adjust the distance from the right */
+            z-index: 999;
+            /* Ensure it's on top of other content */
+        }
+
+        /* Style the button as desired */
+        #fixed-button-2 button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        #wrth {
+            filter: drop-shadow(2px 2px 1px #000);
+        }
+
+        :root {
+            --msger-bg: #fff;
+            --border: 2px solid #ddd;
+            --left-msg-bg: #ececec;
+            --right-msg-bg: #579ffb;
+        }
+
+        html {
+            box-sizing: border-box;
+        }
+
+        *,
+        *:before,
+        *:after {
+            margin: 0;
+            padding: 0;
+            box-sizing: inherit;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Helvetica, sans-serif;
+
+            background: -webkit-linear-gradient(to right, #fff6ef, #ffb78f);
+            background: linear-gradient(to right, #fff6ef, #ffb78f);
+        }
+
+        .msger {
+            display: flex;
+            flex-flow: column wrap;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 867px;
+            margin: 25px 10px;
+            height: calc(100% - 150px);
+            border: var(--border);
+            border-radius: 5px;
+            background: var(--msger-bg);
+            box-shadow: 0 15px 15px -5px rgba(0, 0, 0, 0.2);
+        }
+
+        .msger-header {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: var(--border);
+            background: #ffb78f;
+            color: #222;
+        }
+
+        .msger-chat {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .msger-chat::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .msger-chat::-webkit-scrollbar-track {
+            background: #fff6ef;
+        }
+
+        .msger-chat::-webkit-scrollbar-thumb {
+            background: #fff6ef;
+        }
+
+        .msg {
+            display: flex;
+            align-items: flex-end;
+            margin-bottom: 10px;
+        }
+
+        .msg:last-of-type {
+            margin: 0;
+        }
+
+        .msg-img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+            background: #fff6ef;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            border-radius: 50%;
+        }
+
+        .msg-bubble {
+            max-width: 450px;
+            padding: 15px;
+            border-radius: 15px;
+            background: var(--left-msg-bg);
+        }
+
+        .msg-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .msg-info-name {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .msg-info-time {
+            font-size: 0.85em;
+        }
+
+        .left-msg .msg-bubble {
+            border-bottom-left-radius: 0;
+        }
+
+        .right-msg {
+            flex-direction: row-reverse;
+        }
+
+        .right-msg .msg-bubble {
+            background: var(--right-msg-bg);
+            color: #fff6ef;
+            border-bottom-right-radius: 0;
+        }
+
+        .right-msg .msg-img {
+            margin: 0 0 0 10px;
+        }
+
+        .msger-inputarea {
+            display: flex;
+            padding: 10px;
+            border-top: var(--border);
+            background: #fff6ef;
+        }
+
+        .msger-inputarea * {
+            padding: 10px;
+            border: none;
+            border-radius: 3px;
+            font-size: 1em;
+        }
+
+        .msger-input {
+            flex: 1;
+            background: #ddd;
+        }
+
+        .msger-send-btn {
+            margin-left: 10px;
+            background: rgb(0, 196, 65);
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.23s;
+        }
+
+        .msger-send-btn:hover {
+            background: rgb(0, 180, 50);
+        }
+
+        .msger-chat {
+            background-color: #fcfcfe;
+        }
+    </style>
+
+</head>
+
+<body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Simulate a click on the Google Translate element to trigger translation.
+            setTimeout(function () {
+                $('#google_translate_element > div > div > div > div > a').trigger('click');
+            }, 2000); // Adjust the delay (in milliseconds) as needed.
+        });
+    </script>
+    <!-- Button trigger modal -->
+    <div id="fixed-button-2">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Translate
+        </button>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Translate</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="google_translate_element"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a onclick="window.location.href = '/user/dashboard/';" class="homebttn"
+        style="position: absolute; top: 0; left: 0; margin: 10px;"><img id="wrth" src="{% static 'wreath.png' %}"
+            alt="Pragsha" width="60" height="60" class="d-inline-block align-text-top"></a>
+    <!-- partial:index.partial.html -->
+    <section class="msger">
+        <header class="msger-header">
+            <div class="msger-header-title">
+                <i class="fas fa-comment-alt"></i> PragshaGPT
+            </div>
+        </header>
+
+        <main class="msger-chat">
+            <div class="msg left-msg">
+                <div class="msg-img" style="background-image: url(https://image.flaticon.com/icons/svg/327/327779.svg)">
+                </div>
+
+                <div class="msg-bubble">
+                    <div class="msg-info">
+                        <div class="msg-info-name">PRAGSHA</div>
+                        <div class="msg-info-time">12:45</div>
+                    </div>
+
+                    <div class="msg-text">
+                        Hi, there! How can I help you today?
+                    </div>
+                </div>
+            </div>
+        </main>
+        {% csrf_token %}
+
+        <form class="msger-inputarea">
+            <input type="text" class="msger-input" placeholder="Enter your message...">
+            <button type="submit" class="msger-send-btn">Send</button>
+        </form>
+    </section>
+    <!-- partial -->
+    <script src='https://use.fontawesome.com/releases/v5.0.13/js/all.js'></script>
+    <script>
+        const msgerForm = get(".msger-inputarea");
+        const msgerInput = get(".msger-input");
+        const msgerChat = get(".msger-chat");
+
+
+        // Icons made by Freepik from www.flaticon.com
+        const BOT_IMG = "https://image.flaticon.com/icons/svg/327/327779.svg";
+        const PERSON_IMG = "https://image.flaticon.com/icons/svg/145/145867.svg";
+        const BOT_NAME = "PRAGSHA";
+        const PERSON_NAME = "YOU";
+        msgerForm.addEventListener("submit", event => {
+            event.preventDefault();
+
+            const msgText = msgerInput.value;
+            if (!msgText) return;
+            q = msgText;
+            appendMessage(PERSON_NAME, PERSON_IMG, "right", msgText);
+            msgerInput.value = "";
+
+            botResponse();
+        });
+
+        function appendMessage(name, img, side, text) {
+            //   Simple solution for small apps
+            const msgHTML = `
+    <div class="msg ${side}-msg">
+      <div class="msg-img" style="background-image: url(${img})"></div>
+
+      <div class="msg-bubble">
+        <div class="msg-info">
+          <div class="msg-info-name">${name}</div>
+          <div class="msg-info-time">${formatDate(new Date())}</div>
+        </div>
+
+        <div class="msg-text">${text}</div>
+      </div>
+    </div>
+  `;
+
+            msgerChat.insertAdjacentHTML("beforeend", msgHTML);
+            msgerChat.scrollTop += 500;
+        }
+
+
+        const csrfToken = document.querySelector('input[name=csrfmiddlewaretoken]').value;
+        // Create a `Headers` object to include the CSRF token
+        const headers = new Headers();
+        headers.append('X-CSRFToken', csrfToken);
+        headers.append('Content-Type', 'application/json');
+
+        function botResponse() {
+            fetch('/user/get_response/', {
+                method: 'POST',
+                headers: headers,
+                body: JSON.stringify({
+                    "question": q
+                })
+            }).then(response => {
+                return response.json();
+            }).then(data => {
+                console.log(data.response)
+                const msgText = data.response;
+                const delay = msgText.split(" ").length * 100;
+                setTimeout(() => {
+                    appendMessage(BOT_NAME, BOT_IMG, "left", msgText);
+                }, delay);
+            });
+        }
+
+        // Utils
+        function get(selector, root = document) {
+            return root.querySelector(selector);
+        }
+
+        function formatDate(date) {
+            const h = "0" + date.getHours();
+            const m = "0" + date.getMinutes();
+
+            return `${h.slice(-2)}:${m.slice(-2)}`;
+        }
+
+        function random(min, max) {
+            return Math.floor(Math.random() * (max - min) + min);
+        }
+    </script>
+    
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+  crossorigin="anonymous"></script>
+
+</body>
+
+</html>
