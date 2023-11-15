@@ -87,7 +87,7 @@ def get_response(request):
                 'question': question
             }
         )
-        response = requests.post('https://f27a-34-87-132-227.ngrok.io',data=qjson)
+        response = requests.post('https://aedb-34-126-156-16.ngrok.io',data=qjson)
         response = {
             'response': response.json()['answer'].strip().rstrip("User")
         }
