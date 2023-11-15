@@ -1,0 +1,279 @@
+{% extends 'agencydash/layout.html' %}
+
+{% block title %}
+Drone Feed
+{% endblock %}
+{% block links %}
+<style>
+    .screenshot-image {
+        width: 337.5px;
+        height: 202.5px;
+        border-radius: 4px;
+        border: 2px solid whitesmoke;
+        box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.5);
+        bottom: 5px;
+        left: 10px;
+        background: white;
+    }
+
+    .display-cover {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 50%;
+        margin: auto;
+        position: relative;
+    }
+
+    .row {
+        justify-content: center;
+        align-items: center;
+    }
+
+    video {
+        width: 100%;
+        background: rgba(0, 0, 0, 0.2);
+    }
+
+    .video-options {
+        position: absolute;
+        left: 20px;
+        top: 30px;
+    }
+
+    .controls {
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        display: flex;
+    }
+
+    .controls>button {
+        width: 45px;
+        height: 45px;
+        text-align: center;
+        border-radius: 100%;
+        margin: 0 6px;
+        background: transparent;
+    }
+
+    .controls>button:hover svg {
+        color: white !important;
+    }
+
+    @media (min-width: 300px) and (max-width: 400px) {
+        .controls {
+            flex-direction: column;
+        }
+
+        .controls button {
+            margin: 5px 0 !important;
+        }
+    }
+
+    .controls>button>svg {
+        height: 20px;
+        width: 18px;
+        text-align: center;
+        margin: 0 auto;
+        padding: 0;
+    }
+
+    .controls button:nth-child(1) {
+        border: 2px solid #D2002E;
+    }
+
+    .controls button:nth-child(1) svg {
+        color: #D2002E;
+    }
+
+    .controls button:nth-child(2) {
+        border: 2px solid #008496;
+    }
+
+    .controls button:nth-child(2) svg {
+        color: #008496;
+    }
+
+    .controls button:nth-child(3) {
+        border: 2px solid #00B541;
+    }
+
+    .controls button:nth-child(3) svg {
+        color: #00B541;
+    }
+
+    .controls>button {
+        width: 45px;
+        height: 45px;
+        text-align: center;
+        border-radius: 100%;
+        margin: 0 6px;
+        background: transparent;
+    }
+
+    .controls>button:hover svg {
+        color: white;
+    }
+
+    .col {
+        justify-content: center;
+        align-items: center;
+    }
+
+    .ss {
+        justify-content: center;
+        align-items: center;
+    }
+</style>
+{% endblock %}
+
+{% block main %}
+<div class="card">
+    <div class="card-body">
+        <h3 class="card-title" align="center">Drone Feed</h3>
+        <div class="display-cover card-text">
+            <video autoplay style="border-radius: 10px; width: 100% !important;"></video>
+            <canvas class="d-none"></canvas>
+
+            <div class="video-options">
+                <select name="" id="" class="custom-select form-control">
+                    <option value="">Select camera</option>
+                </select>
+            </div>
+
+            <div class="controls">
+                <button class="btn btn-danger play" title="Play"><i data-feather="play-circle"></i></button>
+                <button class="btn btn-info pause d-none" title="Pause"><i data-feather="pause"></i></button>
+                <button class="btn btn-outline-success screenshot d-none" title="ScreenShot"><i
+                        data-feather="image"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ss card">
+    <h3 class="card-title" align="center">Feed Captures</h3>
+</div>
+<!-- <img class="screenshot-image img-ss d-none" alt=""> -->
+<script src="https://unpkg.com/feather-icons"></script>
+<script>
+    feather.replace();
+
+    const controls = document.querySelector('.controls');
+    const cameraOptions = document.querySelector('.video-options>select');
+    const video = document.querySelector('video');
+    const canvas = document.querySelector('canvas');
+    const screenshotImage = document.querySelector('.img-ss');
+    const buttons = [...controls.querySelectorAll('button')];
+    let streamStarted = false;
+    var i = 0;
+
+    const [play, pause, screenshot] = buttons;
+
+    // const constraints = {
+    //   video: {
+    //     deviceId: {
+    //       exact: '72f5a5a15ec4405b345c6b1fc9fcfe9dd7a90097d50692424db4a38435f06a87'
+    //     }
+    //   }
+    // };
+
+    const getCameraSelection = async () => {
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        const videoDevices = devices.filter(device => device.kind === 'videoinput');
+        const options = videoDevices.map(videoDevice => {
+            console.log(videoDevice);
+            return `<option value="${videoDevice.deviceId}">${videoDevice.label}</option>`;
+        });
+        cameraOptions.innerHTML = options.join('');
+    };
+
+    play.onclick = () => {
+        if (streamStarted) {
+            video.play();
+            play.classList.add('d-none');
+            pause.classList.remove('d-none');
+            return;
+        }
+        if ('mediaDevices' in navigator && navigator.mediaDevices.getUserMedia) {
+            const updatedConstraints = {
+                video: {
+                    deviceId: {
+                        exact: cameraOptions.value
+                    }
+                }
+            };
+            startStream(updatedConstraints);
+        }
+    };
+
+    const startStream = async (constraints) => {
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        console.log(stream.getTracks());
+        handleStream(stream);
+    };
+
+    const handleStream = (stream) => {
+        video.srcObject = stream;
+        play.classList.add('d-none');
+        pause.classList.remove('d-none');
+        screenshot.classList.remove('d-none');
+        streamStarted = true;
+    };
+
+    getCameraSelection();
+    cameraOptions.onchange = () => {
+        console.log(cameraOptions.value);
+        const updatedConstraints = {
+            video: {
+                deviceId: {
+                    exact: cameraOptions.value
+                }
+            }
+        };
+        startStream(updatedConstraints);
+    };
+
+    const pauseStream = () => {
+        video.pause();
+        play.classList.remove('d-none');
+        pause.classList.add('d-none');
+    };
+
+    const doScreenshot = () => {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        canvas.getContext('2d').drawImage(video, 0, 0);
+        var imageCard = document.createElement('div');
+        imageCard.className = 'col card';
+        console.log(i);
+        var imageElement = document.createElement('img');
+        imageElement.src = canvas.toDataURL('image/webp');
+        imageElement.className = 'screenshot-image';
+        imageCard.appendChild(imageElement);
+        if (i % 3 === 0) {
+            var row = document.createElement('div');
+            row.className = `row row${i / 3}`;
+            row.appendChild(imageCard);
+            document.querySelector('.ss').appendChild(row);
+        }
+        else {
+            document.querySelector(`.row${Math.floor(i / 3)}`).appendChild(imageCard);
+        }
+        i++;
+        // screenshotImage.src = canvas.toDataURL('image/webp');
+        // screenshotImage.classList.remove('d-none');
+    };
+
+    pause.onclick = pauseStream;
+    screenshot.onclick = doScreenshot;
+    if ('mediaDevices' in navigator && navigator.mediaDevices.getUserMedia) {
+        const updatedConstraints = {
+            video: true
+        };
+        startStream(updatedConstraints);
+    }
+</script>
+
+{% endblock %}

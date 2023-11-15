@@ -121,4 +121,7 @@ def dash(request):
         'zones': zones,
     })
     
-    
+def drone(request):
+    if 'agency_id' not in request.session:
+        return redirect('/agency/login')
+    return render(request, 'agencydash/drone.html')
